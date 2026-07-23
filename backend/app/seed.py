@@ -174,9 +174,10 @@ async def seed_database():
         # Seed admin
         result = await db.execute(select(Admin).where(Admin.email == settings.admin_email))
         if not result.scalar_one_or_none():
-            pw = settings.admin_password or "admin123"
-            if not settings.admin_password:
-                print("WARNING: Using default admin password. Set ADMIN_PASSWORD env var.")
+            pw = settings.admin_password
+            if not pw:
+                print("ERROR: ADMIN_PASSWORD env var not set. Cannot seed admin.")
+                return
             admin = Admin(
                 email=settings.admin_email,
                 password_hash=hash_password(pw),

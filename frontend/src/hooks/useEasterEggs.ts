@@ -6,7 +6,7 @@ const ROACH_ASCII = `
    🪳  🪳  🪳
   CJP — Voice of the Lazy & Unemployed
   Join the swarm: cockroachjantaparty.org
-  Instagram: @cockroachjantaparty · X: @CJP_2029
+  Instagram: @cockroachjantaparty · X: @cockroachisback
 `;
 
 export function useConsoleEasterEgg() {

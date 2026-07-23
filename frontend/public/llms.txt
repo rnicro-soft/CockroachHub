@@ -41,4 +41,4 @@ React 19, Vite 6, Tailwind CSS 3, FastAPI, PostgreSQL 17, PWA offline-first
 
 ## Contact
 Instagram: @cockroachjantaparty
-X (Twitter): @CJP_2029
+X (Twitter): @cockroachisback

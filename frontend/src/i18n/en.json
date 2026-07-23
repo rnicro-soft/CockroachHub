@@ -382,12 +382,12 @@
     "login": "Admin Login",
     "loginSubtitle": "CockroachHub Admin Panel",
     "email": "Email",
-    "emailPlaceholder": "admin@helpline.local",
+    "emailPlaceholder": "admin@example.com",
     "password": "Password",
     "passwordPlaceholder": "Enter password",
     "signIn": "Sign In",
     "signingIn": "Signing in...",
-    "helperText": "Default: admin@helpline.local / admin123",
+    "helperText": "Enter your credentials",
     "dashboard": "Dashboard",
     "dashboardGreeting": "Welcome back,",
     "submissions": "Submissions",
@@ -585,7 +585,7 @@
   "footer": {
     "heading": "Cockroach Janta Party — Helpline",
     "tagline": "Works when the internet doesn't. Which it will.",
-    "social": "Instagram: @cockroachjantaparty · X: @CJP_2029 · Telegram: cockroachjantaparty",
+    "social": "Instagram: @cockroachjantaparty · X: @cockroachisback · Telegram: cockroachjantaparty",
     "menu": "Menu"
   },
   "easterEgg": {

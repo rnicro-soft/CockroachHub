@@ -57,9 +57,9 @@ export default function About() {
             <span className="flex-1 text-sm font-bold text-ph-text-dark dark:text-white">@cockroachjantaparty</span>
             <ExternalLink className="h-4 w-4 text-ph-text-muted" />
           </a>
-          <a href="https://x.com/CJP_2029" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-3 bg-ph-card-hover hover:bg-ph-orange/10 transition-colors">
+          <a href="https://x.com/cockroachisback" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-3 bg-ph-card-hover hover:bg-ph-orange/10 transition-colors">
             <Twitter className="h-5 w-5 text-ph-orange" />
-            <span className="flex-1 text-sm font-bold text-ph-text-dark dark:text-white">@CJP_2029</span>
+            <span className="flex-1 text-sm font-bold text-ph-text-dark dark:text-white">@cockroachisback</span>
             <ExternalLink className="h-4 w-4 text-ph-text-muted" />
           </a>
           <a href="https://cockroachjantaparty.org" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-3 bg-ph-card-hover hover:bg-ph-orange/10 transition-colors">

@@ -3,7 +3,7 @@ services:
     image: postgres:17-alpine
     environment:
       POSTGRES_USER: helpline
-      POSTGRES_PASSWORD: helpline_secret
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
       POSTGRES_DB: helpline
     ports:
       - "5444:5432"

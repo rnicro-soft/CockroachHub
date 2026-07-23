@@ -382,12 +382,12 @@
     "login": "एडमिन लॉगिन",
     "loginSubtitle": "कॉकरोचहब एडमिन पैनल",
     "email": "ईमेल",
-    "emailPlaceholder": "admin@helpline.local",
+    "emailPlaceholder": "admin@example.com",
     "password": "पासवर्ड",
     "passwordPlaceholder": "पासवर्ड दर्ज करें",
     "signIn": "साइन इन करें",
     "signingIn": "साइन इन हो रहा है...",
-    "helperText": "डिफ़ॉल्ट: admin@helpline.local / admin123",
+    "helperText": "अपना क्रेडेंशियल दर्ज करें",
     "dashboard": "डैशबोर्ड",
     "dashboardGreeting": "वापस स्वागत है,",
     "submissions": "सबमिशन",
@@ -585,7 +585,7 @@
   "footer": {
     "heading": "कॉकरोच जनता पार्टी — हेल्पलाइन",
     "tagline": "जब इंटरनेट काम न करे तब भी काम करता है। और यह काम नहीं करेगा।",
-    "social": "इंस्टाग्राम: @cockroachjantaparty · एक्स: @CJP_2029 · टेलीग्राम: cockroachjantaparty",
+    "social": "इंस्टाग्राम: @cockroachjantaparty · एक्स: @cockroachisback · टेलीग्राम: cockroachjantaparty",
     "menu": "मेनू"
   },
   "easterEgg": {

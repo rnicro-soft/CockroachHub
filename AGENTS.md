@@ -61,9 +61,7 @@ helpline/
 - If port conflict: change in docker-compose.yml + backend/.env + config.py
 
 ## Default admin
-- Email: admin@helpline.local
-- Password: admin123 (forces change on first login)
-- Set ADMIN_PASSWORD env var in production
+- Created on first start via ADMIN_PASSWORD env var
 
 ## Security
 - CORS restricted to cockroachhub.lol

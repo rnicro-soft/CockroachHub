@@ -57,7 +57,7 @@ export default function Manifesto() {
             <p className="mt-1">{t("manifesto.joinDesc")}</p>
             <div className="flex gap-3 mt-2">
               <a href="https://www.instagram.com/cockroachjantaparty/" target="_blank" rel="noopener noreferrer" className="text-xs text-ph-orange hover:underline flex items-center gap-1"><ExternalLink className="h-3 w-3" />{t("manifesto.socialInstagram")}</a>
-              <a href="https://x.com/CJP_2029" target="_blank" rel="noopener noreferrer" className="text-xs text-ph-orange hover:underline flex items-center gap-1"><ExternalLink className="h-3 w-3" />{t("manifesto.socialX")}</a>
+              <a href="https://x.com/cockroachisback" target="_blank" rel="noopener noreferrer" className="text-xs text-ph-orange hover:underline flex items-center gap-1"><ExternalLink className="h-3 w-3" />{t("manifesto.socialX")}</a>
               <a href="https://cockroachjantaparty.org" target="_blank" rel="noopener noreferrer" className="text-xs text-ph-orange hover:underline flex items-center gap-1"><ExternalLink className="h-3 w-3" />{t("manifesto.socialSite")}</a>
             </div>
           </div>

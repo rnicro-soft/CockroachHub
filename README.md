@@ -28,14 +28,6 @@ npm run dev
 
 Open http://localhost:5173
 
-## Default Admin
-
-| Email | Password |
-|---|---|
-| admin@helpline.local | admin123 |
-
-First login forces password change.
-
 ## Environment Variables
 
 Create `backend/.env`:
@@ -48,9 +40,9 @@ ADMIN_PASSWORD=<your-password>
 | Variable | Default | Required |
 |---|---|---|
 | `SECRET_KEY` | — | **Yes** |
-| `DATABASE_URL` | `postgresql+asyncpg://helpline:helpline_secret@localhost:5444/helpline` | No |
-| `ADMIN_EMAIL` | `admin@helpline.local` | No |
-| `ADMIN_PASSWORD` | `admin123` | Recommended |
+| `DATABASE_URL` | — | No |
+| `ADMIN_EMAIL` | — | No |
+| `ADMIN_PASSWORD` | — | **Yes** |
 | `VAPID_PRIVATE_KEY` | auto-generated | No |
 
 ## Production Build
