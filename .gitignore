@@ -1,0 +1,45 @@
+# Node
+node_modules/
+dist/
+.vite-temp/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.Python
+
+# Environment
+.env
+.env.local
+.env.production
+
+# Secrets
+*.pem
+*.key
+vapid_private.pem
+vapid_public.pem
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Logs
+*.log
+/tmp/
+
+# Test artifacts
+test/*.docx
+
+graphify-out/
+*.cpuprofile

@@ -1,0 +1,44 @@
+# CockroachHub — CJP Helpline
+
+> Emergency resource hub for student protesters in India. Works offline. Zero data collection.
+
+## About
+CockroachHub is a Progressive Web App built for the Cockroach Janta Party (CJP) student protest movement. It provides verified emergency contacts, legal rights information, live field updates, first aid guides, and mental health support — all cached offline.
+
+## Key Pages
+- Emergency Directory: /emergency — 34 verified contacts (legal aid, medical, helplines)
+- Live Field Feed: /live-feed — Real-time protest alerts (30s polling + SSE streaming)
+- Know Your Rights: /legal-rights — BNSS-corrected legal protections for protesters
+- First Aid Guide: /first-aid — Tear gas, lathi charge, pepper spray treatment (PHR protocol)
+- Fact Check: /fact-check — NEET paper leak tracker, verified news
+- SOS Emergency: /sos — One-tap emergency broadcast + GPS to admins
+- Bail Info: /bail-info — BNSS sections 478, 480, 482 with bail procedure
+- Mental Health: /mental-health — Free/low-cost counselling directory
+- Safe Zones: /safe-zones — Verified safe locations with Google Maps directions
+- Aid & Accommodation: /aid — Free shelter, food, water
+
+## Verified Contacts
+- NHRC: 14440
+- NALSA Legal Aid: 15100
+- National Ambulance: 108
+- Women's Helpline: 181
+- Child Helpline: 1098
+- AILAJ Legal Aid (Delhi): 93542 31296
+- PUCL Legal Aid (Delhi): 84476 73005
+
+## Tech Stack
+React 19, Vite 6, Tailwind CSS 3, FastAPI, PostgreSQL 17, PWA offline-first
+
+## Data Sources
+- Emergency contacts: Government of India helplines + community-verified lawyer database
+- Legal rights: Bharatiya Nagarik Suraksha Sanhita (BNSS) 2023 + lawyer_saheba
+- First aid: Physicians for Human Rights (PHR) protest medicine guide
+- Fact checks: Supreme Court orders, CBI statements, Times of India, LiveLaw
+- Mental health: Community-sourced directory of pro bono therapists
+
+## Last Updated
+2026-07-23
+
+## Contact
+Instagram: @cockroachjantaparty
+X (Twitter): @CJP_2029

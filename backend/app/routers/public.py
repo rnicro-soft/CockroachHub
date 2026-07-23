@@ -1,0 +1,150 @@
+import asyncio
+import json
+
+from fastapi import APIRouter, Depends, Query, Request
+from fastapi.responses import StreamingResponse
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from pydantic import BaseModel
+
+from app.database import get_db
+from app.models import Alert, Announcement, EmergencyContact, FactCheck, LegalRight, PushSubscription, Submission
+from app.push import get_vapid_public_key
+from app.ratelimit import check_ip_blacklist, rate_limit_submissions
+from app.schemas import AlertOut, AnnouncementOut, ContactOut, FactCheckOut, LegalRightOut, SubmissionCreate, SubmissionOut
+
+router = APIRouter(prefix="/api", tags=["public"])
+
+
+@router.get("/alerts", response_model=list[AlertOut])
+async def get_alerts(
+    type: str | None = Query(None),
+    severity: str | None = Query(None),
+    q: str | None = Query(None),
+    limit: int = Query(50, ge=1, le=200),
+    offset: int = Query(0, ge=0),
+    db: AsyncSession = Depends(get_db),
+):
+    query = select(Alert).where(Alert.is_active == True).order_by(Alert.created_at.desc())
+    if type:
+        query = query.where(Alert.type == type)
+    if severity:
+        query = query.where(Alert.severity == severity)
+    if q:
+        query = query.where(Alert.title.ilike(f"%{q}%") | Alert.description.ilike(f"%{q}%") | Alert.location.ilike(f"%{q}%"))
+    query = query.offset(offset).limit(limit)
+    result = await db.execute(query)
+    return [AlertOut.model_validate(a) for a in result.scalars().all()]
+
+
+@router.get("/alerts/stream")
+async def alert_stream(request: Request, db: AsyncSession = Depends(get_db)):
+    async def event_generator():
+        last_id = 0
+        try:
+            while True:
+                if await request.is_disconnected():
+                    break
+                result = await db.execute(
+                    select(Alert).where(Alert.id > last_id, Alert.is_active == True).order_by(Alert.id)
+                )
+                new_alerts = result.scalars().all()
+                for a in new_alerts:
+                    last_id = a.id
+                    d = AlertOut.model_validate(a).model_dump()
+                    yield f"data: {json.dumps(d, default=str)}\n\n"
+                await asyncio.sleep(5)
+        except asyncio.CancelledError:
+            pass
+
+    return StreamingResponse(event_generator(), media_type="text/event-stream")
+
+
+@router.get("/emergency-contacts", response_model=list[ContactOut])
+async def get_contacts(category: str | None = Query(None), db: AsyncSession = Depends(get_db)):
+    query = select(EmergencyContact).order_by(EmergencyContact.category, EmergencyContact.name)
+    if category:
+        query = query.where(EmergencyContact.category == category)
+    result = await db.execute(query)
+    return [ContactOut.model_validate(c) for c in result.scalars().all()]
+
+
+@router.get("/legal-rights", response_model=list[LegalRightOut])
+async def get_legal_rights(category: str | None = Query(None), db: AsyncSession = Depends(get_db)):
+    query = select(LegalRight).order_by(LegalRight.sort_order)
+    if category:
+        query = query.where(LegalRight.category == category)
+    result = await db.execute(query)
+    return [LegalRightOut.model_validate(r) for r in result.scalars().all()]
+
+
+@router.get("/fact-checks", response_model=list[FactCheckOut])
+async def get_fact_checks(db: AsyncSession = Depends(get_db)):
+    result = await db.execute(
+        select(FactCheck).where(FactCheck.is_published == True).order_by(FactCheck.created_at.desc())
+    )
+    return [FactCheckOut.model_validate(c) for c in result.scalars().all()]
+
+
+class PushSubBody(BaseModel):
+    endpoint: str
+    auth: str
+    p256dh: str
+
+
+@router.get("/push/vapid-key")
+async def vapid_public_key():
+    return {"public_key": get_vapid_public_key()}
+
+
+@router.post("/push/subscribe", status_code=201)
+async def subscribe_push(body: PushSubBody, db: AsyncSession = Depends(get_db)):
+    existing = await db.execute(select(PushSubscription).where(PushSubscription.endpoint == body.endpoint))
+    if not existing.scalar_one_or_none():
+        sub = PushSubscription(endpoint=body.endpoint, auth=body.auth, p256dh=body.p256dh)
+        db.add(sub)
+        await db.commit()
+    return {"status": "subscribed"}
+
+
+@router.post("/push/unsubscribe", status_code=200)
+async def unsubscribe_push(body: PushSubBody, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(PushSubscription).where(PushSubscription.endpoint == body.endpoint))
+    sub = result.scalar_one_or_none()
+    if sub:
+        await db.delete(sub)
+        await db.commit()
+    return {"status": "unsubscribed"}
+
+
+@router.get("/announcement", response_model=AnnouncementOut | None)
+async def get_active_announcement(db: AsyncSession = Depends(get_db)):
+    result = await db.execute(
+        select(Announcement).where(Announcement.is_active == True).order_by(Announcement.created_at.desc()).limit(1)
+    )
+    a = result.scalar_one_or_none()
+    return AnnouncementOut.model_validate(a) if a else None
+
+
+@router.post("/submissions", response_model=SubmissionOut, status_code=201)
+async def submit_report(
+    body: SubmissionCreate,
+    request: Request,
+    db: AsyncSession = Depends(get_db),
+    _=Depends(rate_limit_submissions),
+    __=Depends(check_ip_blacklist),
+):
+    submission = Submission(
+        type=body.type,
+        description=body.description,
+        location=body.location,
+        ip_address=request.client.host if request.client else None,
+    )
+    db.add(submission)
+    await db.commit()
+    await db.refresh(submission)
+    ip = request.client.host if request.client else "unknown"
+    sos_prefix = "[SOS]" if "[SOS]" in (body.description or "") else ""
+    print(f"[SUBMIT]{sos_prefix} type={body.type} ip={ip} loc={body.location or 'none'}")
+    return SubmissionOut.model_validate(submission)

@@ -1,0 +1,115 @@
+[
+  {
+    "id": "tear-gas",
+    "title": "Tear Gas Exposure",
+    "icon": "AlertTriangle",
+    "severity": "red",
+    "symptoms": "Burning eyes, difficulty breathing, skin irritation, coughing, disorientation",
+    "steps": [
+      "Don't panic — move to higher ground where gas settles lower",
+      "Cover nose and mouth with a wet cloth (water, not soda)",
+      "DO NOT rub eyes — blink rapidly to flush tears",
+      "Rinse eyes with cold water or saline solution — tilt head sideways, let water run across eye",
+      "Remove contaminated clothing and wash skin with cold water and mild soap",
+      "If wearing contact lenses, remove them immediately (discard them)",
+      "Stand in wind direction — keep gas cloud behind you",
+      "Breathe slowly through wet cloth — short shallow breaths",
+      "Severe symptoms: difficulty breathing for >10 min, chest pain, blurred vision — seek medical help immediately"
+    ],
+    "doNot": [
+      "DO NOT rub eyes — causes corneal abrasion",
+      "DO NOT use oil-based products (Vaseline, coconut oil) — they trap chemicals against skin",
+      "DO NOT use water on skin if pepper spray (oil-based) — use dish soap or milk",
+      "DO NOT wear contact lenses to protests",
+      "DO NOT panic-run — conserve oxygen, move calmly"
+    ],
+    "supplies": "Carry: N95 mask, small water bottle, saline eye drops, bandana/wet cloth"
+  },
+  {
+    "id": "lathi-charge",
+    "title": "Lathi Charge / Baton Injury",
+    "icon": "Shield",
+    "severity": "red",
+    "symptoms": "Bruising, cuts, fractures, head injuries, internal bleeding",
+    "steps": [
+      "Protect your head with arms — DO NOT turn your back",
+      "If hit, move away from crowd surge to avoid trampling",
+      "For cuts: apply direct pressure with clean cloth for 10 minutes",
+      "For suspected fractures: immobilize the limb, do not move it",
+      "For head injury: if dizzy, nauseous, or confused — seek IMMEDIATE medical help",
+      "Ice the area to reduce swelling (20 min on, 20 min off)",
+      "Take photos of injuries as evidence (send to a trusted contact)"
+    ],
+    "doNot": [
+      "DO NOT run in direction of lathi charge — move sideways/perpendicular",
+      "DO NOT remove embedded object from wound — seek medical help",
+      "DO NOT move someone with suspected spinal injury",
+      "DO NOT take painkillers that thin blood (aspirin, ibuprofen) for 24h"
+    ],
+    "supplies": "Carry: Small first-aid kit, antiseptic wipes, bandages, ice pack"
+  },
+  {
+    "id": "pepper-spray",
+    "title": "Pepper Spray / OC Spray",
+    "icon": "AlertTriangle",
+    "severity": "yellow",
+    "symptoms": "Intense eye burning, temporary blindness, coughing, skin burning",
+    "steps": [
+      "DO NOT rub eyes — this spreads the oil",
+      "Flush eyes with cold water or saline for 15-20 minutes",
+      "Wash face with DAWN dish soap or baby shampoo (cuts oil)",
+      "Milk or yogurt can help neutralize — apply with cloth, not directly in eyes",
+      "Remove contacts immediately",
+      "Stand in fresh air — symptoms usually subside in 30-45 minutes",
+      "Wash clothing separately from other laundry"
+    ],
+    "doNot": [
+      "DO NOT rub eyes",
+      "DO NOT use water only on skin — oil needs soap to break down",
+      "DO NOT use oil-based lotions",
+      "DO NOT wear contacts or makeup to protests"
+    ],
+    "supplies": "Carry: Small bottle of liquid antacid (Maalox/Milk of Magnesia) — apply on skin to neutralize"
+  },
+  {
+    "id": "dehydration",
+    "title": "Heat Exhaustion / Dehydration",
+    "icon": "Thermometer",
+    "severity": "yellow",
+    "symptoms": "Dizziness, headache, nausea, dark urine, dry mouth, confusion, fainting",
+    "steps": [
+      "Move to shade or cooler area immediately",
+      "Drink ORS (Oral Rehydration Solution) or water with salt + sugar",
+      "Loosen clothing and apply wet cloth to neck, armpits, groin",
+      "Lie down with legs elevated",
+      "If confusion or fainting occurs — seek medical help"
+    ],
+    "doNot": [
+      "DO NOT drink sugary sodas or energy drinks — worsens dehydration",
+      "DO NOT drink alcohol before/during protests",
+      "DO NOT ignore symptoms — heat stroke can be fatal"
+    ],
+    "supplies": "Carry: 1L water, ORS packets, wet bandana"
+  },
+  {
+    "id": "crowd-crush",
+    "title": "Crowd Crush / Stampede",
+    "icon": "Users",
+    "severity": "red",
+    "symptoms": "Difficulty breathing, chest compression, panic, falling",
+    "steps": [
+      "Keep arms up in front of chest — protect your breathing space",
+      "Move WITH the crowd, not against it",
+      "If you fall: curl into fetal position, protect head with hands",
+      "Try to get to the edge of the crowd",
+      "If possible, move diagonally toward the exit"
+    ],
+    "doNot": [
+      "DO NOT push against the crowd",
+      "DO NOT bend down to pick up dropped items",
+      "DO NOT scream — conserve oxygen",
+      "DO NOT stop moving — keep shuffling forward"
+    ],
+    "supplies": "Wear sturdy closed-toe shoes. Keep elbows out to maintain space."
+  }
+]
