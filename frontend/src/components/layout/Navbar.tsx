@@ -36,23 +36,23 @@ const pageImports: Record<string, () => Promise<any>> = {
 
 const navLinks: { to: string; key: string; icon: any }[] = [
   { to: "/", key: "home", icon: Flame },
+  { to: "/metro", key: "metro", icon: Train },
   { to: "/emergency", key: "emergency", icon: Phone },
   { to: "/live-feed", key: "liveFeed", icon: Radio },
-  { to: "/first-aid", key: "firstAid", icon: Heart },
   { to: "/sos", key: "sos", icon: AlertTriangle },
+  { to: "/first-aid", key: "firstAid", icon: Heart },
   { to: "/safe-zones", key: "safeZones", icon: MapPin },
-  { to: "/preparation", key: "prep", icon: BookOpen },
   { to: "/legal-rights", key: "rights", icon: Scale },
   { to: "/bail-info", key: "bail", icon: Scale },
   { to: "/checklist", key: "checklist", icon: ClipboardList },
+  { to: "/preparation", key: "prep", icon: BookOpen },
   { to: "/mental-health", key: "mentalHealth", icon: Heart },
   { to: "/aid", key: "aid", icon: Droplets },
   { to: "/resources", key: "resources", icon: Globe },
   { to: "/fact-check", key: "factCheck", icon: ShieldCheck },
-  { to: "/manifesto", key: "manifesto", icon: ShieldCheck },
   { to: "/privacy", key: "privacy", icon: Eye },
   { to: "/evidence", key: "evidence", icon: Shield },
-  { to: "/metro", key: "metro", icon: Train },
+  { to: "/manifesto", key: "manifesto", icon: ShieldCheck },
   { to: "/about", key: "about", icon: Shield },
 ];
 
@@ -222,13 +222,13 @@ export const Navbar = memo(function Navbar({ onLogoClick }: { onLogoClick?: () =
     {/* Mobile Bottom Navigation */}
     <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-ph-border bg-ph-dark md:hidden safe-area-bottom">
       <div className="flex items-center justify-around h-14 px-1">
-        {[
-          { to: "/", key: "home", icon: Flame },
-          { to: "/sos", key: "sos", icon: AlertTriangle, urgent: true },
-          { to: "/live-feed", key: "liveFeed", icon: Radio },
-          { to: "/emergency", key: "emergency", icon: Phone },
-          { to: "/submit", key: "submit", icon: Send },
-        ].map(({ to, key, icon: Icon, urgent }) => (
+          {[
+            { to: "/", key: "home", icon: Flame },
+            { to: "/sos", key: "sos", icon: AlertTriangle, urgent: true },
+            { to: "/metro", key: "metro", icon: Train },
+            { to: "/live-feed", key: "liveFeed", icon: Radio },
+            { to: "/emergency", key: "emergency", icon: Phone },
+          ].map(({ to, key, icon: Icon, urgent }) => (
           <Link
             key={to}
             to={to}
