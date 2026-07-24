@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Phone, Radio, Scale, ShieldCheck, Send, TrendingUp, Eye, Clock, WifiOff, Shield, Calendar } from "lucide-react";
+import { Phone, Radio, Scale, ShieldCheck, Send, TrendingUp, Eye, Clock, WifiOff, Shield, Calendar, Download, MapPin } from "lucide-react";
 import { SEO } from "../components/SEO";
+import { Card } from "../components/ui/Card";
 import { ThumbSkeleton } from "../components/ui/Skeleton";
 import { getCacheAge } from "../lib/offlineCache";
 import { useLocale } from "../hooks/useLocale";
@@ -138,6 +139,45 @@ export default function Home() {
               <span className="text-[11px] text-ph-text-muted shrink-0">{a.time}</span>
             </Link>
           ))}
+        </div>
+
+        {/* Before You Leave */}
+        <div className="bg-cjp-maroon/5 border border-cjp-maroon/30 p-4">
+          <h3 className="text-sm font-bold text-ph-text-dark dark:text-white mb-3 flex items-center gap-2">
+            <Shield className="h-4 w-4 text-ph-orange" /> {t("home.beforeYouLeave")}
+          </h3>
+          <div className="grid gap-2 sm:grid-cols-2">
+            {(t("home.beforeYouLeaveItems") as unknown as { icon: string; label: string; desc: string }[]).map((item, i) => (
+              <div key={i} className="flex items-start gap-2 text-sm text-ph-text-secondary">
+                {item.icon === "Download" ? <Download className="h-4 w-4 text-ph-orange shrink-0 mt-0.5" /> :
+                 item.icon === "MapPin" ? <MapPin className="h-4 w-4 text-ph-orange shrink-0 mt-0.5" /> :
+                 item.icon === "Phone" ? <Phone className="h-4 w-4 text-ph-orange shrink-0 mt-0.5" /> :
+                 <Shield className="h-4 w-4 text-ph-orange shrink-0 mt-0.5" />}
+                <div>
+                  <p className="font-bold text-ph-text-dark dark:text-white">{item.label}</p>
+                  <p className="text-xs text-ph-text-muted">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Changelog */}
+        <div>
+          <div className="ph-section">
+            <div>
+              <h2>{t("home.changelog")}</h2>
+              <div className="ph-section-accent" />
+            </div>
+          </div>
+          <div className="space-y-2">
+            {(t("home.changelogItems") as unknown as { date: string; text: string }[]).map((item, i) => (
+              <div key={i} className="flex items-start gap-3 px-4 py-2.5 bg-white dark:bg-ph-dark-2 border border-ph-border-light dark:border-ph-border">
+                <span className="text-[11px] font-bold text-ph-orange shrink-0 w-24">{item.date}</span>
+                <p className="text-sm text-ph-text-secondary">{item.text}</p>
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="bg-ph-orange-muted border border-ph-orange/20 px-5 py-4">

@@ -1,29 +1,29 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { CheckSquare, ClipboardList } from "lucide-react";
 import { SEO } from "../components/SEO";
 import { useLocale } from "../hooks/useLocale";
 
-const DEFAULT_ITEMS = [
-  { id: "water", label: "Water bottle (1L)", category: "essentials" },
-  { id: "ors", label: "ORS packets /Electral", category: "essentials" },
-  { id: "mask", label: "N95 mask (2x)", category: "essentials" },
-  { id: "id", label: "ID card (Aadhaar/Voter)", category: "essentials" },
-  { id: "phone-charged", label: "Phone charged + power bank", category: "essentials" },
-  { id: "emergency-nums", label: "Emergency numbers memorized", category: "essentials" },
-  { id: "snacks", label: "Dry snacks (biscuits, nuts)", category: "essentials" },
-  { id: "first-aid", label: "First aid kit (bandages, antiseptic)", category: "essentials" },
-  { id: "wet-cloth", label: "Wet cloth / bandana for tear gas", category: "safety" },
-  { id: "eye-drops", label: "Saline eye drops", category: "safety" },
-  { id: "soap", label: "Small soap / dish soap for pepper spray", category: "safety" },
-  { id: "cash", label: "Cash (small bills) + bail money", category: "legal" },
-  { id: "lawyer-num", label: "Lawyer contact saved", category: "legal" },
-  { id: "medicines", label: "Personal medicines (if any)", category: "medical" },
-  { id: "glucose", label: "Glucose / sugar", category: "medical" },
-  { id: "whistle", label: "Whistle (to alert others)", category: "safety" },
-  { id: "power-bank", label: "Power bank + cable", category: "essentials" },
-  { id: "chappal", label: "Sturdy closed-toe shoes (not chappals)", category: "safety" },
-  { id: "hat", label: "Cap / hat for sun protection", category: "essentials" },
-  { id: "contacts-out", label: "Remove contact lenses", category: "safety" },
+const ITEM_IDS = [
+  { id: "water", category: "essentials" },
+  { id: "ors", category: "essentials" },
+  { id: "mask", category: "essentials" },
+  { id: "id", category: "essentials" },
+  { id: "phone-charged", category: "essentials" },
+  { id: "emergency-nums", category: "essentials" },
+  { id: "snacks", category: "essentials" },
+  { id: "first-aid", category: "essentials" },
+  { id: "wet-cloth", category: "safety" },
+  { id: "eye-drops", category: "safety" },
+  { id: "soap", category: "safety" },
+  { id: "cash", category: "legal" },
+  { id: "lawyer-num", category: "legal" },
+  { id: "medicines", category: "medical" },
+  { id: "glucose", category: "medical" },
+  { id: "whistle", category: "safety" },
+  { id: "power-bank", category: "essentials" },
+  { id: "chappal", category: "safety" },
+  { id: "hat", category: "essentials" },
+  { id: "contacts-out", category: "safety" },
 ];
 
 const categories = [
@@ -42,6 +42,18 @@ export default function Checklist() {
     try { return JSON.parse(localStorage.getItem("protest-checklist-custom") || "[]"); }
     catch { return []; }
   });
+
+  const allItems = useMemo(() => {
+    const items = ITEM_IDS.map((item) => ({
+      ...item,
+      label: t(`checklist.items.${item.id}`),
+    }));
+    for (const cId of custom) {
+      const stored = localStorage.getItem(`protest-checklist-custom-label-${cId}`);
+      if (stored) items.push({ id: cId, category: "essentials", label: stored });
+    }
+    return items;
+  }, [t, custom]);
 
   useEffect(() => {
     try {
@@ -64,13 +76,13 @@ export default function Checklist() {
     if (label && label.trim()) {
       const id = `custom-${Date.now()}`;
       const newCustom = [...custom, id];
-      DEFAULT_ITEMS.push({ id, label: label.trim(), category: "essentials" });
       setCustom(newCustom);
       localStorage.setItem("protest-checklist-custom", JSON.stringify(newCustom));
+      localStorage.setItem(`protest-checklist-custom-label-${id}`, label.trim());
     }
   };
 
-  const total = DEFAULT_ITEMS.length;
+  const total = allItems.length;
   const done = checked.size;
   const pct = total > 0 ? Math.round((done / total) * 100) : 0;
 
@@ -97,7 +109,7 @@ export default function Checklist() {
 
       <div className="space-y-6">
         {categories.map(({ key, labelKey, color }) => {
-          const items = DEFAULT_ITEMS.filter((i) => i.category === key);
+          const items = allItems.filter((i) => i.category === key);
           if (items.length === 0) return null;
           return (
 <div key={key}>

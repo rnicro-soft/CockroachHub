@@ -19,6 +19,8 @@ const staticPaths = [
   "/bail-info",
   "/manifesto",
   "/about",
+  "/privacy",
+  "/evidence",
   "/admin/login",
 ];
 

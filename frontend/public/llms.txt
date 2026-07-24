@@ -16,6 +16,8 @@ CockroachHub is a Progressive Web App built for the Cockroach Janta Party (CJP) 
 - Mental Health: /mental-health — Free/low-cost counselling directory
 - Safe Zones: /safe-zones — Verified safe locations with Google Maps directions
 - Aid & Accommodation: /aid — Free shelter, food, water
+- Privacy & Surveillance Guide: /privacy — Phone security, digital privacy, avoiding surveillance
+- Evidence Preservation: /evidence — How to document and preserve evidence of violence
 
 ## Verified Contacts
 - NHRC: 14440

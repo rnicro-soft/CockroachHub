@@ -2,7 +2,7 @@ import { Link, useLocation, useNavigate, useSearchParams } from "react-router-do
 import {
   Flame, Phone, Radio, Scale, ShieldCheck, Menu, X, Send, Search, Shield,
   Moon, Sun, Download, Bell, BellOff, Heart, AlertTriangle, Sun as SunIcon,
-  ClipboardList, MapPin, Lock, BookOpen, Home as HomeIcon, Droplets, Globe,
+  ClipboardList, MapPin, Lock, BookOpen, Home as HomeIcon, Droplets, Globe, Eye,
 } from "lucide-react";
 import { memo, useCallback, useRef, useState } from "react";
 import { useTheme } from "../../hooks/useTheme";
@@ -29,6 +29,8 @@ const pageImports: Record<string, () => Promise<any>> = {
   "/fact-check": () => import("../../pages/FactCheck"),
   "/manifesto": () => import("../../pages/Manifesto"),
   "/about": () => import("../../pages/About"),
+  "/privacy": () => import("../../pages/Privacy"),
+  "/evidence": () => import("../../pages/Evidence"),
 };
 
 const navLinks: { to: string; key: string; icon: any }[] = [
@@ -47,6 +49,8 @@ const navLinks: { to: string; key: string; icon: any }[] = [
   { to: "/resources", key: "resources", icon: Globe },
   { to: "/fact-check", key: "factCheck", icon: ShieldCheck },
   { to: "/manifesto", key: "manifesto", icon: ShieldCheck },
+  { to: "/privacy", key: "privacy", icon: Eye },
+  { to: "/evidence", key: "evidence", icon: Shield },
   { to: "/about", key: "about", icon: Shield },
 ];
 

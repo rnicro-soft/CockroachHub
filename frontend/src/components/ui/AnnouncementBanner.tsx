@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { X, Megaphone } from "lucide-react";
 import { useOnlineStatus } from "../../hooks/useOnlineStatus";
+import { useLocale } from "../../hooks/useLocale";
 
 interface Announcement {
   id: number;
@@ -9,6 +10,7 @@ interface Announcement {
 }
 
 export function AnnouncementBanner() {
+  const { t } = useLocale();
   const [announcement, setAnnouncement] = useState<Announcement | null>(null);
   const [dismissed, setDismissed] = useState(false);
   const online = useOnlineStatus();
@@ -35,7 +37,7 @@ export function AnnouncementBanner() {
         <button
           onClick={() => setDismissed(true)}
           className="shrink-0 p-1 text-ph-text-muted hover:text-ph-text-dark dark:hover:text-white"
-          aria-label="Dismiss announcement"
+          aria-label={t("common.close")}
         >
           <X className="h-4 w-4" />
         </button>

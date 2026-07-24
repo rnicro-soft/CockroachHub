@@ -37,6 +37,8 @@ const Aid = lazy(() => import("./pages/Aid"));
 const Resources = lazy(() => import("./pages/Resources"));
 const Manifesto = lazy(() => import("./pages/Manifesto"));
 const About = lazy(() => import("./pages/About"));
+const Privacy = lazy(() => import("./pages/Privacy"));
+const Evidence = lazy(() => import("./pages/Evidence"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const AdminLogin = lazy(() => import("./pages/admin/Login"));
 const ChangePassword = lazy(() => import("./pages/admin/ChangePassword"));
@@ -213,6 +215,8 @@ export default function App() {
             <Route path="/resources" element={<Resources />} />
             <Route path="/manifesto" element={<Manifesto />} />
             <Route path="/about" element={<About />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/evidence" element={<Evidence />} />
           </Route>
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/change-password" element={<ChangePassword />} />
