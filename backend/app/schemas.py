@@ -343,3 +343,72 @@ class MetroDisruptionUpdate(BaseModel):
     status: str | None = None
     reason: str | None = None
     published: bool | None = None
+
+
+# --- Mental Health ---
+class MentalHealthOut(BaseModel):
+    id: int
+    name: str
+    contact: str | None = None
+    email: str | None = None
+    service_type: str
+    details: str | None = None
+    location: str | None = None
+
+    model_config = {"from_attributes": True}
+
+
+# --- Aid Organizations ---
+class AidOrganizationOut(BaseModel):
+    id: int
+    name: str
+    purpose: str | None = None
+    contact: str | None = None
+    link: str | None = None
+    category: str
+
+    model_config = {"from_attributes": True}
+
+
+# --- News Sources ---
+class NewsSourceOut(BaseModel):
+    id: int
+    name: str
+    platform: str
+    link: str
+    description: str | None = None
+    category: str
+
+    model_config = {"from_attributes": True}
+
+
+# --- Safe Zones ---
+class SafeZoneOut(BaseModel):
+    id: int
+    name: str
+    type: str
+    description: str | None = None
+    status: str
+    lat: float
+    lng: float
+    created_at: datetime
+
+    model_config = {"from_attributes": True}
+
+
+class SafeZoneCreate(BaseModel):
+    name: str = Field(max_length=255)
+    type: str = Field(max_length=50)
+    description: str | None = Field(None, max_length=2000)
+    status: str = "active"
+    lat: float
+    lng: float
+
+
+class SafeZoneUpdate(BaseModel):
+    name: str | None = None
+    type: str | None = None
+    description: str | None = None
+    status: str | None = None
+    lat: float | None = None
+    lng: float | None = None

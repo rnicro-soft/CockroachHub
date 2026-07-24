@@ -5,7 +5,7 @@ from app.auth import hash_password
 from app.config import settings
 from app.database import async_session, init_db
 import json as json_mod
-from app.models import Admin, Alert, EmergencyContact, FactCheck, LegalRight, MetroStation
+from app.models import Admin, Alert, EmergencyContact, FactCheck, LegalRight, MetroStation, SafeZone
 from app.metro_data import METRO_STATIONS
 
 SEED_CONTACTS = [
@@ -228,6 +228,16 @@ async def seed_database():
             print(f"Seeded {len(SEED_FACT_CHECKS)} fact checks")
 
     print("Database seeding complete!")
+
+
+SEED_SAFE_ZONES = [
+    {"name": "Legal Aid Desk — Jantar Mantar", "type": "legal", "description": "Pro bono lawyers stationed near main protest entrance", "status": "active", "lat": 28.6271, "lng": 77.2174},
+    {"name": "Medical Tent — India Gate Lawns", "type": "medical", "description": "First aid, ORS, and volunteer doctors. Look for Red Cross flag.", "status": "active", "lat": 28.6129, "lng": 77.2295},
+    {"name": "Safe House — Central Delhi", "type": "safe", "description": "Temporary shelter for protesters. Women and injured prioritized.", "status": "active", "lat": 28.6268, "lng": 77.2163},
+    {"name": "Hydration Point — Patel Chowk", "type": "medical", "description": "Free water, ORS, and glucose. Green and white flags.", "status": "active", "lat": 28.6265, "lng": 77.2182},
+    {"name": "Lawyer Coordination — Supreme Court", "type": "legal", "description": "Legal team coordinating bail and detainee tracking.", "status": "active", "lat": 28.6226, "lng": 77.2395},
+    {"name": "Metro Station — Central Secretariat", "type": "alert", "description": "Police checkpoints near gate 2. Use gate 4 instead.", "status": "caution", "lat": 28.6156, "lng": 77.2131},
+]
 
 
 async def seed_metro_stations():

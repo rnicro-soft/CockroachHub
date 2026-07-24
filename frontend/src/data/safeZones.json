@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Legal Aid Desk \u2014 Jantar Mantar",
+    "type": "legal",
+    "description": "Pro bono lawyers stationed near main protest entrance",
+    "status": "active",
+    "lat": 28.6271,
+    "lng": 77.2174
+  },
+  {
+    "name": "Medical Tent \u2014 India Gate Lawns",
+    "type": "medical",
+    "description": "First aid, ORS, and volunteer doctors. Look for Red Cross flag.",
+    "status": "active",
+    "lat": 28.6129,
+    "lng": 77.2295
+  },
+  {
+    "name": "Safe House \u2014 Central Delhi",
+    "type": "safe",
+    "description": "Temporary shelter for protesters. Women and injured prioritized.",
+    "status": "active",
+    "lat": 28.6268,
+    "lng": 77.2163
+  },
+  {
+    "name": "Hydration Point \u2014 Patel Chowk",
+    "type": "medical",
+    "description": "Free water, ORS, and glucose. Green and white flags.",
+    "status": "active",
+    "lat": 28.6265,
+    "lng": 77.2182
+  },
+  {
+    "name": "Lawyer Coordination \u2014 Supreme Court",
+    "type": "legal",
+    "description": "Legal team coordinating bail and detainee tracking.",
+    "status": "active",
+    "lat": 28.6226,
+    "lng": 77.2395
+  },
+  {
+    "name": "Metro Station \u2014 Central Secretariat",
+    "type": "alert",
+    "description": "Police checkpoints near gate 2. Use gate 4 instead.",
+    "status": "caution",
+    "lat": 28.6156,
+    "lng": 77.2131
+  }
+]

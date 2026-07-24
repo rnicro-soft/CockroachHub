@@ -1,0 +1,58 @@
+[
+  {
+    "name": "Aditi Pandey",
+    "contact": "ap.work.psych@gmail.com",
+    "service_type": "online",
+    "details": "Counselling Psychologist",
+    "location": "Lucknow/Delhi"
+  },
+  {
+    "name": "Anvitha Satheesh",
+    "contact": "thethirdspace1507@gmail.com",
+    "service_type": "online",
+    "details": "Counselling Psychologist",
+    "location": "Online"
+  },
+  {
+    "name": "Maria Senora",
+    "contact": "maria.senora1997@gmail.com",
+    "service_type": "online",
+    "details": "Counselling Psychologist",
+    "location": "Online"
+  },
+  {
+    "name": "Batul M",
+    "contact": "7850810877 (WhatsApp)",
+    "service_type": "online",
+    "details": "WhatsApp counselling",
+    "location": "Online"
+  },
+  {
+    "name": "Sonali Dayal",
+    "contact": "thriversweb@gmail.com",
+    "service_type": "online",
+    "details": "Counselling Psychologist",
+    "location": "Online"
+  },
+  {
+    "name": "Simran Gera",
+    "contact": "simrangera02@gmail.com",
+    "service_type": "online",
+    "details": "CBT, Trauma-informed therapy",
+    "location": "Online"
+  },
+  {
+    "name": "Jayeesha Taneja",
+    "contact": "firgunmentalhealth@gmail.com",
+    "service_type": "online",
+    "details": "Counselling, Queer & neurodivergence affirmative",
+    "location": "Online"
+  },
+  {
+    "name": "Agatsu Foundation",
+    "contact": "9004489010",
+    "service_type": "offline",
+    "details": "Community center & clinic. Bandra (W), Mumbai.",
+    "location": "Mumbai"
+  }
+]

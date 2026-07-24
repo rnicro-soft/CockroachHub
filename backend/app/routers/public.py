@@ -9,10 +9,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from pydantic import BaseModel
 
 from app.database import get_db
-from app.models import Alert, Announcement, EmergencyContact, FactCheck, LegalRight, MetroDisruption, MetroStation, PushSubscription, Submission
+from app.models import AidOrganization, Alert, Announcement, EmergencyContact, FactCheck, LegalRight, MentalHealthProvider, MetroDisruption, MetroStation, NewsSource, PushSubscription, SafeZone, Submission
 from app.push import get_vapid_public_key
 from app.ratelimit import check_ip_blacklist, rate_limit_submissions
-from app.schemas import AlertOut, AnnouncementOut, ContactOut, FactCheckOut, LegalRightOut, MetroDisruptionOut, MetroStationOut, MetroSubmitRequest, SubmissionCreate, SubmissionOut
+from app.schemas import AidOrganizationOut, AlertOut, AnnouncementOut, ContactOut, FactCheckOut, LegalRightOut, MentalHealthOut, MetroDisruptionOut, MetroStationOut, MetroSubmitRequest, NewsSourceOut, SafeZoneOut, SubmissionCreate, SubmissionOut
 
 router = APIRouter(prefix="/api", tags=["public"])
 
@@ -187,3 +187,31 @@ async def submit_metro_disruption(
     await db.refresh(d)
     print(f"[METRO] Crowd report: {body.station_id} → {body.status}")
     return MetroDisruptionOut.model_validate(d)
+
+
+# --- Mental Health ---
+@router.get("/mental-health", response_model=list[MentalHealthOut])
+async def get_mental_health(db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(MentalHealthProvider).order_by(MentalHealthProvider.name))
+    return [MentalHealthOut.model_validate(m) for m in result.scalars().all()]
+
+
+# --- Aid Organizations ---
+@router.get("/aid-organizations", response_model=list[AidOrganizationOut])
+async def get_aid_organizations(db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(AidOrganization).order_by(AidOrganization.name))
+    return [AidOrganizationOut.model_validate(a) for a in result.scalars().all()]
+
+
+# --- News Sources ---
+@router.get("/news-sources", response_model=list[NewsSourceOut])
+async def get_news_sources(db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(NewsSource).order_by(NewsSource.name))
+    return [NewsSourceOut.model_validate(n) for n in result.scalars().all()]
+
+
+# --- Safe Zones ---
+@router.get("/safe-zones", response_model=list[SafeZoneOut])
+async def get_safe_zones(db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(SafeZone).order_by(SafeZone.name))
+    return [SafeZoneOut.model_validate(z) for z in result.scalars().all()]

@@ -9,7 +9,7 @@ from app.auth import get_current_admin
 from app.database import get_db
 import json as json_mod
 from app.helpline_sync import sync_helpline_data
-from app.models import Admin, Alert, Announcement, AuditLog, Detainee, EmergencyContact, FactCheck, IPBlacklist, LegalRight, LoginAttempt, MetroDisruption, MetroStation, PushSubscription, Submission
+from app.models import Admin, Alert, Announcement, AuditLog, Detainee, EmergencyContact, FactCheck, IPBlacklist, LegalRight, LoginAttempt, MetroDisruption, MetroStation, PushSubscription, SafeZone, Submission
 from app.push import send_push_notification
 from app.schemas import (
     AdminOut,
@@ -34,6 +34,9 @@ from app.schemas import (
     MetroDisruptionOut,
     MetroDisruptionUpdate,
     MetroStationOut,
+    SafeZoneCreate,
+    SafeZoneOut,
+    SafeZoneUpdate,
     SubmissionOut,
     SubmissionReview,
 )
@@ -414,13 +417,19 @@ async def delete_right(right_id: int, db: AsyncSession = Depends(get_db), curren
     await db.commit()
 
 # --- Announcements ---
-@router.get("/announcements", response_model=list[AnnouncementOut])
+@router.get("/announcements")
 async def list_announcements(
+    page: int = Query(1, ge=1),
+    per_page: int = Query(50, ge=1, le=200),
     db: AsyncSession = Depends(get_db),
     current_admin: Admin = Depends(get_current_admin),
 ):
-    result = await db.execute(select(Announcement).order_by(Announcement.created_at.desc()))
-    return [AnnouncementOut.model_validate(a) for a in result.scalars().all()]
+    query = select(Announcement).order_by(Announcement.created_at.desc())
+    total = (await db.execute(select(func.count(Announcement.id)))).scalar()
+    offset = (page - 1) * per_page
+    result = await db.execute(query.offset(offset).limit(per_page))
+    items = [AnnouncementOut.model_validate(a) for a in result.scalars().all()]
+    return {"items": items, "total": total, "page": page, "per_page": per_page}
 
 
 @router.post("/announcements", response_model=AnnouncementOut, status_code=201)
@@ -523,12 +532,18 @@ async def list_login_attempts(
 # --- IP Blacklist ---
 @router.get("/ip-blacklist")
 async def list_ip_blacklist(
+    page: int = Query(1, ge=1),
+    per_page: int = Query(50, ge=1, le=200),
     db: AsyncSession = Depends(get_db),
     current_admin: Admin = Depends(get_current_admin),
 ):
     from app.schemas import IPBlacklistOut
-    result = await db.execute(select(IPBlacklist).order_by(IPBlacklist.created_at.desc()))
-    return [IPBlacklistOut.model_validate(b) for b in result.scalars().all()]
+    query = select(IPBlacklist).order_by(IPBlacklist.created_at.desc())
+    total = (await db.execute(select(func.count(IPBlacklist.id)))).scalar()
+    offset = (page - 1) * per_page
+    result = await db.execute(query.offset(offset).limit(per_page))
+    items = [IPBlacklistOut.model_validate(b) for b in result.scalars().all()]
+    return {"items": items, "total": total, "page": page, "per_page": per_page}
 
 
 @router.post("/ip-blacklist", status_code=201)
@@ -881,4 +896,63 @@ async def admin_delete_metro_disruption(
         raise HTTPException(status_code=404, detail="Disruption not found")
     await _log_action(db, current_admin.id, "delete", "metro_disruption", disruption_id)
     await db.delete(d)
+    await db.commit()
+
+
+# --- Safe Zones Admin ---
+@router.get("/safe-zones")
+async def admin_list_safe_zones(
+    db: AsyncSession = Depends(get_db),
+    current_admin: Admin = Depends(get_current_admin),
+):
+    result = await db.execute(select(SafeZone).order_by(SafeZone.name))
+    return [SafeZoneOut.model_validate(z) for z in result.scalars().all()]
+
+
+@router.post("/safe-zones", response_model=SafeZoneOut, status_code=201)
+async def admin_create_safe_zone(
+    body: SafeZoneCreate,
+    db: AsyncSession = Depends(get_db),
+    current_admin: Admin = Depends(get_current_admin),
+):
+    z = SafeZone(**body.model_dump())
+    db.add(z)
+    await _log_action(db, current_admin.id, "create", "safe_zone", z.id)
+    await db.commit()
+    await db.refresh(z)
+    return SafeZoneOut.model_validate(z)
+
+
+@router.put("/safe-zones/{zone_id}", response_model=SafeZoneOut)
+async def admin_update_safe_zone(
+    zone_id: int,
+    body: SafeZoneUpdate,
+    db: AsyncSession = Depends(get_db),
+    current_admin: Admin = Depends(get_current_admin),
+):
+    result = await db.execute(select(SafeZone).where(SafeZone.id == zone_id))
+    z = result.scalar_one_or_none()
+    if not z:
+        raise HTTPException(status_code=404, detail="Safe zone not found")
+    for field, value in body.model_dump(exclude_unset=True).items():
+        setattr(z, field, value)
+    z.updated_at = datetime.now(timezone.utc)
+    await _log_action(db, current_admin.id, "update", "safe_zone", zone_id)
+    await db.commit()
+    await db.refresh(z)
+    return SafeZoneOut.model_validate(z)
+
+
+@router.delete("/safe-zones/{zone_id}", status_code=204)
+async def admin_delete_safe_zone(
+    zone_id: int,
+    db: AsyncSession = Depends(get_db),
+    current_admin: Admin = Depends(get_current_admin),
+):
+    result = await db.execute(select(SafeZone).where(SafeZone.id == zone_id))
+    z = result.scalar_one_or_none()
+    if not z:
+        raise HTTPException(status_code=404, detail="Safe zone not found")
+    await _log_action(db, current_admin.id, "delete", "safe_zone", zone_id)
+    await db.delete(z)
     await db.commit()
