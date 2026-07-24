@@ -699,7 +699,8 @@
     "disruptionPublished": "व्यवधान प्रकाशित किया गया",
     "allDisruptions": "सभी",
     "created": "बनाया गया",
-    "source": "स्रोत"
+    "source": "स्रोत",
+    "metroStations": "मेट्रो स्टेशन"
   },
   "common": {
     "loading": "लोड हो रहा है...",

@@ -56,6 +56,7 @@ const AdminDetainees = lazy(() => import("./pages/admin/Detainees"));
 const AdminIPBlacklist = lazy(() => import("./pages/admin/IPBlacklist"));
 const AdminLoginAttempts = lazy(() => import("./pages/admin/LoginAttempts"));
 const AdminMetroDisruptions = lazy(() => import("./pages/admin/MetroDisruptions"));
+const AdminMetroStations = lazy(() => import("./pages/admin/MetroStations"));
 
 const PageLoader = () => (
   <div className="flex items-center justify-center min-h-[40vh] bg-ph-light dark:bg-ph-black">
@@ -239,6 +240,7 @@ export default function App() {
               <Route path="/admin/ip-blacklist" element={<AdminIPBlacklist />} />
               <Route path="/admin/login-attempts" element={<AdminLoginAttempts />} />
               <Route path="/admin/metro" element={<AdminMetroDisruptions />} />
+              <Route path="/admin/metro-stations" element={<AdminMetroStations />} />
             </Route>
           </Route>
           <Route path="*" element={<NotFound />} />
