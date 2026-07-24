@@ -3,10 +3,11 @@ import toast from "react-hot-toast";
 
 const STORAGE_KEYS = ["auth", "cockroachhub-theme", "cockroachhub-locale", "protest-checklist"];
 
-export function useAutoErase(enabled: boolean, timeoutMinutes: number = 30) {
+export function useAutoErase(enabled: boolean, timeoutMinutes: number = 30, t?: (s: string) => string) {
   const timerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const warningRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const warnedRef = useRef(false);
+  const translate = t || ((s: string) => s);
 
   const erase = useCallback(() => {
     STORAGE_KEYS.forEach((key) => localStorage.removeItem(key));
@@ -20,9 +21,9 @@ export function useAutoErase(enabled: boolean, timeoutMinutes: number = 30) {
         regs.forEach((r) => r.unregister())
       );
     }
-    toast.error("Auto-erased for safety. Reloading...", { duration: 5000 });
+    toast.error(translate("autoErase.erased"), { duration: 5000 });
     setTimeout(() => window.location.reload(), 2000);
-  }, []);
+  }, [translate]);
 
   const resetTimer = useCallback(() => {
     warnedRef.current = false;
@@ -36,14 +37,14 @@ export function useAutoErase(enabled: boolean, timeoutMinutes: number = 30) {
       if (!warnedRef.current) {
         warnedRef.current = true;
         toast(
-          `Auto-erase in 30s — tap anywhere to keep data`,
+          translate("autoErase.warning"),
           { duration: 25000, icon: "⚠️" }
         );
       }
     }, (timeoutMinutes * 60 - 30) * 1000);
 
     timerRef.current = setTimeout(erase, timeoutMinutes * 60 * 1000);
-  }, [enabled, timeoutMinutes, erase]);
+  }, [enabled, timeoutMinutes, erase, translate]);
 
   useEffect(() => {
     if (!enabled) {

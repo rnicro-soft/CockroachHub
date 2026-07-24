@@ -11,8 +11,9 @@ interface QueuedItem {
   queuedAt: string;
 }
 
-export function useOfflineQueue() {
+export function useOfflineQueue(t?: (s: string) => string) {
   const flushingRef = useRef(false);
+  const translate = t || ((s: string) => s);
 
   const getQueue = useCallback((): QueuedItem[] => {
     try {
@@ -39,7 +40,7 @@ export function useOfflineQueue() {
           body: JSON.stringify({ type, description, location: location || null }),
         });
         if (res.ok) {
-          toast.success("Report sent!");
+          toast.success(translate("offlineQueue.sent"));
           return true;
         }
       } catch {}
@@ -49,9 +50,9 @@ export function useOfflineQueue() {
     const queue = getQueue();
     queue.push(item);
     localStorage.setItem(QUEUE_KEY, JSON.stringify(queue));
-    toast.success("Saved offline — will send when internet returns.");
+    toast.success(translate("offlineQueue.savedOffline"));
     return true;
-  }, [getQueue]);
+  }, [getQueue, translate]);
 
   const flushQueue = useCallback(async () => {
     if (flushingRef.current) return;
@@ -84,11 +85,11 @@ export function useOfflineQueue() {
     if (sent > 0) {
       const remaining = queue.slice(sent);
       localStorage.setItem(QUEUE_KEY, JSON.stringify(remaining));
-      toast.success(`Sent ${sent} queued report${sent > 1 ? "s" : ""}!`);
+      toast.success(translate("offlineQueue.flushed").replace("{count}", String(sent)));
     }
 
     flushingRef.current = false;
-  }, [getQueue]);
+  }, [getQueue, translate]);
 
   useEffect(() => {
     const handler = () => flushQueue();

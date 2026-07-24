@@ -134,7 +134,7 @@ export const Navbar = memo(function Navbar({ onLogoClick }: { onLogoClick?: () =
           </button>
           <button onClick={() => setLocale(locale === "en" ? "hi" : "en")}
             className="p-2 text-xs font-bold text-ph-text-secondary hover:text-white" title={t("lang.switchTo")} aria-label={t("lang.switchTo")}>
-            {locale === "en" ? "HI" : "EN"}
+            {locale === "en" ? t("lang.shortHi") : t("lang.shortEn")}
           </button>
           <button onClick={toggle} className="p-2 text-ph-text-secondary hover:text-white" title={theme === "dark" ? t("theme.switchToLight") : t("theme.switchToDark")} aria-label={t("theme.toggle")}>
             {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}

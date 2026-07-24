@@ -55,13 +55,13 @@ export default function AdminSubmissions() {
     try {
       const body = Array.from(selected).map((id) => ({ id, status }));
       const { data } = await api.post("/admin/submissions/batch-review", body);
-      toast.success(`${data.reviewed} ${t("admin.submissions")} ${status}`);
+      toast.success(`${data.reviewed} ${t("admin.submissions")} ${t("admin." + status)}`);
       fetch();
     } catch { toast.error(t("common.error")); }
   };
 
   const review = async (id: number, status: string) => {
-    try { await api.patch(`/admin/submissions/${id}`, { status, action: status }); toast.success(`${status}!`); fetch(); }
+      try { await api.patch(`/admin/submissions/${id}`, { status, action: status }); toast.success(t("admin." + status) + "!"); fetch(); }
     catch { toast.error(t("common.error")); }
   };
 

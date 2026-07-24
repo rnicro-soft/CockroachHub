@@ -15,7 +15,7 @@ export default function SubmitReport() {
   const [loc, setLoc] = useState("");
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(false);
-  const { addToQueue } = useOfflineQueue();
+  const { addToQueue } = useOfflineQueue(t);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();

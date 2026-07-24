@@ -802,6 +802,17 @@
   "lang": {
     "en": "English",
     "hi": "हिन्दी",
+    "shortEn": "EN",
+    "shortHi": "HI",
     "switchTo": "Switch language"
+  },
+  "autoErase": {
+    "erased": "Auto-erased for safety. Reloading...",
+    "warning": "Auto-erase in 30s — tap anywhere to keep data"
+  },
+  "offlineQueue": {
+    "sent": "Report sent!",
+    "savedOffline": "Saved offline — will send when internet returns.",
+    "flushed": "Sent {count} queued reports!"
   }
 }

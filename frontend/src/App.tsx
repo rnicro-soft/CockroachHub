@@ -85,7 +85,8 @@ function PwaUpdateToast() {
 function ProtectedContent() {
   const { unlocked } = useStealth();
   const { eraseMinutes } = useStealth();
-  useAutoErase(unlocked, eraseMinutes);
+  const { t } = useLocale();
+  useAutoErase(unlocked, eraseMinutes, t);
   return unlocked ? <Outlet /> : null;
 }
 

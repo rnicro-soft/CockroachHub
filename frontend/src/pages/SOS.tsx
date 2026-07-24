@@ -11,7 +11,7 @@ export default function SOS() {
   const { t } = useLocale();
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState<string | null>(null);
-  const { addToQueue } = useOfflineQueue();
+  const { addToQueue } = useOfflineQueue(t);
 
   const presets = [
     { type: "safety", label: t("sos.presets.detained.label"), desc: t("sos.presets.detained.desc"), severity: "red" },
