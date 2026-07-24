@@ -724,7 +724,8 @@
     "unexpectedError": "एक अप्रत्याशित त्रुटि हुई।",
     "deleted": "Deleted",
     "actions": "कार्रवाइयाँ",
-    "noResults": "कोई परिणाम नहीं"
+    "noResults": "कोई परिणाम नहीं",
+    "name": "नाम"
   },
   "panic": {
     "todaysWeather": "आज का मौसम",
@@ -878,7 +879,8 @@
   "errors": {
     "somethingWentWrong": "कुछ गलत हो गया",
     "unexpectedError": "एक अप्रत्याशित त्रुटि हुई।",
-    "reloadPage": "पेज रीलोड करें"
+    "reloadPage": "पेज रीलोड करें",
+    "keepClicking": "क्लिक करते रहें..."
   },
   "footer": {
     "heading": "कॉकरोच जनता पार्टी — हेल्पलाइन",

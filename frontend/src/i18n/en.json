@@ -724,7 +724,8 @@
     "unexpectedError": "An unexpected error occurred.",
     "deleted": "Deleted",
     "actions": "Actions",
-    "noResults": "No results"
+    "noResults": "No results",
+    "name": "Name"
   },
   "panic": {
     "todaysWeather": "Today's Weather",
@@ -878,7 +879,8 @@
   "errors": {
     "somethingWentWrong": "Something went wrong",
     "unexpectedError": "An unexpected error occurred.",
-    "reloadPage": "Reload Page"
+    "reloadPage": "Reload Page",
+    "keepClicking": "Keep clicking..."
   },
   "footer": {
     "heading": "Cockroach Janta Party — Helpline",

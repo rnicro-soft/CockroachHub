@@ -12,7 +12,7 @@ const bailContent: Record<string, string> = {
   "legal-aid": `**NALSA Helpline: 15100** — Free legal aid available to all citizens. Women, children, SC/ST, persons in custody are automatically eligible.\n\n**District Legal Services Authority (DLSA):**\n- Present at every district court\n- Free lawyer provided within hours\n- Covers bail applications, legal representation\n\n**On-site legal aid at protests:**\n- Legal Aid Collective lawyers are typically present at major protest sites\n- Look for white/khadi uniforms or \"Legal Aid\" signs\n- Pro bono lawyers from local law schools may also be present\n\n**Recommended to carry:**\n- Aadhaar card or any ID (for bail bond)\n- Phone number of 2 family/friends who can act as sureties\n- ₹10,000-20,000 cash minimum\n- NALSA helpline: 15100 (save in phone)`,
 };
 
-const bailGuideIds = ["bailable", "non-bailable", "anticipatory", "procedure", "legal-aid"];
+const bailGuideIds = ["bailable", "nonBailable", "anticipatory", "procedure", "legalAid"];
 
 export default function BailInfo() {
   const { t } = useLocale();
