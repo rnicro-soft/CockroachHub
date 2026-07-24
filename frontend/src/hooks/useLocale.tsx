@@ -15,13 +15,13 @@ async function loadLocale(locale: Locale) {
 interface LocaleCtx {
   locale: Locale;
   setLocale: (l: Locale) => void;
-  t: (path: string) => string;
+  t: (path: string) => any;
 }
 
 export const Ctx = createContext<LocaleCtx>({
   locale: "en",
   setLocale: () => {},
-  t: (p: string) => p,
+  t: (p: string) => p as any,
 });
 
 export function LocaleProvider({ children }: { children: ReactNode }) {
@@ -39,14 +39,14 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
   const setLocale = useCallback((l: Locale) => setLocaleState(l), []);
 
   const t = useCallback(
-    (path: string): string => {
+    (path: string): any => {
       const parts = path.split(".");
       let val: any = data;
       for (const p of parts) {
         if (val && typeof val === "object" && p in val) val = val[p];
         else return path;
       }
-      return typeof val === "string" ? val : path;
+      return val;
     },
     [data]
   );
