@@ -12,7 +12,7 @@ from sqlalchemy import select, text
 
 from app.database import async_session
 from app.routers import admin, auth, public
-from app.seed import seed_database
+from app.seed import seed_database, seed_metro_stations
 from app.helpline_sync import sync_helpline_data
 
 
@@ -21,6 +21,7 @@ async def lifespan(app: FastAPI):
     print("Starting up — seeding database if needed...")
     try:
         await seed_database()
+        await seed_metro_stations()
         await sync_helpline_data()
     except Exception as e:
         print(f"Seed/sync error (DB may not be ready yet): {e}", file=sys.stderr)

@@ -266,7 +266,13 @@
     "proTip": "Pro Tip",
     "proTipDesc": "Know where to run before you get there. If internet goes down, you still know the way. Tell someone where you are.",
     "seoTitle": "Where to Run — Safe Spots",
-    "seoDesc": "Verified safe zones near CJP protest areas — legal aid desks, medical tents, safe houses, hydration points with directions."
+    "seoDesc": "Verified safe zones near CJP protest areas — legal aid desks, medical tents, safe houses, hydration points with directions.",
+    "typeLabels": {
+      "legal": "Legal Aid",
+      "medical": "Medical",
+      "safe": "Safe House",
+      "alert": "Alert"
+    }
   },
   "bail": {
     "title": "Bail & Legal Procedure",
@@ -718,7 +724,9 @@
     "disruptionCreated": "Disruption created",
     "disruptionUpdated": "Disruption updated",
     "disruptionPublished": "Disruption published",
-    "allDisruptions": "All"
+    "allDisruptions": "All",
+    "created": "Created",
+    "source": "Source"
   },
   "common": {
     "loading": "Loading...",
@@ -738,7 +746,9 @@
     "updated": "Updated",
     "reloadPage": "Reload Page",
     "somethingWentWrong": "Something went wrong",
-    "unexpectedError": "An unexpected error occurred."
+    "unexpectedError": "An unexpected error occurred.",
+    "deleted": "Deleted",
+    "actions": "Actions"
   },
   "panic": {
     "todaysWeather": "Today's Weather",

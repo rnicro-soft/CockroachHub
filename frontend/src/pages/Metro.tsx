@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { Search, X, MapPin, Train, AlertTriangle, Circle, Send, Shield } from "lucide-react";
+import { Search, X, AlertTriangle, Send } from "lucide-react";
 import toast from "react-hot-toast";
 import { SEO } from "../components/SEO";
 import { Card } from "../components/ui/Card";
@@ -220,7 +220,7 @@ export default function Metro() {
         <div className="space-y-3">
           <p className="text-sm text-ph-text-secondary">{t("metro.reportDesc")}</p>
           <div>
-            <label className="ph-label">{t("admin.severity")}</label>
+            <label className="ph-label">{t("metro.reportSelectStatus")}</label>
             <select value={reportStatus} onChange={(e) => setReportStatus(e.target.value)} className="ph-select">
               <option value="closed">{t("metro.status.closed")}</option>
               <option value="limited">{t("metro.status.limited")}</option>
@@ -232,15 +232,12 @@ export default function Metro() {
               placeholder={t("metro.reportReasonPlaceholder")} className="ph-input resize-none" rows={3} />
           </div>
           <button onClick={handleReport} disabled={reportBusy || !reportReason} className="ph-btn-primary w-full">
-            <Send className="h-4 w-4" /> {reportBusy ? t("admin.broadcasting") : t("metro.reportDisruption")}
+            <Send className="h-4 w-4" /> {reportBusy ? t("common.loading") : t("metro.reportDisruption")}
           </button>
         </div>
       </Modal>
 
-      {/* Import toast */}
-      <style>{`
-        .line-clamp-1 { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
-      `}</style>
+      {/* bottom padding for mobile nav */}
     </div>
   );
 }

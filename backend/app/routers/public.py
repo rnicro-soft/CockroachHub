@@ -1,5 +1,5 @@
 import asyncio
-import json
+import json as json_mod
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from fastapi.responses import StreamingResponse
@@ -157,7 +157,7 @@ async def get_metro_stations(db: AsyncSession = Depends(get_db)):
     stations = result.scalars().all()
     out = []
     for s in stations:
-        d = {"id": s.id, "name": s.name, "lines": __import__("json").loads(s.lines), "interchange": s.interchange, "type": s.type, "area": s.area, "alternatives": __import__("json").loads(s.alternatives), "lat": s.lat, "lng": s.lng}
+        d = {"id": s.id, "name": s.name, "lines": json_mod.loads(s.lines), "interchange": s.interchange, "type": s.type, "area": s.area, "alternatives": json_mod.loads(s.alternatives), "lat": s.lat, "lng": s.lng}
         out.append(MetroStationOut(**d))
     return out
 

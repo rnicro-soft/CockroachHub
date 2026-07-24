@@ -189,6 +189,7 @@ class AnnouncementOut(BaseModel):
     message: str
     is_active: bool
     created_at: datetime
+    updated_at: datetime | None = None
 
     model_config = {"from_attributes": True}
 
@@ -305,6 +306,7 @@ class MetroStationOut(BaseModel):
     alternatives: list[str]
     lat: float
     lng: float
+    is_active: bool = True
 
     model_config = {"from_attributes": True}
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Send, Shield, CheckCircle, WifiOff } from "lucide-react";
+import { Send, Shield, CheckCircle } from "lucide-react";
 import { Button } from "../components/ui/Button";
 import toast from "react-hot-toast";
 import { SEO } from "../components/SEO";

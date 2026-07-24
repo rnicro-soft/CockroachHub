@@ -2,7 +2,6 @@ import { useState } from "react";
 import { AlertTriangle, Send, Shield, MapPin, Clock } from "lucide-react";
 import { Card } from "../components/ui/Card";
 import { Button } from "../components/ui/Button";
-import toast from "react-hot-toast";
 import { SEO } from "../components/SEO";
 import { useOfflineQueue } from "../hooks/useOfflineQueue";
 import { useLocale } from "../hooks/useLocale";

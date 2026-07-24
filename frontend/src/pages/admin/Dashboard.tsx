@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Radio, Inbox, ShieldCheck, Phone, Users, Bell, Send, Megaphone, RefreshCw } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Radio, Inbox, ShieldCheck, Phone, Users, Bell, Megaphone, RefreshCw } from "lucide-react";
 import { useAuthStore } from "../../store/authStore";
 import { CardSkeleton } from "../../components/ui/Skeleton";
 import { Button } from "../../components/ui/Button";
@@ -127,10 +128,10 @@ export default function AdminDashboard() {
       <div className="bg-ph-orange-muted border border-ph-orange/20 p-5">
         <h3 className="text-sm font-bold text-ph-text-dark dark:text-white mb-3">{t("admin.quickActions")}</h3>
         <div className="flex flex-wrap gap-2">
-          <a href="/admin/submissions" className="ph-btn-primary ph-btn-sm">{t("admin.reviewSubmissions")}</a>
-          <a href="/admin/detainees" className="ph-btn-outline ph-btn-sm">{t("admin.detaineeTracker")}</a>
-          <a href="/admin/audit-log" className="ph-btn-outline ph-btn-sm">{t("admin.auditLog")}</a>
-          <a href="/admin/ip-blacklist" className="ph-btn-outline ph-btn-sm">{t("admin.ipBlacklist")}</a>
+          <Link to="/admin/submissions" className="ph-btn-primary ph-btn-sm">{t("admin.reviewSubmissions")}</Link>
+          <Link to="/admin/detainees" className="ph-btn-outline ph-btn-sm">{t("admin.detaineeTracker")}</Link>
+          <Link to="/admin/audit-log" className="ph-btn-outline ph-btn-sm">{t("admin.auditLog")}</Link>
+          <Link to="/admin/ip-blacklist" className="ph-btn-outline ph-btn-sm">{t("admin.ipBlacklist")}</Link>
           <button onClick={() => api.post("/admin/sync-helpline").then(() => toast.success(t("admin.synced"))).catch(() => toast.error(t("admin.syncFailed")))} className="ph-btn-outline ph-btn-sm">
             <RefreshCw className="h-3.5 w-3.5" />{t("admin.syncHelpline")}
           </button>

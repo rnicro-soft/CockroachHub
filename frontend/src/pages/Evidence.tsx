@@ -3,13 +3,6 @@ import { SEO } from "../components/SEO";
 import { Card } from "../components/ui/Card";
 import { useLocale } from "../hooks/useLocale";
 
-const sectionIcons: Record<string, any> = {
-  capture: Camera,
-  preserve: Upload,
-  legal: Scale,
-  medical: Stethoscope,
-};
-
 export default function Evidence() {
   const { t } = useLocale();
   const sections: { key: string; icon: any }[] = [

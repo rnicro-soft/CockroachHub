@@ -1,4 +1,4 @@
-import { MapPin, Navigation, Shield, Plus } from "lucide-react";
+import { Navigation, Shield } from "lucide-react";
 import { Card } from "../components/ui/Card";
 import { Badge } from "../components/ui/Badge";
 import { SEO } from "../components/SEO";
@@ -49,7 +49,7 @@ export default function SafeZones() {
               <div className="p-4">
                 <div className="flex items-start justify-between gap-3 mb-2">
                   <h3 className="text-sm font-bold text-ph-text-dark dark:text-white">{z.name}</h3>
-                  <Badge variant={typeColors[z.type] || "default"}>{z.type}</Badge>
+                  <Badge variant={typeColors[z.type] || "default"}>{t(`safeZones.typeLabels.${z.type}`)}</Badge>
                 </div>
                 <p className="text-xs text-ph-text-muted mb-3">{z.desc}</p>
                 <div className="flex items-center gap-2 text-xs text-ph-orange font-bold">

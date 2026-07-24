@@ -7,6 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.auth import get_current_admin
 from app.database import get_db
+import json as json_mod
 from app.helpline_sync import sync_helpline_data
 from app.models import Admin, Alert, Announcement, AuditLog, Detainee, EmergencyContact, FactCheck, IPBlacklist, LegalRight, LoginAttempt, MetroDisruption, MetroStation, PushSubscription, Submission
 from app.push import send_push_notification
@@ -110,9 +111,9 @@ async def review_submission(
     submission.status = body.status
     submission.reviewed_by = current_admin.id
     submission.reviewed_at = datetime.now(timezone.utc)
+    await _log_action(db, current_admin.id, "review", "submission", submission_id, f"status={body.status}")
     await db.commit()
     await db.refresh(submission)
-    await _log_action(db, current_admin.id, "review", "submission", submission_id, f"status={body.status}")
     print(f"[ADMIN] {current_admin.email} reviewed submission #{submission_id} → {body.status}")
     return SubmissionOut.model_validate(submission)
 
@@ -144,9 +145,9 @@ async def approve_and_publish(
     submission.reviewed_by = current_admin.id
     submission.reviewed_at = datetime.now(timezone.utc)
 
+    await _log_action(db, current_admin.id, "publish", "submission", submission_id, f"created alert #{alert.id}")
     await db.commit()
     await db.refresh(alert)
-    await _log_action(db, current_admin.id, "publish", "submission", submission_id, f"created alert #{alert.id}")
     print(f"[ADMIN] {current_admin.email} published submission #{submission_id} as alert #{alert.id}")
     return AlertOut.model_validate(alert)
 
@@ -180,6 +181,7 @@ async def create_alert(
 ):
     alert = Alert(**body.model_dump(), created_by=current_admin.id)
     db.add(alert)
+    await _log_action(db, current_admin.id, "create", "alert", alert.id)
     await db.commit()
     await db.refresh(alert)
 
@@ -196,7 +198,6 @@ async def create_alert(
         except Exception as e:
             print(f"Push failed: {e}")
 
-    await _log_action(db, current_admin.id, "create", "alert", alert.id)
     print(f"[ADMIN] {current_admin.email} created alert #{alert.id}: {body.title}")
     return AlertOut.model_validate(alert)
 
@@ -215,9 +216,9 @@ async def update_alert(
     for field, value in body.model_dump(exclude_unset=True).items():
         setattr(alert, field, value)
     alert.updated_at = datetime.now(timezone.utc)
+    await _log_action(db, current_admin.id, "update", "alert", alert_id)
     await db.commit()
     await db.refresh(alert)
-    await _log_action(db, current_admin.id, "update", "alert", alert_id)
     print(f"[ADMIN] {current_admin.email} updated alert #{alert_id}")
     return AlertOut.model_validate(alert)
 
@@ -267,9 +268,9 @@ async def create_fact_check(
 ):
     fact_check = FactCheck(**body.model_dump(), created_by=current_admin.id, is_published=True)
     db.add(fact_check)
+    await _log_action(db, current_admin.id, "create", "fact_check", fact_check.id)
     await db.commit()
     await db.refresh(fact_check)
-    await _log_action(db, current_admin.id, "create", "fact_check", fact_check.id)
     print(f"[ADMIN] {current_admin.email} created fact check #{fact_check.id}: {body.title}")
     return FactCheckOut.model_validate(fact_check)
 
@@ -288,9 +289,9 @@ async def update_fact_check(
     for field, value in body.model_dump(exclude_unset=True).items():
         setattr(check, field, value)
     check.updated_at = datetime.now(timezone.utc)
+    await _log_action(db, current_admin.id, "update", "fact_check", check_id)
     await db.commit()
     await db.refresh(check)
-    await _log_action(db, current_admin.id, "update", "fact_check", check_id)
     return FactCheckOut.model_validate(check)
 
 
@@ -329,9 +330,9 @@ async def list_contacts(
 async def create_contact(body: ContactCreate, db: AsyncSession = Depends(get_db), current_admin: Admin = Depends(get_current_admin)):
     contact = EmergencyContact(**body.model_dump())
     db.add(contact)
+    await _log_action(db, current_admin.id, "create", "contact", contact.id)
     await db.commit()
     await db.refresh(contact)
-    await _log_action(db, current_admin.id, "create", "contact", contact.id)
     print(f"[ADMIN] {current_admin.email} added contact: {body.name}")
     return ContactOut.model_validate(contact)
 
@@ -344,9 +345,9 @@ async def update_contact(contact_id: int, body: ContactUpdate, db: AsyncSession 
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Contact not found")
     for field, value in body.model_dump(exclude_unset=True).items():
         setattr(contact, field, value)
+    await _log_action(db, current_admin.id, "update", "contact", contact_id)
     await db.commit()
     await db.refresh(contact)
-    await _log_action(db, current_admin.id, "update", "contact", contact_id)
     return ContactOut.model_validate(contact)
 
 
@@ -381,9 +382,9 @@ async def list_rights(
 async def create_right(body: LegalRightCreate, db: AsyncSession = Depends(get_db), current_admin: Admin = Depends(get_current_admin)):
     right = LegalRight(**body.model_dump())
     db.add(right)
+    await _log_action(db, current_admin.id, "create", "legal_right", right.id)
     await db.commit()
     await db.refresh(right)
-    await _log_action(db, current_admin.id, "create", "legal_right", right.id)
     print(f"[ADMIN] {current_admin.email} created legal right: {body.title}")
     return LegalRightOut.model_validate(right)
 
@@ -396,9 +397,9 @@ async def update_right(right_id: int, body: LegalRightUpdate, db: AsyncSession =
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Legal right not found")
     for field, value in body.model_dump(exclude_unset=True).items():
         setattr(right, field, value)
+    await _log_action(db, current_admin.id, "update", "legal_right", right_id)
     await db.commit()
     await db.refresh(right)
-    await _log_action(db, current_admin.id, "update", "legal_right", right_id)
     return LegalRightOut.model_validate(right)
 
 
@@ -430,9 +431,9 @@ async def create_announcement(
 ):
     a = Announcement(message=body.message)
     db.add(a)
+    await _log_action(db, current_admin.id, "create", "announcement", a.id)
     await db.commit()
     await db.refresh(a)
-    await _log_action(db, current_admin.id, "create", "announcement", a.id)
     print(f"[ADMIN] {current_admin.email} created announcement #{a.id}")
     return AnnouncementOut.model_validate(a)
 
@@ -458,15 +459,15 @@ async def toggle_announcement(
     db: AsyncSession = Depends(get_db),
     current_admin: Admin = Depends(get_current_admin),
 ):
-    await db.execute(Announcement.__table__.update().values(is_active=False))
     result = await db.execute(select(Announcement).where(Announcement.id == announcement_id))
     a = result.scalar_one_or_none()
     if not a:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Announcement not found")
+    await db.execute(Announcement.__table__.update().values(is_active=False))
     a.is_active = True
+    await _log_action(db, current_admin.id, "toggle", "announcement", announcement_id)
     await db.commit()
     await db.refresh(a)
-    await _log_action(db, current_admin.id, "toggle", "announcement", announcement_id)
     return AnnouncementOut.model_validate(a)
 
 # --- Audit Log ---
@@ -537,9 +538,9 @@ async def add_ip_blacklist(
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="IP already blacklisted")
     entry = IPBlacklist(**body.model_dump(), created_by=current_admin.id)
     db.add(entry)
+    await _log_action(db, current_admin.id, "create", "ip_blacklist", entry.id, f"IP: {entry.ip_address}")
     await db.commit()
     await db.refresh(entry)
-    await _log_action(db, current_admin.id, "create", "ip_blacklist", entry.id, f"IP: {entry.ip_address}")
     print(f"[ADMIN] {current_admin.email} blacklisted IP: {entry.ip_address}")
     return IPBlacklistOut.model_validate(entry)
 
@@ -586,9 +587,9 @@ async def create_detainee(
     from app.schemas import DetaineeOut
     d = Detainee(**body.model_dump(), reported_by=current_admin.id)
     db.add(d)
+    await _log_action(db, current_admin.id, "create", "detainee", d.id)
     await db.commit()
     await db.refresh(d)
-    await _log_action(db, current_admin.id, "create", "detainee", d.id)
     print(f"[ADMIN] {current_admin.email} added detainee: {body.name}")
     return DetaineeOut.model_validate(d)
 
@@ -608,9 +609,9 @@ async def update_detainee(
     for field, value in body.model_dump(exclude_unset=True).items():
         setattr(d, field, value)
     d.updated_at = datetime.now(timezone.utc)
+    await _log_action(db, current_admin.id, "update", "detainee", detainee_id)
     await db.commit()
     await db.refresh(d)
-    await _log_action(db, current_admin.id, "update", "detainee", detainee_id)
     return DetaineeOut.model_validate(d)
 
 
@@ -677,9 +678,6 @@ async def emergency_broadcast(
 ):
     alert = Alert(**body.model_dump(), created_by=current_admin.id)
     db.add(alert)
-    await db.commit()
-    await db.refresh(alert)
-    
     sent = 0
     try:
         sent = await send_push_notification(
@@ -690,8 +688,9 @@ async def emergency_broadcast(
         )
     except Exception as e:
         print(f"Broadcast push failed: {e}")
-    
     await _log_action(db, current_admin.id, "broadcast", "alert", alert.id, f"push={sent}")
+    await db.commit()
+    await db.refresh(alert)
     print(f"[BROADCAST] {current_admin.email} broadcast '{body.title}' → {sent} devices")
     return {"alert_id": alert.id, "push_sent": sent, "severity": body.severity}
 
@@ -769,6 +768,7 @@ async def batch_review_submissions(
     await db.commit()
     if count:
         await _log_action(db, current_admin.id, "batch_review", "submission", details=f"{count} reviewed")
+    await db.commit()
     print(f"[ADMIN] {current_admin.email} batch-reviewed {count} submissions")
     return {"reviewed": count}
 
@@ -793,7 +793,7 @@ async def admin_list_metro_stations(
     stations = result.scalars().all()
     out = []
     for s in stations:
-        d = {"id": s.id, "name": s.name, "lines": __import__("json").loads(s.lines), "interchange": s.interchange, "type": s.type, "area": s.area, "alternatives": __import__("json").loads(s.alternatives), "lat": s.lat, "lng": s.lng}
+        d = {"id": s.id, "name": s.name, "lines": json_mod.loads(s.lines), "interchange": s.interchange, "type": s.type, "area": s.area, "alternatives": json_mod.loads(s.alternatives), "lat": s.lat, "lng": s.lng}
         out.append(MetroStationOut(**d))
     return out
 
@@ -837,9 +837,9 @@ async def admin_create_metro_disruption(
 ):
     d = MetroDisruption(**body.model_dump(), submitted_by=current_admin.id)
     db.add(d)
+    await _log_action(db, current_admin.id, "create", "metro_disruption", d.id, f"{body.station_id} → {body.status}")
     await db.commit()
     await db.refresh(d)
-    await _log_action(db, current_admin.id, "create", "metro_disruption", d.id, f"{body.station_id} → {body.status}")
     print(f"[ADMIN] {current_admin.email} created metro disruption: {body.station_id} → {body.status}")
     return MetroDisruptionOut.model_validate(d)
 
@@ -858,9 +858,9 @@ async def admin_update_metro_disruption(
     for field, value in body.model_dump(exclude_unset=True).items():
         setattr(d, field, value)
     d.updated_at = datetime.now(timezone.utc)
+    await _log_action(db, current_admin.id, "update", "metro_disruption", disruption_id)
     await db.commit()
     await db.refresh(d)
-    await _log_action(db, current_admin.id, "update", "metro_disruption", disruption_id)
     return MetroDisruptionOut.model_validate(d)
 
 

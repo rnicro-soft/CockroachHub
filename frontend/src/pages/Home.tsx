@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Phone, Radio, Scale, ShieldCheck, Send, TrendingUp, Eye, Clock, WifiOff, Shield, Calendar, Download, MapPin } from "lucide-react";
+import { Phone, Radio, Scale, ShieldCheck, Send, Eye, WifiOff, Shield, Calendar, Download, MapPin } from "lucide-react";
 import { SEO } from "../components/SEO";
 import { Card } from "../components/ui/Card";
 import { ThumbSkeleton } from "../components/ui/Skeleton";

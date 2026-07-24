@@ -4,6 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.auth import hash_password
 from app.config import settings
 from app.database import async_session, init_db
+import json as json_mod
 from app.models import Admin, Alert, EmergencyContact, FactCheck, LegalRight, MetroStation
 from app.metro_data import METRO_STATIONS
 
@@ -226,24 +227,26 @@ async def seed_database():
             await db.commit()
             print(f"Seeded {len(SEED_FACT_CHECKS)} fact checks")
 
-    # Seed metro stations
-    result = await db.execute(select(MetroStation).limit(1))
-    if not result.scalar_one_or_none():
-        for s in METRO_STATIONS:
-            import json
-            station = MetroStation(
-                id=s["id"],
-                name=s["name"],
-                lines=json.dumps(s["lines"]),
-                interchange=s["interchange"],
-                type=s["type"],
-                area=s["area"],
-                alternatives=json.dumps(s["alternatives"]),
-                lat=s["lat"],
-                lng=s["lng"],
-            )
-            db.add(station)
-        await db.commit()
-        print(f"Seeded {len(METRO_STATIONS)} metro stations")
-
     print("Database seeding complete!")
+
+
+async def seed_metro_stations():
+    await init_db()
+    async with async_session() as db:
+        result = await db.execute(select(MetroStation).limit(1))
+        if not result.scalar_one_or_none():
+            for s in METRO_STATIONS:
+                station = MetroStation(
+                    id=s["id"],
+                    name=s["name"],
+                    lines=json_mod.dumps(s["lines"]),
+                    interchange=s["interchange"],
+                    type=s["type"],
+                    area=s["area"],
+                    alternatives=json_mod.dumps(s["alternatives"]),
+                    lat=s["lat"],
+                    lng=s["lng"],
+                )
+                db.add(station)
+            await db.commit()
+            print(f"Seeded {len(METRO_STATIONS)} metro stations")

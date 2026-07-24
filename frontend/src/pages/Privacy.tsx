@@ -1,21 +1,7 @@
-import { Shield, Smartphone, Wifi, Lock, Eye, Camera, BatteryCharging, FileText } from "lucide-react";
+import { Shield, Smartphone, Wifi, Lock, Eye, Camera } from "lucide-react";
 import { SEO } from "../components/SEO";
 import { Card } from "../components/ui/Card";
 import { useLocale } from "../hooks/useLocale";
-
-const sectionIcons: Record<string, any> = {
-  phoneSecurity: Smartphone,
-  digitalPrivacy: Wifi,
-  ifSeized: Lock,
-  surveillance: Eye,
-};
-
-const sectionIconsName: Record<string, any> = {
-  PhoneSecurity: Smartphone,
-  DigitalPrivacy: Wifi,
-  IfSeized: Lock,
-  Surveillance: Eye,
-};
 
 export default function Privacy() {
   const { t } = useLocale();

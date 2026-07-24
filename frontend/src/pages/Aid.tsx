@@ -4,6 +4,13 @@ import { Badge } from "../components/ui/Badge";
 import { Home, Utensils, Droplets, Heart, ExternalLink, Phone } from "lucide-react";
 import { useLocale } from "../hooks/useLocale";
 
+const bgMap: Record<string, string> = {
+  "text-ph-orange": "bg-ph-orange/10",
+  "text-ph-green": "bg-ph-green/10",
+  "text-ph-red": "bg-ph-red/10",
+  "text-ph-yellow": "bg-ph-yellow/10",
+};
+
 const accommodations = [
   { name: "Hemkunt Foundation", desc: "Food, accommodation, and aid for protesters", contact: "@hemkuntfoundation (Instagram)", type: "aid" },
   { name: "Gurudwara Bangla Sahib", desc: "Free meals (langar) and accommodation available", contact: "Bangla Sahib, Delhi", type: "accommodation" },
@@ -41,7 +48,7 @@ export default function Aid() {
           const Icon = cfg.icon;
           return (
             <Card key={a.name} className="p-4 flex items-start gap-3">
-              <div className={`rounded p-2 bg-${cfg.color.replace("text-", "")}/10 shrink-0`}>
+              <div className={`rounded p-2 ${bgMap[cfg.color] || "bg-ph-orange/10"} shrink-0`}>
                 <Icon className={`h-5 w-5 ${cfg.color}`} />
               </div>
               <div className="min-w-0 flex-1">
@@ -64,7 +71,7 @@ export default function Aid() {
           const Icon = cfg.icon;
           return (
             <Card key={a.name} className="p-4 flex items-start gap-3">
-              <div className={`rounded p-2 bg-${cfg.color.replace("text-", "")}/10 shrink-0`}>
+              <div className={`rounded p-2 ${bgMap[cfg.color] || "bg-ph-orange/10"} shrink-0`}>
                 <Icon className={`h-5 w-5 ${cfg.color}`} />
               </div>
               <div className="min-w-0 flex-1">

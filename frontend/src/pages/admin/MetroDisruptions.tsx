@@ -62,7 +62,7 @@ export default function AdminMetroDisruptions() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-ph-border-light dark:border-ph-border text-left text-ph-text-muted">
-                <th className="pb-2 font-bold">Station</th>
+                <th className="pb-2 font-bold">{t("common.name")}</th>
                 <th className="pb-2 font-bold">{t("admin.status")}</th>
                 <th className="pb-2 font-bold">{t("admin.reason")}</th>
                 <th className="pb-2 font-bold">{t("admin.source")}</th>
@@ -95,9 +95,9 @@ export default function AdminMetroDisruptions() {
       <Modal open={editOpen} onClose={() => setEditOpen(false)} title={editing.id ? t("admin.editDisruption") : t("admin.createDisruption")}>
         <div className="space-y-3">
           <div>
-            <label className="ph-label">Station</label>
+            <label className="ph-label">{t("common.name")}</label>
             <select value={editing.station_id} onChange={(e) => setEditing({ ...editing, station_id: e.target.value })} className="ph-select">
-              <option value="">Select station</option>
+              <option value="">—</option>
               {stations.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
             </select>
           </div>
@@ -113,7 +113,7 @@ export default function AdminMetroDisruptions() {
             <label className="ph-label">{t("admin.reason")}</label>
             <textarea value={editing.reason} onChange={(e) => setEditing({ ...editing, reason: e.target.value })} className="ph-input resize-none" rows={3} required />
           </div>
-          <button onClick={save} className="ph-btn-primary w-full"><Send className="h-4 w-4" />{editing.id ? t("admin.update") : t("admin.create")}</button>
+          <button onClick={save} className="ph-btn-primary w-full"><Send className="h-4 w-4" />{editing.id ? t("admin.actions.update") : t("admin.actions.create")}</button>
         </div>
       </Modal>
     </div>

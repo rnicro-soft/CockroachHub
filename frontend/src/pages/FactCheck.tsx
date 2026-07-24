@@ -3,6 +3,7 @@ import { ShieldCheck, AlertTriangle, CheckCircle, XCircle, HelpCircle, ExternalL
 import type { FactCheck } from "../types";
 import { SEO } from "../components/SEO";
 import { useLocale } from "../hooks/useLocale";
+import api from "../lib/api";
 
 const vc: Record<string, { icon: typeof ShieldCheck; badge: string }> = {
   true: { icon: CheckCircle, badge: "ph-badge-green" },
@@ -25,9 +26,8 @@ export default function FactCheck() {
   const [checks, setChecks] = useState<FactCheck[]>(sample as unknown as FactCheck[]);
 
   useEffect(() => {
-    fetch("/api/fact-checks")
-      .then((r) => r.ok && r.json())
-      .then((d) => d?.length && setChecks(d))
+    api.get("/fact-checks")
+      .then(({ data }) => data?.length && setChecks(data))
       .catch(() => {});
   }, []);
 
@@ -70,7 +70,7 @@ export default function FactCheck() {
                         <h3 className="text-[14px] font-bold text-ph-text-dark dark:text-white">{c.title}</h3>
                         <span className={v.badge}>{t("factCheck.verdicts." + verdictKey)}</span>
                       </div>
-                      <p className="text-xs italic text-ph-text-muted mb-2">"{(c as any).claim}"</p>
+                      <p className="text-xs italic text-ph-text-muted mb-2">"{c.claim}"</p>
                       <p className="text-sm text-ph-text-dark dark:text-ph-text-secondary leading-relaxed">{c.explanation}</p>
                       {c.source && <p className="mt-2 flex items-center gap-1.5 text-xs text-ph-text-muted"><ExternalLink className="h-3 w-3" />{t("factCheck.source")}: {c.source}</p>}
                     </div>

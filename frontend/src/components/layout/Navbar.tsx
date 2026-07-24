@@ -2,7 +2,7 @@ import { Link, useLocation, useNavigate, useSearchParams } from "react-router-do
 import {
   Flame, Phone, Radio, Scale, ShieldCheck, Menu, X, Send, Search, Shield,
   Moon, Sun, Download, Bell, BellOff, Heart, AlertTriangle, Sun as SunIcon,
-  ClipboardList, MapPin, Lock, BookOpen, Home as HomeIcon, Droplets, Globe, Eye, Train,
+  ClipboardList, MapPin, Lock, BookOpen, Droplets, Globe, Eye, Train,
 } from "lucide-react";
 import { memo, useCallback, useRef, useState } from "react";
 import { useTheme } from "../../hooks/useTheme";
@@ -112,7 +112,7 @@ export const Navbar = memo(function Navbar({ onLogoClick }: { onLogoClick?: () =
             <input type="text" value={searchVal} onChange={(e) => doSearch(e.target.value)}
               placeholder={t("search.placeholder")}
               className="ph-input-search w-full pl-8 pr-3" aria-label={t("search.ariaLabel")}
-              onFocus={() => nav("/live-feed")}
+              onFocus={() => { if (loc.pathname !== "/live-feed") nav("/live-feed"); }}
             />
             <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-ph-text-secondary pointer-events-none" />
           </div>

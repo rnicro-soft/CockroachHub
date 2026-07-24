@@ -1,8 +1,6 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { SEO } from "../components/SEO";
 import { Card } from "../components/ui/Card";
-import { Badge } from "../components/ui/Badge";
 import { Shield, Download, MapPin, WifiOff, Users, Camera, ClipboardList } from "lucide-react";
 import { useLocale } from "../hooks/useLocale";
 
