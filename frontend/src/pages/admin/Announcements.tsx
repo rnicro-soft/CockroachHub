@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Plus, Trash2, Megaphone, Check } from "lucide-react";
 import { Button } from "../../components/ui/Button";
 import { Modal } from "../../components/ui/Modal";
+import { CardSkeleton } from "../../components/ui/Skeleton";
 import { useLocale } from "../../hooks/useLocale";
 import api from "../../lib/api";
 import toast from "react-hot-toast";
@@ -51,7 +52,7 @@ export default function AdminAnnouncements() {
         <Button size="sm" onClick={() => setModal(true)}><Plus className="h-4 w-4" />{t("admin.new")}</Button>
       </div>
 
-      {loading ? <p className="text-sm text-ph-text-muted">{t("admin.loading")}</p>
+      {loading ? <div className="space-y-3"><CardSkeleton /><CardSkeleton /></div>
       : items.length === 0 ? <div className="py-16 text-center text-sm text-ph-text-muted">{t("admin.noData.announcements")}</div>
       : <div className="space-y-3">
           {items.map((a) => (

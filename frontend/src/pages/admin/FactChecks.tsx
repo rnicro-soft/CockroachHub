@@ -68,8 +68,8 @@ export default function AdminFactChecks() {
                   <span className={vb[c.verdict]}>{t("factCheck.verdicts." + c.verdict)}</span>
                   {!c.is_published && <span className="ph-badge-default">{t("admin.draft")}</span>}
                 </div>
-                <p className="text-xs italic text-ph-text-muted mb-1">"{c.claim.slice(0, 80)}..."</p>
-                <p className="text-xs text-ph-text-muted">{c.explanation.slice(0, 100)}...</p>
+                <p className="text-xs italic text-ph-text-muted mb-1">"{(c.claim || "").slice(0, 80)}..."</p>
+                <p className="text-xs text-ph-text-muted">{(c.explanation || "").slice(0, 100)}...</p>
               </div>
               <div className="flex shrink-0 gap-1">
                 <button onClick={() => openE(c)} className="p-2 text-ph-text-muted hover:text-ph-text-dark dark:hover:text-white" aria-label={t("admin.editAria").replace("{title}", c.title)}><Edit3 className="h-4 w-4" /></button>

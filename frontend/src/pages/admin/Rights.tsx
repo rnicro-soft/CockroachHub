@@ -60,7 +60,7 @@ export default function AdminRights() {
               <div className="flex-1 min-w-0">
                 <h3 className="text-sm font-bold text-ph-text-dark dark:text-white">{r.title}</h3>
                 <p className="text-xs text-ph-text-muted mb-1 capitalize">{r.category} · {t("admin.sortOrder")} {r.sort_order}</p>
-                <p className="text-xs text-ph-text-muted line-clamp-2">{r.content.slice(0, 150)}...</p>
+                <p className="text-xs text-ph-text-muted line-clamp-2">{(r.content || "").slice(0, 150)}...</p>
               </div>
               <div className="flex shrink-0 gap-1">
                 <button onClick={() => openE(r)} className="p-2 text-ph-text-muted hover:text-ph-text-dark dark:hover:text-white" aria-label={t("admin.editAria").replace("{title}", r.title)}><Edit3 className="h-4 w-4" /></button>

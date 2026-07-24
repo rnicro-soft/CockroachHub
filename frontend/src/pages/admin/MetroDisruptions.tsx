@@ -86,7 +86,7 @@ export default function AdminMetroDisruptions() {
                   </td>
                 </tr>
               ))}
-              {disruptions.length === 0 && <tr><td colSpan={6} className="py-8 text-center text-ph-text-muted">{t("admin.noData.submissions").replace("{filter}", "")}</td></tr>}
+              {disruptions.length === 0 && <tr><td colSpan={6} className="py-8 text-center text-ph-text-muted">{t("admin.noneYet")}</td></tr>}
             </tbody>
           </table>
         </div>

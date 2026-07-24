@@ -977,5 +977,22 @@
     "offlineData": "Showing cached metro data",
     "seoTitle": "Delhi Metro Status — CJP Helpline",
     "seoDesc": "Real-time Delhi Metro station disruptions during protests. Check station status, report closures, see alternative routes. Crowdsourced."
+  },
+  "bailGuide": {
+    "bailable": {
+      "title": "Bailable Offences (Right to Bail — BNSS Section 478)"
+    },
+    "nonBailable": {
+      "title": "Non-Bailable Offences (Bail at Court Discretion — BNSS Section 480)"
+    },
+    "anticipatory": {
+      "title": "Anticipatory Bail (BNSS Section 482)"
+    },
+    "procedure": {
+      "title": "What happens after arrest (step by step)"
+    },
+    "legalAid": {
+      "title": "Free legal aid & lawyer contacts"
+    }
   }
 }

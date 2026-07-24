@@ -20,14 +20,13 @@ export default function AdminLoginAttempts() {
 
   const fetch = () => {
     setLoading(true);
-    api.get(`/admin/login-attempts?page=${page}&per_page=${perPage}`)
+    const f = filter === "success" ? "success" : filter === "fail" ? "fail" : "";
+    api.get(`/admin/login-attempts?page=${page}&per_page=${perPage}${f ? `&success=${f === "success"}` : ""}`)
       .then(({ data }) => { setItems(data.items); setTotal(data.total); })
       .catch(() => {})
       .finally(() => setLoading(false));
   };
-  useEffect(() => { fetch(); }, [page]);
-
-  const shown = filter === null ? items : items.filter((a) => a.success === (filter === "success"));
+  useEffect(() => { fetch(); }, [page, filter]);
 
   return (
     <div className="space-y-5">
@@ -46,7 +45,7 @@ export default function AdminLoginAttempts() {
 
       {loading ? <div className="space-y-2"><CardSkeleton /><CardSkeleton /><CardSkeleton /></div>
       : items.length === 0 ? <p className="text-sm text-ph-text-muted py-8 text-center">{t("admin.noData.loginAttempts")}</p>
-      : <><div className="space-y-2">{shown.map((a) => (
+      : <><div className="space-y-2">{items.map((a) => (
         <div key={a.id} className="bg-white dark:bg-ph-dark-2 border border-ph-border-light dark:border-ph-border p-3 flex items-center gap-3 text-sm">
           {a.success ? (
             <ShieldCheck className="h-4 w-4 shrink-0 text-ph-green" />

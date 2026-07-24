@@ -501,13 +501,18 @@ async def list_audit_log(
 async def list_login_attempts(
     page: int = Query(1, ge=1),
     per_page: int = Query(50, ge=1, le=200),
+    success: bool | None = Query(None),
     db: AsyncSession = Depends(get_db),
     current_admin: Admin = Depends(get_current_admin),
 ):
     if not current_admin.is_super:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
     query = select(LoginAttempt).order_by(LoginAttempt.created_at.desc())
-    total = (await db.execute(select(func.count(LoginAttempt.id)))).scalar()
+    count_q = select(func.count(LoginAttempt.id))
+    if success is not None:
+        query = query.where(LoginAttempt.success == success)
+        count_q = count_q.where(LoginAttempt.success == success)
+    total = (await db.execute(count_q)).scalar()
     offset = (page - 1) * per_page
     result = await db.execute(query.offset(offset).limit(per_page))
     from app.schemas import LoginAttemptOut
