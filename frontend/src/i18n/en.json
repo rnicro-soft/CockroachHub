@@ -9,10 +9,8 @@
     "home": "Home",
     "emergency": "Emergency",
     "liveFeed": "Live Feed",
-    "legalRights": "Know Your Rights",
     "factCheck": "Fact Check",
     "submit": "Submit Report",
-    "admin": "Admin Panel",
     "firstAid": "First Aid",
     "sos": "SOS 🚨",
     "safeZones": "Safe Spots",
@@ -25,24 +23,13 @@
     "resources": "Trusted Sources",
     "manifesto": "Manifesto",
     "about": "About",
-    "submitReport": "Submit Report",
     "lock": "Lock App",
-    "torch": "Flashlight",
     "exit": "Exit",
-    "lang": "Switch language",
     "privacy": "Privacy Guide",
     "evidence": "Evidence",
     "metro": "Metro"
   },
   "home": {
-    "title": "CJP Helpline",
-    "subtitle": "Student Support Network",
-    "quickAccess": "Quick Access",
-    "emergencyDesc": "One-tap emergency contacts & legal aid",
-    "liveFeedDesc": "Real-time field updates & safety alerts",
-    "rightsDesc": "Know your legal rights during protests",
-    "factCheckDesc": "Verified info & bust the rumor",
-    "submitDesc": "Send a field report to admins",
     "trending": "Trending",
     "viewAll": "View All",
     "liveUpdates": "Live Updates",
@@ -190,7 +177,6 @@
   },
   "legalRights": {
     "title": "Know Your Rights (They Won't Tell You This)",
-    "subtitle": "Legal protections under the Constitution of India",
     "categories": {
       "detention": "During Detention",
       "search_seizure": "Search & Seizure",
@@ -207,7 +193,6 @@
   },
   "factCheck": {
     "title": "Rumor Mill — Verified",
-    "subtitle": "Verified updates on NEET, court hearings & CJP announcements",
     "verdicts": {
       "true": "True",
       "false": "False",
@@ -222,7 +207,6 @@
   },
   "submit": {
     "title": "Submit Field Report",
-    "subtitle": "Send anonymous field reports to admins for verification",
     "type": "Report Type",
     "types": {
       "medical": "Medical",
@@ -251,11 +235,6 @@
     "whatToDo": "What to do",
     "doNot": "DO NOT",
     "supplies": "Supplies to carry",
-    "tearGas": "Tear Gas Treatment",
-    "lathi": "Lathi Charge Injuries",
-    "pepperSpray": "Pepper Spray First Aid",
-    "dehydration": "Dehydration & Heat Stroke",
-    "crowdCrush": "Crowd Crush Safety",
     "seoTitle": "Field Medicine 101",
     "seoDesc": "Tear gas treatment, lathi charge injury care, pepper spray first aid, dehydration, crowd crush safety. Cached on your phone — works without internet."
   },
@@ -276,7 +255,6 @@
   },
   "bail": {
     "title": "Bail & Legal Procedure",
-    "subtitle": "Complete guide to bail under BNSS for protesters",
     "important": "Important",
     "importantText": "This is a guide — not legal advice. Arrest procedures vary. Consult a lawyer immediately if detained.",
     "memorize": "Memorize before you go",
@@ -387,9 +365,6 @@
   },
   "aid": {
     "title": "Aid & Accommodation",
-    "subtitle": "Free resources for protesters in need",
-    "accommodation": "Accommodation & Shelter",
-    "onSiteAid": "On-Site Aid",
     "types": {
       "accommodation": "Accommodation",
       "aid": "Aid",
@@ -417,7 +392,6 @@
     "partyTitle": "Cockroach Janta Party",
     "partyDesc": "A political front of the youth, by the youth, for the youth: Secular, Socialist, Democratic, and Lazy. Reclaiming the cockroach as a badge of resilience.",
     "founded": "Founded May 16, 2026 · New Delhi",
-    "fiveDemands": "Five demands. Zero sponsors. One large, stubborn swarm.",
     "demands": {
       "1": {
         "title": "NEET Cancellation & Reform",
@@ -450,7 +424,6 @@
   },
   "about": {
     "title": "About CockroachHub",
-    "heading": "About CockroachHub",
     "partyTitle": "Cockroach Janta Party",
     "partyTagline": "Voice of the Lazy & Unemployed",
     "partyDesc1": "The Cockroach Janta Party is a satirical political party and student protest movement founded on May 16, 2026 by Abhijeet Dipke. What started as an internet meme grew into a nationwide youth movement leading the NEET paper leak protests at Jantar Mantar, Delhi.",
@@ -902,9 +875,7 @@
   "errors": {
     "somethingWentWrong": "Something went wrong",
     "unexpectedError": "An unexpected error occurred.",
-    "reloadPage": "Reload Page",
-    "keepClicking": "Keep clicking...",
-    "mainBhiCockroach": "Main Bhi Cockroach! — Join CJP"
+    "reloadPage": "Reload Page"
   },
   "footer": {
     "heading": "Cockroach Janta Party — Helpline",
