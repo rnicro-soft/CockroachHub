@@ -27,6 +27,7 @@ export default function Resources() {
         <h3 className="flex items-center gap-2 text-sm font-bold text-ph-orange mb-1"><ShieldCheck className="h-4 w-4" />{t("resources.trustedSources")}</h3>
         <p className="text-sm text-ph-text-dark dark:text-ph-text-secondary">{t("resources.trustedSourcesDesc")}</p>
       </Card>
+      {sources.length === 0 && <p className="text-sm text-ph-text-muted py-8 text-center">{t("admin.noneYet")}</p>}
       <div className="grid gap-3 sm:grid-cols-2">
         {sources.map((s, i) => (
           <a key={s.id || i} href={s.link} target="_blank" rel="noopener noreferrer"

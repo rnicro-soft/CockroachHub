@@ -132,7 +132,9 @@ export default function Metro() {
       </Card>
 
       {/* Station grid */}
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      {filtered.length === 0 ? (
+        <div className="py-16 text-center text-sm text-ph-text-muted">{t("common.noResults") || "No stations match your search"}</div>
+      ) : <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {filtered.map((station) => {
           const d = disruptionMap.get(station.id);
           const status = d?.status || "open";
@@ -162,7 +164,7 @@ export default function Metro() {
             </button>
           );
         })}
-      </div>
+      </div>}
 
       {/* Detail panel */}
       <Modal open={!!selected} onClose={() => setSelected(null)} title={selected?.name || ""}>

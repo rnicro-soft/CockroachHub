@@ -77,8 +77,8 @@ export default function AdminDetainees() {
             <p className="text-xs text-ph-text-muted mt-1 flex items-center gap-1"><Clock className="h-3 w-3" />{new Date(d.created_at).toLocaleString()}</p>
           </div>
           <div className="flex shrink-0 gap-1">
-            <button onClick={() => openE(d)} className="p-2 text-ph-text-muted hover:text-ph-text-dark dark:hover:text-white"><Edit3 className="h-4 w-4" /></button>
-            <button onClick={() => del(d.id)} className="p-2 text-ph-text-muted hover:text-ph-red"><Trash2 className="h-4 w-4" /></button>
+            <button onClick={() => openE(d)} className="p-2 text-ph-text-muted hover:text-ph-text-dark dark:hover:text-white" aria-label={t("admin.editAria").replace("{title}", d.name)}><Edit3 className="h-4 w-4" /></button>
+            <button onClick={() => del(d.id)} className="p-2 text-ph-text-muted hover:text-ph-red" aria-label={t("admin.deleteAria").replace("{title}", d.name)}><Trash2 className="h-4 w-4" /></button>
           </div>
         </div>
       ))}</div>

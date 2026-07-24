@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Users, Shield } from "lucide-react";
 import { Button } from "../../components/ui/Button";
 import { Modal } from "../../components/ui/Modal";
+import { CardSkeleton } from "../../components/ui/Skeleton";
 import { useLocale } from "../../hooks/useLocale";
 import api from "../../lib/api";
 import { useAuthStore } from "../../store/authStore";
@@ -43,7 +44,7 @@ export default function AdminAdmins() {
 
       {!me?.is_super && <div className="bg-ph-yellow/10 border border-ph-yellow/20 p-4"><p className="text-sm text-ph-yellow font-bold">{t("admin.permissionNotice")}</p></div>}
 
-      {loading ? <p className="text-sm text-ph-text-muted">{t("admin.loading")}</p>
+      {loading ? <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3"><CardSkeleton /><CardSkeleton /><CardSkeleton /></div>
       : <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((a) => (
             <div key={a.id} className="bg-white dark:bg-ph-dark-2 border border-ph-border-light dark:border-ph-border p-4 flex items-center gap-4">

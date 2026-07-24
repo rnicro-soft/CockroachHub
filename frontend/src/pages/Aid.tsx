@@ -38,6 +38,7 @@ export default function Aid() {
     <div className="mx-auto max-w-4xl space-y-5">
       <SEO title={t("aid.seoTitle")} description={t("aid.seoDesc")} path="/aid" />
       <div className="ph-section"><div><h2>{t("aid.title")}</h2><div className="ph-section-accent" /></div></div>
+      {orgs.length === 0 && <p className="text-sm text-ph-text-muted py-8 text-center">{t("admin.noneYet")}</p>}
       <div className="grid gap-3 sm:grid-cols-2">
         {orgs.map((a, i) => {
           const cfg = typeConfig[a.category] || typeConfig.aid;

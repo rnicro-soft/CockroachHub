@@ -32,6 +32,7 @@ export default function SafeZones() {
         <Card className="bg-ph-orange-muted border border-ph-orange/20 p-4">
           <p className="text-sm text-ph-text-dark dark:text-ph-text-secondary">{t("safeZones.subtitle")}</p>
         </Card>
+        {zones.length === 0 && <div className="py-16 text-center text-sm text-ph-text-muted">{t("admin.noneYet")}</div>}
         <div className="grid gap-3 sm:grid-cols-2">
           {zones.map((z, i) => (
             <a key={z.id || i} href={`https://www.google.com/maps/dir/?api=1&destination=${z.lat},${z.lng}`}

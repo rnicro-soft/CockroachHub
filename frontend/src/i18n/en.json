@@ -722,7 +722,8 @@
     "somethingWentWrong": "Something went wrong",
     "unexpectedError": "An unexpected error occurred.",
     "deleted": "Deleted",
-    "actions": "Actions"
+    "actions": "Actions",
+    "noResults": "No results"
   },
   "panic": {
     "todaysWeather": "Today's Weather",

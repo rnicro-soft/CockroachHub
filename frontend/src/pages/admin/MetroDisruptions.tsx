@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Plus, Pencil, Trash2, Send } from "lucide-react";
 import { Modal } from "../../components/ui/Modal";
+import { CardSkeleton } from "../../components/ui/Skeleton";
 import { useLocale } from "../../hooks/useLocale";
 import api from "../../lib/api";
 import toast from "react-hot-toast";
@@ -57,7 +58,7 @@ export default function AdminMetroDisruptions() {
           className="ph-btn-primary ph-btn-sm"><Plus className="h-4 w-4" />{t("admin.createDisruption")}</button>
       </div>
 
-      {loading ? <p className="text-sm text-ph-text-muted">{t("common.loading")}</p> : (
+      {loading ? <div className="space-y-2"><CardSkeleton /><CardSkeleton /></div> : (
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>

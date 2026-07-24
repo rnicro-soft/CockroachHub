@@ -722,7 +722,8 @@
     "somethingWentWrong": "कुछ गलत हो गया",
     "unexpectedError": "एक अप्रत्याशित त्रुटि हुई।",
     "deleted": "Deleted",
-    "actions": "कार्रवाइयाँ"
+    "actions": "कार्रवाइयाँ",
+    "noResults": "कोई परिणाम नहीं"
   },
   "panic": {
     "todaysWeather": "आज का मौसम",

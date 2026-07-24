@@ -32,6 +32,7 @@ export default function MentalHealth() {
         <p className="text-sm text-ph-text-secondary">{t("mentalHealth.protestingIsHeavy")}</p>
       </Card>
       <h3 className="text-sm font-bold text-ph-text-dark dark:text-white flex items-center gap-2"><MessageCircle className="h-4 w-4 text-ph-orange" />{t("mentalHealth.onlineCounsellors")}</h3>
+      {onlineProv.length === 0 && <p className="text-sm text-ph-text-muted py-4">{t("admin.noneYet")}</p>}
       <div className="grid gap-3 sm:grid-cols-2">
         {onlineProv.map((p, i) => (
           <Card key={p.id || i} className="p-4">

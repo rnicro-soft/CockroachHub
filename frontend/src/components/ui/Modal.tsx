@@ -1,11 +1,43 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import { X } from "lucide-react";
 
 interface Props { open: boolean; onClose: () => void; title: string; children: React.ReactNode }
 
 export function Modal({ open, onClose, title, children }: Props) {
   const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => { document.body.style.overflow = open ? "hidden" : ""; return () => { document.body.style.overflow = ""; }; }, [open]);
+  const prevFocus = useRef<HTMLElement | null>(null);
+
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (e.key === "Escape") onClose();
+    if (e.key === "Tab" && ref.current) {
+      const focusable = ref.current.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  }, [onClose]);
+
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    if (open) {
+      prevFocus.current = document.activeElement as HTMLElement;
+      document.addEventListener("keydown", handleKeyDown);
+      setTimeout(() => {
+        const btn = ref.current?.querySelector<HTMLElement>("button, input, select, textarea");
+        btn?.focus();
+      }, 50);
+    }
+    return () => {
+      document.body.style.overflow = "";
+      document.removeEventListener("keydown", handleKeyDown);
+      prevFocus.current?.focus();
+    };
+  }, [open, handleKeyDown]);
+
   if (!open) return null;
 
   return (
@@ -14,7 +46,7 @@ export function Modal({ open, onClose, title, children }: Props) {
       <div className="relative z-10 w-full max-w-lg bg-white dark:bg-ph-dark-2 border border-ph-border-light dark:border-ph-border p-6">
         <div className="flex items-center justify-between border-b border-ph-border-light dark:border-ph-border pb-3 mb-5">
           <h2 className="text-base font-bold text-ph-text-dark dark:text-white">{title}</h2>
-          <button onClick={onClose} className="p-1 text-ph-text-muted hover:bg-gray-100 dark:hover:bg-ph-card-hover"><X className="h-5 w-5" /></button>
+          <button onClick={onClose} className="p-1 text-ph-text-muted hover:bg-gray-100 dark:hover:bg-ph-card-hover" aria-label="Close"><X className="h-5 w-5" /></button>
         </div>
         {children}
       </div>

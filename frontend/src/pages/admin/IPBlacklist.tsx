@@ -53,7 +53,7 @@ export default function AdminIPBlacklist() {
               {e.reason && <p className="text-xs text-ph-text-muted">{e.reason}</p>}
             </div>
           </div>
-          <button onClick={() => del(e.id)} className="p-2 text-ph-text-muted hover:text-ph-red"><Trash2 className="h-4 w-4" /></button>
+          <button onClick={() => del(e.id)} className="p-2 text-ph-text-muted hover:text-ph-red" aria-label={t("admin.deleteAria").replace("{title}", e.ip_address)}><Trash2 className="h-4 w-4" /></button>
         </div>
       ))}</div>}
 

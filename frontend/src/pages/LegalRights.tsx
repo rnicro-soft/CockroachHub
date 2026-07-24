@@ -48,7 +48,9 @@ export default function LegalRights() {
           ))}
         </div>
 
-        {shown.length > 0 && (
+        {shown.length === 0 ? (
+          <p className="py-8 text-center text-sm text-ph-text-muted">{t("common.noResults") || "No rights in this category"}</p>
+        ) : (
           <Accordion
             items={shown.map((r) => ({
               id: String(r.id),
