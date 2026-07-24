@@ -1,7 +1,7 @@
 import asyncio
 import json
 
-from fastapi import APIRouter, Depends, Query, Request
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from fastapi.responses import StreamingResponse
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -9,10 +9,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from pydantic import BaseModel
 
 from app.database import get_db
-from app.models import Alert, Announcement, EmergencyContact, FactCheck, LegalRight, PushSubscription, Submission
+from app.models import Alert, Announcement, EmergencyContact, FactCheck, LegalRight, MetroDisruption, MetroStation, PushSubscription, Submission
 from app.push import get_vapid_public_key
 from app.ratelimit import check_ip_blacklist, rate_limit_submissions
-from app.schemas import AlertOut, AnnouncementOut, ContactOut, FactCheckOut, LegalRightOut, SubmissionCreate, SubmissionOut
+from app.schemas import AlertOut, AnnouncementOut, ContactOut, FactCheckOut, LegalRightOut, MetroDisruptionOut, MetroStationOut, MetroSubmitRequest, SubmissionCreate, SubmissionOut
 
 router = APIRouter(prefix="/api", tags=["public"])
 
@@ -148,3 +148,42 @@ async def submit_report(
     sos_prefix = "[SOS]" if "[SOS]" in (body.description or "") else ""
     print(f"[SUBMIT]{sos_prefix} type={body.type} ip={ip} loc={body.location or 'none'}")
     return SubmissionOut.model_validate(submission)
+
+
+# --- Metro ---
+@router.get("/metro/stations", response_model=list[MetroStationOut])
+async def get_metro_stations(db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(MetroStation).where(MetroStation.is_active == True).order_by(MetroStation.name))
+    stations = result.scalars().all()
+    out = []
+    for s in stations:
+        d = {"id": s.id, "name": s.name, "lines": __import__("json").loads(s.lines), "interchange": s.interchange, "type": s.type, "area": s.area, "alternatives": __import__("json").loads(s.alternatives), "lat": s.lat, "lng": s.lng}
+        out.append(MetroStationOut(**d))
+    return out
+
+
+@router.get("/metro/disruptions", response_model=list[MetroDisruptionOut])
+async def get_metro_disruptions(db: AsyncSession = Depends(get_db)):
+    result = await db.execute(
+        select(MetroDisruption).where(MetroDisruption.published == True).order_by(MetroDisruption.created_at.desc())
+    )
+    return [MetroDisruptionOut.model_validate(d) for d in result.scalars().all()]
+
+
+@router.post("/metro/submit", status_code=201)
+async def submit_metro_disruption(
+    body: MetroSubmitRequest,
+    request: Request,
+    db: AsyncSession = Depends(get_db),
+    _=Depends(rate_limit_submissions),
+    __=Depends(check_ip_blacklist),
+):
+    station = await db.execute(select(MetroStation).where(MetroStation.id == body.station_id))
+    if not station.scalar_one_or_none():
+        raise HTTPException(status_code=404, detail="Station not found")
+    d = MetroDisruption(station_id=body.station_id, status=body.status, reason=body.reason, source="crowd", published=False)
+    db.add(d)
+    await db.commit()
+    await db.refresh(d)
+    print(f"[METRO] Crowd report: {body.station_id} → {body.status}")
+    return MetroDisruptionOut.model_validate(d)

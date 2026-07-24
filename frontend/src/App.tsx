@@ -39,6 +39,7 @@ const Manifesto = lazy(() => import("./pages/Manifesto"));
 const About = lazy(() => import("./pages/About"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Evidence = lazy(() => import("./pages/Evidence"));
+const Metro = lazy(() => import("./pages/Metro"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const AdminLogin = lazy(() => import("./pages/admin/Login"));
 const ChangePassword = lazy(() => import("./pages/admin/ChangePassword"));
@@ -54,6 +55,7 @@ const AdminAuditLog = lazy(() => import("./pages/admin/AuditLog"));
 const AdminDetainees = lazy(() => import("./pages/admin/Detainees"));
 const AdminIPBlacklist = lazy(() => import("./pages/admin/IPBlacklist"));
 const AdminLoginAttempts = lazy(() => import("./pages/admin/LoginAttempts"));
+const AdminMetroDisruptions = lazy(() => import("./pages/admin/MetroDisruptions"));
 
 const PageLoader = () => (
   <div className="flex items-center justify-center min-h-[40vh] bg-ph-light dark:bg-ph-black">
@@ -218,6 +220,7 @@ export default function App() {
             <Route path="/about" element={<About />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/evidence" element={<Evidence />} />
+            <Route path="/metro" element={<Metro />} />
           </Route>
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/change-password" element={<ChangePassword />} />
@@ -235,6 +238,7 @@ export default function App() {
               <Route path="/admin/detainees" element={<AdminDetainees />} />
               <Route path="/admin/ip-blacklist" element={<AdminIPBlacklist />} />
               <Route path="/admin/login-attempts" element={<AdminLoginAttempts />} />
+              <Route path="/admin/metro" element={<AdminMetroDisruptions />} />
             </Route>
           </Route>
           <Route path="*" element={<NotFound />} />

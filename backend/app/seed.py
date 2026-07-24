@@ -4,7 +4,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.auth import hash_password
 from app.config import settings
 from app.database import async_session, init_db
-from app.models import Admin, Alert, EmergencyContact, FactCheck, LegalRight
+from app.models import Admin, Alert, EmergencyContact, FactCheck, LegalRight, MetroStation
+from app.metro_data import METRO_STATIONS
 
 SEED_CONTACTS = [
     {"name": "National Human Rights Commission (NHRC)", "phone": "14440", "category": "legal", "description": "National human rights complaint helpline. Toll-free.", "city": "National"},
@@ -224,5 +225,25 @@ async def seed_database():
                 db.add(FactCheck(**f, created_by=admin.id))
             await db.commit()
             print(f"Seeded {len(SEED_FACT_CHECKS)} fact checks")
+
+    # Seed metro stations
+    result = await db.execute(select(MetroStation).limit(1))
+    if not result.scalar_one_or_none():
+        for s in METRO_STATIONS:
+            import json
+            station = MetroStation(
+                id=s["id"],
+                name=s["name"],
+                lines=json.dumps(s["lines"]),
+                interchange=s["interchange"],
+                type=s["type"],
+                area=s["area"],
+                alternatives=json.dumps(s["alternatives"]),
+                lat=s["lat"],
+                lng=s["lng"],
+            )
+            db.add(station)
+        await db.commit()
+        print(f"Seeded {len(METRO_STATIONS)} metro stations")
 
     print("Database seeding complete!")

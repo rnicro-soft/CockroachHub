@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String, Text
+from sqlalchemy import Boolean, DateTime, Float, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
@@ -204,6 +204,39 @@ class TokenBlacklist(Base):
     jti: Mapped[str] = mapped_column(String(255), unique=True, index=True, nullable=False)
     expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class MetroStation(Base):
+    __tablename__ = "metro_stations"
+
+    id: Mapped[str] = mapped_column(String(50), primary_key=True)
+    name: Mapped[str] = mapped_column(String(255), nullable=False)
+    lines: Mapped[str] = mapped_column(Text, nullable=False)  # JSON array
+    interchange: Mapped[bool] = mapped_column(Boolean, default=False)
+    type: Mapped[str] = mapped_column(String(50), nullable=False)
+    area: Mapped[str] = mapped_column(String(255), nullable=False)
+    alternatives: Mapped[str] = mapped_column(Text, default="[]")  # JSON array
+    lat: Mapped[float] = mapped_column(Float, nullable=False)
+    lng: Mapped[float] = mapped_column(Float, nullable=False)
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+
+    disruptions = relationship("MetroDisruption", back_populates="station")
+
+
+class MetroDisruption(Base):
+    __tablename__ = "metro_disruptions"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    station_id: Mapped[str] = mapped_column(ForeignKey("metro_stations.id"), nullable=False)
+    status: Mapped[str] = mapped_column(String(20), nullable=False)  # open | limited | closed
+    reason: Mapped[str] = mapped_column(Text, nullable=False)
+    source: Mapped[str] = mapped_column(String(20), default="admin")  # admin | crowd
+    submitted_by: Mapped[int | None] = mapped_column(ForeignKey("admins.id"), nullable=True)
+    published: Mapped[bool] = mapped_column(Boolean, default=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, onupdate=utcnow)
+
+    station = relationship("MetroStation", back_populates="disruptions")
 
 
 class LegalRight(Base):

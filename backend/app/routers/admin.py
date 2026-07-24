@@ -8,7 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.auth import get_current_admin
 from app.database import get_db
 from app.helpline_sync import sync_helpline_data
-from app.models import Admin, Alert, Announcement, AuditLog, Detainee, EmergencyContact, FactCheck, IPBlacklist, LegalRight, LoginAttempt, PushSubscription, Submission
+from app.models import Admin, Alert, Announcement, AuditLog, Detainee, EmergencyContact, FactCheck, IPBlacklist, LegalRight, LoginAttempt, MetroDisruption, MetroStation, PushSubscription, Submission
 from app.push import send_push_notification
 from app.schemas import (
     AdminOut,
@@ -29,6 +29,10 @@ from app.schemas import (
     LegalRightCreate,
     LegalRightOut,
     LegalRightUpdate,
+    MetroDisruptionCreate,
+    MetroDisruptionOut,
+    MetroDisruptionUpdate,
+    MetroStationOut,
     SubmissionOut,
     SubmissionReview,
 )
@@ -777,3 +781,99 @@ async def trigger_sync(
     """Trigger helpline data sync from helpline_sync module."""
     await sync_helpline_data()
     return {"status": "synced"}
+
+
+# --- Metro Admin ---
+@router.get("/metro/stations", response_model=list[MetroStationOut])
+async def admin_list_metro_stations(
+    db: AsyncSession = Depends(get_db),
+    current_admin: Admin = Depends(get_current_admin),
+):
+    result = await db.execute(select(MetroStation).order_by(MetroStation.name))
+    stations = result.scalars().all()
+    out = []
+    for s in stations:
+        d = {"id": s.id, "name": s.name, "lines": __import__("json").loads(s.lines), "interchange": s.interchange, "type": s.type, "area": s.area, "alternatives": __import__("json").loads(s.alternatives), "lat": s.lat, "lng": s.lng}
+        out.append(MetroStationOut(**d))
+    return out
+
+
+@router.patch("/metro/stations/{station_id}")
+async def toggle_metro_station(
+    station_id: str,
+    db: AsyncSession = Depends(get_db),
+    current_admin: Admin = Depends(get_current_admin),
+):
+    result = await db.execute(select(MetroStation).where(MetroStation.id == station_id))
+    station = result.scalar_one_or_none()
+    if not station:
+        raise HTTPException(status_code=404, detail="Station not found")
+    station.is_active = not station.is_active
+    await db.commit()
+    return {"id": station.id, "is_active": station.is_active}
+
+
+@router.get("/metro/disruptions")
+async def admin_list_metro_disruptions(
+    page: int = Query(1, ge=1),
+    per_page: int = Query(20, ge=1, le=100),
+    db: AsyncSession = Depends(get_db),
+    current_admin: Admin = Depends(get_current_admin),
+):
+    query = select(MetroDisruption).order_by(MetroDisruption.created_at.desc())
+    count_q = select(func.count(MetroDisruption.id))
+    total = (await db.execute(count_q)).scalar()
+    offset = (page - 1) * per_page
+    result = await db.execute(query.offset(offset).limit(per_page))
+    items = [MetroDisruptionOut.model_validate(d) for d in result.scalars().all()]
+    return {"items": items, "total": total, "page": page, "per_page": per_page}
+
+
+@router.post("/metro/disruptions", response_model=MetroDisruptionOut, status_code=201)
+async def admin_create_metro_disruption(
+    body: MetroDisruptionCreate,
+    db: AsyncSession = Depends(get_db),
+    current_admin: Admin = Depends(get_current_admin),
+):
+    d = MetroDisruption(**body.model_dump(), submitted_by=current_admin.id)
+    db.add(d)
+    await db.commit()
+    await db.refresh(d)
+    await _log_action(db, current_admin.id, "create", "metro_disruption", d.id, f"{body.station_id} → {body.status}")
+    print(f"[ADMIN] {current_admin.email} created metro disruption: {body.station_id} → {body.status}")
+    return MetroDisruptionOut.model_validate(d)
+
+
+@router.put("/metro/disruptions/{disruption_id}", response_model=MetroDisruptionOut)
+async def admin_update_metro_disruption(
+    disruption_id: int,
+    body: MetroDisruptionUpdate,
+    db: AsyncSession = Depends(get_db),
+    current_admin: Admin = Depends(get_current_admin),
+):
+    result = await db.execute(select(MetroDisruption).where(MetroDisruption.id == disruption_id))
+    d = result.scalar_one_or_none()
+    if not d:
+        raise HTTPException(status_code=404, detail="Disruption not found")
+    for field, value in body.model_dump(exclude_unset=True).items():
+        setattr(d, field, value)
+    d.updated_at = datetime.now(timezone.utc)
+    await db.commit()
+    await db.refresh(d)
+    await _log_action(db, current_admin.id, "update", "metro_disruption", disruption_id)
+    return MetroDisruptionOut.model_validate(d)
+
+
+@router.delete("/metro/disruptions/{disruption_id}", status_code=204)
+async def admin_delete_metro_disruption(
+    disruption_id: int,
+    db: AsyncSession = Depends(get_db),
+    current_admin: Admin = Depends(get_current_admin),
+):
+    result = await db.execute(select(MetroDisruption).where(MetroDisruption.id == disruption_id))
+    d = result.scalar_one_or_none()
+    if not d:
+        raise HTTPException(status_code=404, detail="Disruption not found")
+    await _log_action(db, current_admin.id, "delete", "metro_disruption", disruption_id)
+    await db.delete(d)
+    await db.commit()

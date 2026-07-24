@@ -31,7 +31,8 @@
     "exit": "Exit",
     "lang": "Switch language",
     "privacy": "Privacy Guide",
-    "evidence": "Evidence"
+    "evidence": "Evidence",
+    "metro": "Metro"
   },
   "home": {
     "title": "CJP Helpline",
@@ -96,16 +97,41 @@
     },
     "beforeYouLeave": "Before You Leave",
     "beforeYouLeaveItems": [
-      { "icon": "Download", "label": "Download this app", "desc": "Save this page to your home screen. Everything works offline." },
-      { "icon": "MapPin", "label": "Share your location", "desc": "Tell a trusted contact where you're going and when you'll be back." },
-      { "icon": "Phone", "label": "Save emergency numbers", "desc": "Add 108, 100, and a lawyer's number to your speed dial." },
-      { "icon": "Shield", "label": "Carry essentials", "desc": "ID, cash, mask, water, power bank — don't skip the checklist." }
+      {
+        "icon": "Download",
+        "label": "Download this app",
+        "desc": "Save this page to your home screen. Everything works offline."
+      },
+      {
+        "icon": "MapPin",
+        "label": "Share your location",
+        "desc": "Tell a trusted contact where you're going and when you'll be back."
+      },
+      {
+        "icon": "Phone",
+        "label": "Save emergency numbers",
+        "desc": "Add 108, 100, and a lawyer's number to your speed dial."
+      },
+      {
+        "icon": "Shield",
+        "label": "Carry essentials",
+        "desc": "ID, cash, mask, water, power bank — don't skip the checklist."
+      }
     ],
     "changelog": "What's New",
     "changelogItems": [
-      { "date": "23 Jul 2026", "text": "New: Privacy & Surveillance Guide and Evidence Preservation pages added" },
-      { "date": "22 Jul 2026", "text": "Updated legal rights with latest BNSS amendments" },
-      { "date": "21 Jul 2026", "text": "Fixed offline caching for emergency contacts" }
+      {
+        "date": "23 Jul 2026",
+        "text": "New: Privacy & Surveillance Guide and Evidence Preservation pages added"
+      },
+      {
+        "date": "22 Jul 2026",
+        "text": "Updated legal rights with latest BNSS amendments"
+      },
+      {
+        "date": "21 Jul 2026",
+        "text": "Fixed offline caching for emergency contacts"
+      }
     ],
     "seoTitle": "Cockroach Janta Party — CJP Helpline",
     "seoDesc": "Works when the internet goes down. Emergency protest info, legal aid, live field updates, Know Your Rights — all offline, private, free. Built for CJP."
@@ -297,14 +323,38 @@
     "solidarityKit": "Solidarity Kit:",
     "solidarityKitDesc": "Download before going. Works offline. Auto-updates when connected.",
     "beforeItems": [
-      { "label": "Download Offline Google Maps", "desc": "Save Delhi/NCR map to your phone for navigation during internet shutdown" },
-      { "label": "Install Briar or BitChat", "desc": "Uses Bluetooth to communicate when internet is cut. Works mesh-network style." },
-      { "label": "Memorize an exit location", "desc": "Know a safe exit route and meetup point in case of emergency" },
-      { "label": "Write contacts on your arm", "desc": "Use permanent marker: 2 lawyer numbers, 1 family contact, 1 medical contact" },
-      { "label": "Enable auto cloud backup", "desc": "Set phone photos/videos to auto-upload so evidence is saved even if phone is seized" },
-      { "label": "Go with a buddy or group", "desc": "Never protest alone — ensure someone knows your location at all times" },
-      { "label": "Download Solidarity Kit", "desc": "Works offline and auto-updates when internet returns — protest.uskhokhar.xyz" },
-      { "label": "Carry ID and bail money", "desc": "Aadhaar/Voter ID + ₹10,000-20,000 cash minimum for bail" }
+      {
+        "label": "Download Offline Google Maps",
+        "desc": "Save Delhi/NCR map to your phone for navigation during internet shutdown"
+      },
+      {
+        "label": "Install Briar or BitChat",
+        "desc": "Uses Bluetooth to communicate when internet is cut. Works mesh-network style."
+      },
+      {
+        "label": "Memorize an exit location",
+        "desc": "Know a safe exit route and meetup point in case of emergency"
+      },
+      {
+        "label": "Write contacts on your arm",
+        "desc": "Use permanent marker: 2 lawyer numbers, 1 family contact, 1 medical contact"
+      },
+      {
+        "label": "Enable auto cloud backup",
+        "desc": "Set phone photos/videos to auto-upload so evidence is saved even if phone is seized"
+      },
+      {
+        "label": "Go with a buddy or group",
+        "desc": "Never protest alone — ensure someone knows your location at all times"
+      },
+      {
+        "label": "Download Solidarity Kit",
+        "desc": "Works offline and auto-updates when internet returns — protest.uskhokhar.xyz"
+      },
+      {
+        "label": "Carry ID and bail money",
+        "desc": "Aadhaar/Voter ID + ₹10,000-20,000 cash minimum for bail"
+      }
     ],
     "afterItems": [
       "Take care of any immediate medical needs — refer to First Aid and Medical contacts",
@@ -363,11 +413,26 @@
     "founded": "Founded May 16, 2026 · New Delhi",
     "fiveDemands": "Five demands. Zero sponsors. One large, stubborn swarm.",
     "demands": {
-      "1": { "title": "NEET Cancellation & Reform", "desc": "Nullify NEET-UG 2024 results. Constitute a judicial commission to overhaul the exam system. Re-test under Supreme Court supervision." },
-      "2": { "title": "Anti-Paper-Leak Law", "desc": "Enact a stringent law making exam paper leaks a cognizable, non-bailable offence with 10-year minimum sentence. Create a centralised secure digital exam infrastructure." },
-      "3": { "title": "Education Minister's Resignation", "desc": "Demand the immediate resignation of Union Education Minister Dharmendra Pradhan for systemic failure in protecting the integrity of national examinations." },
-      "4": { "title": "Free Legal Aid for Protesters", "desc": "Establish government-funded free legal aid desks at every district court for students facing politically motivated cases. No student should hire a lawyer to demand their right to education." },
-      "5": { "title": "Digital Rights Charter", "desc": "Enact a Digital Rights Charter prohibiting internet shutdowns during examinations and protests. Ensure net neutrality, data privacy, and the right to peaceful digital assembly." }
+      "1": {
+        "title": "NEET Cancellation & Reform",
+        "desc": "Nullify NEET-UG 2024 results. Constitute a judicial commission to overhaul the exam system. Re-test under Supreme Court supervision."
+      },
+      "2": {
+        "title": "Anti-Paper-Leak Law",
+        "desc": "Enact a stringent law making exam paper leaks a cognizable, non-bailable offence with 10-year minimum sentence. Create a centralised secure digital exam infrastructure."
+      },
+      "3": {
+        "title": "Education Minister's Resignation",
+        "desc": "Demand the immediate resignation of Union Education Minister Dharmendra Pradhan for systemic failure in protecting the integrity of national examinations."
+      },
+      "4": {
+        "title": "Free Legal Aid for Protesters",
+        "desc": "Establish government-funded free legal aid desks at every district court for students facing politically motivated cases. No student should hire a lawyer to demand their right to education."
+      },
+      "5": {
+        "title": "Digital Rights Charter",
+        "desc": "Enact a Digital Rights Charter prohibiting internet shutdowns during examinations and protests. Ensure net neutrality, data privacy, and the right to peaceful digital assembly."
+      }
     },
     "join": "Join the Swarm",
     "joinDesc": "Membership is open to the unemployed, the lazy, the chronically online, and anyone who has ever been told they amount to nothing. We are many. They are few.",
@@ -400,10 +465,22 @@
     "title": "SOS Emergency",
     "subtitle": "One tap. GPS goes out. Admins know where you are.",
     "presets": {
-      "detained": { "label": "I'm being detained", "desc": "Police are detaining me" },
-      "policeForce": { "label": "Police using force", "desc": "Police using lathi charge / tear gas near me" },
-      "medical": { "label": "Medical emergency", "desc": "Someone is injured and needs help" },
-      "lost": { "label": "Lost / separated", "desc": "Separated from group, need to find safe zone" }
+      "detained": {
+        "label": "I'm being detained",
+        "desc": "Police are detaining me"
+      },
+      "policeForce": {
+        "label": "Police using force",
+        "desc": "Police using lathi charge / tear gas near me"
+      },
+      "medical": {
+        "label": "Medical emergency",
+        "desc": "Someone is injured and needs help"
+      },
+      "lost": {
+        "label": "Lost / separated",
+        "desc": "Separated from group, need to find safe zone"
+      }
     },
     "locationShared": "Location shared automatically",
     "sent": "SOS Sent:",
@@ -631,7 +708,17 @@
       "general": "General"
     },
     "seoTitle": "Admin — CJP Helpline",
-    "seoDesc": "CockroachHub admin panel. Manage submissions, alerts, contacts, legal rights, and IP blacklist."
+    "seoDesc": "CockroachHub admin panel. Manage submissions, alerts, contacts, legal rights, and IP blacklist.",
+    "metroDisruptions": "Metro Disruptions",
+    "metroTitle": "Manage Metro Disruptions",
+    "createDisruption": "Create Disruption",
+    "editDisruption": "Edit Disruption",
+    "confirmDeleteDisruption": "Delete this disruption?",
+    "disruptionDeleted": "Disruption deleted",
+    "disruptionCreated": "Disruption created",
+    "disruptionUpdated": "Disruption updated",
+    "disruptionPublished": "Disruption published",
+    "allDisruptions": "All"
   },
   "common": {
     "loading": "Loading...",
@@ -710,34 +797,46 @@
     "title": "Privacy & Surveillance Guide",
     "subtitle": "How to protect your phone and data during protests",
     "sections": {
-      "phoneSecurity": { "title": "Phone Security Before You Go", "items": [
-        "Enable a strong PIN/password — not pattern lock",
-        "Disable biometric unlock (police can force your finger/face)",
-        "Turn off Wi-Fi and Bluetooth when not in use to avoid IMSI catchers",
-        "Enable auto-lock with shortest timeout (30 seconds)",
-        "Remove sensitive apps from your home screen"
-      ]},
-      "digitalPrivacy": { "title": "Digital Privacy During Protests", "items": [
-        "Use VPN at all times — prefer WireGuard or OpenVPN",
-        "Turn on airplane mode near protest sites to avoid tower tracking",
-        "Use encrypted messaging (Signal, Briar, BitChat — NOT SMS)",
-        "Disable location history in Google Maps settings",
-        "Avoid posting real-time location on social media"
-      ]},
-      "ifSeized": { "title": "If Your Phone Is Seized", "items": [
-        "You have the right to remain silent — do not give passwords",
-        "Police cannot compel you to unlock your phone (Article 20(3))",
-        "Enable auto-erase or remote wipe if you have time",
-        "Log out of all accounts remotely if possible",
-        "Contact a lawyer immediately — do not sign anything"
-      ]},
-      "surveillance": { "title": "Avoiding Surveillance", "items": [
-        "Assume all communications can be monitored during protests",
-        "Use burner SIMs if possible for protest coordination",
-        "Remove your phone battery if you suspect active tracking",
-        "Cover cameras with tape when not in use",
-        "Watch for stalkerware — check installed apps regularly"
-      ]}
+      "phoneSecurity": {
+        "title": "Phone Security Before You Go",
+        "items": [
+          "Enable a strong PIN/password — not pattern lock",
+          "Disable biometric unlock (police can force your finger/face)",
+          "Turn off Wi-Fi and Bluetooth when not in use to avoid IMSI catchers",
+          "Enable auto-lock with shortest timeout (30 seconds)",
+          "Remove sensitive apps from your home screen"
+        ]
+      },
+      "digitalPrivacy": {
+        "title": "Digital Privacy During Protests",
+        "items": [
+          "Use VPN at all times — prefer WireGuard or OpenVPN",
+          "Turn on airplane mode near protest sites to avoid tower tracking",
+          "Use encrypted messaging (Signal, Briar, BitChat — NOT SMS)",
+          "Disable location history in Google Maps settings",
+          "Avoid posting real-time location on social media"
+        ]
+      },
+      "ifSeized": {
+        "title": "If Your Phone Is Seized",
+        "items": [
+          "You have the right to remain silent — do not give passwords",
+          "Police cannot compel you to unlock your phone (Article 20(3))",
+          "Enable auto-erase or remote wipe if you have time",
+          "Log out of all accounts remotely if possible",
+          "Contact a lawyer immediately — do not sign anything"
+        ]
+      },
+      "surveillance": {
+        "title": "Avoiding Surveillance",
+        "items": [
+          "Assume all communications can be monitored during protests",
+          "Use burner SIMs if possible for protest coordination",
+          "Remove your phone battery if you suspect active tracking",
+          "Cover cameras with tape when not in use",
+          "Watch for stalkerware — check installed apps regularly"
+        ]
+      }
     },
     "seoTitle": "Privacy & Surveillance Guide — CJP",
     "seoDesc": "Protect your phone and data during protests. Phone security, digital privacy, what to do if your phone is seized, avoiding surveillance."
@@ -746,34 +845,46 @@
     "title": "Evidence Preservation Guide",
     "subtitle": "How to document and preserve evidence of police violence or human rights violations",
     "sections": {
-      "capture": { "title": "Capturing Evidence Safely", "items": [
-        "Record video horizontally when possible — captures more context",
-        "Start each video with: date, time, location (say it aloud)",
-        "Capture identifying details: badge numbers, vehicle plates, unit markers",
-        "Keep recording even during escalation — continuous footage is stronger",
-        "Stay at safe distance — your safety comes first"
-      ]},
-      "preserve": { "title": "Preserving Digital Evidence", "items": [
-        "Upload footage to cloud immediately after leaving the site",
-        "Use multiple platforms: Google Drive, Dropbox, Proton Drive",
-        "Share copies with a trusted contact not at the protest",
-        "Do not edit or trim raw footage — unaltered files hold more weight",
-        "Keep metadata intact (date, time, location stamps)"
-      ]},
-      "legal": { "title": "Legal Use of Evidence", "items": [
-        "File an FIR with the nearest police station within 24 hours",
-        "Submit footage on a USB drive — keep the original on your device",
-        "Get a free legal aid lawyer via NALSA (15100) before submitting anything",
-        "Document your own statement: what you saw, when, where, who",
-        "Collect witness names and contact information"
-      ]},
-      "medical": { "title": "Medical Evidence After Violence", "items": [
-        "Get a medical examination within 24 hours at a government hospital",
-        "Request a copy of the medical report (MLC — Medico-Legal Certificate)",
-        "Photograph injuries with a ruler or object for scale",
-        "Keep all prescription receipts and pharmacy bills",
-        "Do not shower before the medical exam if you were pepper-sprayed or tear-gassed"
-      ]}
+      "capture": {
+        "title": "Capturing Evidence Safely",
+        "items": [
+          "Record video horizontally when possible — captures more context",
+          "Start each video with: date, time, location (say it aloud)",
+          "Capture identifying details: badge numbers, vehicle plates, unit markers",
+          "Keep recording even during escalation — continuous footage is stronger",
+          "Stay at safe distance — your safety comes first"
+        ]
+      },
+      "preserve": {
+        "title": "Preserving Digital Evidence",
+        "items": [
+          "Upload footage to cloud immediately after leaving the site",
+          "Use multiple platforms: Google Drive, Dropbox, Proton Drive",
+          "Share copies with a trusted contact not at the protest",
+          "Do not edit or trim raw footage — unaltered files hold more weight",
+          "Keep metadata intact (date, time, location stamps)"
+        ]
+      },
+      "legal": {
+        "title": "Legal Use of Evidence",
+        "items": [
+          "File an FIR with the nearest police station within 24 hours",
+          "Submit footage on a USB drive — keep the original on your device",
+          "Get a free legal aid lawyer via NALSA (15100) before submitting anything",
+          "Document your own statement: what you saw, when, where, who",
+          "Collect witness names and contact information"
+        ]
+      },
+      "medical": {
+        "title": "Medical Evidence After Violence",
+        "items": [
+          "Get a medical examination within 24 hours at a government hospital",
+          "Request a copy of the medical report (MLC — Medico-Legal Certificate)",
+          "Photograph injuries with a ruler or object for scale",
+          "Keep all prescription receipts and pharmacy bills",
+          "Do not shower before the medical exam if you were pepper-sprayed or tear-gassed"
+        ]
+      }
     },
     "seoTitle": "Evidence Preservation Guide — CJP",
     "seoDesc": "Document and preserve evidence of police violence. Capture safely, preserve digitally, use legally, document medical evidence."
@@ -814,5 +925,47 @@
     "sent": "Report sent!",
     "savedOffline": "Saved offline — will send when internet returns.",
     "flushed": "Sent {count} queued reports!"
+  },
+  "metro": {
+    "title": "Delhi Metro Status",
+    "subtitle": "Real-time station disruptions during protests and emergencies",
+    "searchPlaceholder": "Search stations...",
+    "filterAll": "All Lines",
+    "status": {
+      "open": "Open",
+      "limited": "Limited",
+      "closed": "Closed"
+    },
+    "statusDesc": {
+      "open": "Normal service",
+      "limited": "Reduced service",
+      "closed": "Station closed"
+    },
+    "card": {
+      "area": "Area",
+      "interchange": "Interchange",
+      "alternatives": "Alternatives"
+    },
+    "detail": {
+      "lastUpdated": "Last updated",
+      "reason": "Reason",
+      "lines": "Lines",
+      "type": "Type",
+      "coordinates": "Coordinates"
+    },
+    "networkOverview": "Network Overview",
+    "totalStations": "Total Stations",
+    "activeDisruptions": "Active Disruptions",
+    "interchanges": "Interchanges",
+    "reportDisruption": "Report Disruption",
+    "reportTitle": "Report a Metro Disruption",
+    "reportDesc": "Report station closure or limited service at this station",
+    "reportReason": "What's happening?",
+    "reportReasonPlaceholder": "e.g., Station closed due to police presence",
+    "reportSuccess": "Disruption reported! Awaiting admin review.",
+    "reportSelectStatus": "Select status",
+    "offlineData": "Showing cached metro data",
+    "seoTitle": "Delhi Metro Status — CJP Helpline",
+    "seoDesc": "Real-time Delhi Metro station disruptions during protests. Check station status, report closures, see alternative routes. Crowdsourced."
   }
 }

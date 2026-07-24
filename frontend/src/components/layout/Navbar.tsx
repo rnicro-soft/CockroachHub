@@ -2,7 +2,7 @@ import { Link, useLocation, useNavigate, useSearchParams } from "react-router-do
 import {
   Flame, Phone, Radio, Scale, ShieldCheck, Menu, X, Send, Search, Shield,
   Moon, Sun, Download, Bell, BellOff, Heart, AlertTriangle, Sun as SunIcon,
-  ClipboardList, MapPin, Lock, BookOpen, Home as HomeIcon, Droplets, Globe, Eye,
+  ClipboardList, MapPin, Lock, BookOpen, Home as HomeIcon, Droplets, Globe, Eye, Train,
 } from "lucide-react";
 import { memo, useCallback, useRef, useState } from "react";
 import { useTheme } from "../../hooks/useTheme";
@@ -31,6 +31,7 @@ const pageImports: Record<string, () => Promise<any>> = {
   "/about": () => import("../../pages/About"),
   "/privacy": () => import("../../pages/Privacy"),
   "/evidence": () => import("../../pages/Evidence"),
+  "/metro": () => import("../../pages/Metro"),
 };
 
 const navLinks: { to: string; key: string; icon: any }[] = [
@@ -51,6 +52,7 @@ const navLinks: { to: string; key: string; icon: any }[] = [
   { to: "/manifesto", key: "manifesto", icon: ShieldCheck },
   { to: "/privacy", key: "privacy", icon: Eye },
   { to: "/evidence", key: "evidence", icon: Shield },
+  { to: "/metro", key: "metro", icon: Train },
   { to: "/about", key: "about", icon: Shield },
 ];
 

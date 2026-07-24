@@ -18,6 +18,7 @@ CockroachHub is a Progressive Web App built for the Cockroach Janta Party (CJP) 
 - Aid & Accommodation: /aid — Free shelter, food, water
 - Privacy & Surveillance Guide: /privacy — Phone security, digital privacy, avoiding surveillance
 - Evidence Preservation: /evidence — How to document and preserve evidence of violence
+- Delhi Metro Status: /metro — Real-time metro station disruptions during protests
 
 ## Verified Contacts
 - NHRC: 14440

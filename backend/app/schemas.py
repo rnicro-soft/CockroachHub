@@ -287,3 +287,57 @@ class LegalRightOut(BaseModel):
     updated_at: datetime
 
     model_config = {"from_attributes": True}
+
+
+# --- Metro ---
+class MetroLineOut(BaseModel):
+    name: str
+    color: str
+
+
+class MetroStationOut(BaseModel):
+    id: str
+    name: str
+    lines: list[MetroLineOut]
+    interchange: bool
+    type: str
+    area: str
+    alternatives: list[str]
+    lat: float
+    lng: float
+
+    model_config = {"from_attributes": True}
+
+
+class MetroDisruptionOut(BaseModel):
+    id: int
+    station_id: str
+    status: str
+    reason: str
+    source: str
+    submitted_by: int | None = None
+    published: bool
+    created_at: datetime
+    updated_at: datetime
+
+    model_config = {"from_attributes": True}
+
+
+class MetroSubmitRequest(BaseModel):
+    station_id: str
+    status: str = Field(max_length=20)
+    reason: str = Field(max_length=2000)
+
+
+class MetroDisruptionCreate(BaseModel):
+    station_id: str
+    status: str = Field(max_length=20)
+    reason: str = Field(max_length=2000)
+    source: str = "admin"
+    published: bool = True
+
+
+class MetroDisruptionUpdate(BaseModel):
+    status: str | None = None
+    reason: str | None = None
+    published: bool | None = None
