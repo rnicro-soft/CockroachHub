@@ -240,6 +240,17 @@ SEED_SAFE_ZONES = [
 ]
 
 
+async def seed_safe_zones():
+    await init_db()
+    async with async_session() as db:
+        result = await db.execute(select(SafeZone).limit(1))
+        if not result.scalar_one_or_none():
+            for z in SEED_SAFE_ZONES:
+                db.add(SafeZone(**z))
+            await db.commit()
+            print(f"Seeded {len(SEED_SAFE_ZONES)} safe zones")
+
+
 async def seed_metro_stations():
     await init_db()
     async with async_session() as db:

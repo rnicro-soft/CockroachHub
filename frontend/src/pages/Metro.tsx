@@ -33,8 +33,8 @@ export default function Metro() {
   useEffect(() => {
     if (!online) return;
     Promise.all([
-      api.get("/metro/stations").then(({ data }) => setStations(data)).catch(() => {}),
-      api.get("/metro/disruptions").then(({ data }) => setDisruptions(data)).catch(() => {}),
+      api.get("/metro/stations").then(({ data }) => data?.length && setStations(data)).catch(() => {}),
+      api.get("/metro/disruptions").then(({ data }) => data?.length && setDisruptions(data)).catch(() => {}),
     ]);
   }, [online]);
 

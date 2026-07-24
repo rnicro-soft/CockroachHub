@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Phone, Radio, Scale, ShieldCheck, Send, Eye, WifiOff, Shield, Calendar, Download, MapPin } from "lucide-react";
 import { SEO } from "../components/SEO";
@@ -6,10 +6,32 @@ import { Card } from "../components/ui/Card";
 import { ThumbSkeleton } from "../components/ui/Skeleton";
 import { getCacheAge } from "../lib/offlineCache";
 import { useLocale } from "../hooks/useLocale";
+import { useOnlineStatus } from "../hooks/useOnlineStatus";
+import api from "../lib/api";
+
+const FALLBACK_ALERTS = [
+  { title: "Tear Gas Reported — Central Secretariat", severity: "red", created_at: new Date().toISOString() },
+  { title: "Legal Aid Available — Protest Site", severity: "yellow", created_at: new Date(Date.now() - 7200000).toISOString() },
+  { title: "Medical Tent — India Gate", severity: "green", created_at: new Date(Date.now() - 14400000).toISOString() },
+];
+
+interface AlertItem { id?: number; title: string; severity: string; created_at: string }
+
+function timeAgo(dateStr: string): string {
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const m = Math.floor(diff / 60000);
+  if (m < 1) return "Just now";
+  if (m < 60) return `${m}m ago`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `${h}h ago`;
+  return `${Math.floor(h / 24)}d ago`;
+}
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
+  const [alerts, setAlerts] = useState<AlertItem[]>([]);
   const { t } = useLocale();
+  const online = useOnlineStatus();
 
   const categories = [
     {
@@ -34,13 +56,20 @@ export default function Home() {
     },
   ];
 
-  const trending = [
-    { label: t("home.trendingAlerts.tearGas"), sev: "red", time: "32m ago" },
-    { label: t("home.trendingAlerts.legalAid"), sev: "yellow", time: "2h ago" },
-    { label: t("home.trendingAlerts.medicalTent"), sev: "green", time: "4h ago" },
-  ];
+  useEffect(() => {
+    const t = setTimeout(() => setLoading(false), 600);
+    return () => clearTimeout(t);
+  }, []);
 
-  useEffect(() => { const t = setTimeout(() => setLoading(false), 600); return () => clearTimeout(t); }, []);
+  useEffect(() => {
+    if (!online) return;
+    api.get("/alerts").then(({ data }) => data?.length && setAlerts(data)).catch(() => {});
+  }, [online]);
+
+  const liveItems = useMemo(() => {
+    const items = alerts.length > 0 ? alerts.slice(0, 4) : FALLBACK_ALERTS;
+    return items.map((a) => ({ label: a.title, sev: a.severity, time: timeAgo(a.created_at) }));
+  }, [alerts]);
 
   if (loading) {
     return (
@@ -128,7 +157,7 @@ export default function Home() {
         </div>
 
         <div className="grid gap-2">
-          {trending.map((a, i) => (
+          {liveItems.map((a, i) => (
             <Link key={i} to="/live-feed"
               className={`flex items-center gap-3 px-4 py-3 bg-white dark:bg-ph-dark-2 border-l-[3px] hover:bg-gray-50 dark:hover:bg-ph-card-hover transition-colors ${
                 a.sev === "red" ? "border-l-ph-red" : a.sev === "yellow" ? "border-l-ph-yellow" : "border-l-ph-green"
