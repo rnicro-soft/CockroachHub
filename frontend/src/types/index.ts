@@ -16,6 +16,7 @@ export interface Alert {
   severity: "green" | "yellow" | "red";
   location: string | null;
   is_active: boolean;
+  featured: boolean;
   created_by: number;
   created_at: string;
   updated_at: string;

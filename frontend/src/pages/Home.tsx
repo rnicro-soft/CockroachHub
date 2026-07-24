@@ -68,7 +68,7 @@ export default function Home() {
 
   const liveItems = useMemo(() => {
     const items = alerts.length > 0 ? alerts.slice(0, 4) : FALLBACK_ALERTS;
-    return items.map((a) => ({ label: a.title, sev: a.severity, time: timeAgo(a.created_at) }));
+    return items.map((a) => ({ label: a.title, sev: a.severity, time: timeAgo(a.created_at), featured: (a as any).featured }));
   }, [alerts]);
 
   if (loading) {
@@ -164,7 +164,12 @@ export default function Home() {
               }`}
             >
               <div className={`w-2 h-2 rounded-full shrink-0 ${a.sev === "red" ? "bg-ph-red" : a.sev === "yellow" ? "bg-ph-yellow" : "bg-ph-green"}`} />
-              <p className="flex-1 text-[14px] font-bold text-ph-text-dark dark:text-white">{a.label}</p>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <p className="text-[14px] font-bold text-ph-text-dark dark:text-white truncate">{a.label}</p>
+                  {a.featured && <span className="text-[10px] font-bold px-1 py-0.5 bg-cjp-maroon/10 text-cjp-maroon border border-cjp-maroon/30 shrink-0">Featured</span>}
+                </div>
+              </div>
               <span className="text-[11px] text-ph-text-muted shrink-0">{a.time}</span>
             </Link>
           ))}

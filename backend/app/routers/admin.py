@@ -226,6 +226,25 @@ async def update_alert(
     return AlertOut.model_validate(alert)
 
 
+@router.patch("/alerts/{alert_id}/feature", response_model=AlertOut)
+async def feature_alert(
+    alert_id: int,
+    db: AsyncSession = Depends(get_db),
+    current_admin: Admin = Depends(get_current_admin),
+):
+    result = await db.execute(select(Alert).where(Alert.id == alert_id))
+    alert = result.scalar_one_or_none()
+    if not alert:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Alert not found")
+    alert.featured = not alert.featured
+    alert.updated_at = datetime.now(timezone.utc)
+    await _log_action(db, current_admin.id, "feature", "alert", alert_id, f"featured={alert.featured}")
+    await db.commit()
+    await db.refresh(alert)
+    print(f"[ADMIN] {current_admin.email} {'featured' if alert.featured else 'unfeatured'} alert #{alert_id}")
+    return AlertOut.model_validate(alert)
+
+
 @router.delete("/alerts/{alert_id}", status_code=204)
 async def delete_alert(
     alert_id: int,

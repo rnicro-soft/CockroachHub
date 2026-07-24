@@ -173,7 +173,8 @@
     "refresh": "Refresh",
     "refreshAria": "Refresh alerts",
     "seoTitle": "Live Field Feed — CJP Helpline",
-    "seoDesc": "Real-time protest field updates, safety alerts, and verified CJP announcements. Cached offline."
+    "seoDesc": "Real-time protest field updates, safety alerts, and verified CJP announcements. Cached offline.",
+    "featured": "Featured"
   },
   "legalRights": {
     "title": "Know Your Rights (They Won't Tell You This)",

@@ -116,7 +116,10 @@ export default function LiveFeed() {
                     }`} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-[14px] font-bold text-ph-text-dark dark:text-white">{a.title}</h3>
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-[14px] font-bold text-ph-text-dark dark:text-white">{a.title}</h3>
+                      {a.featured && <span className="text-[10px] font-bold px-1.5 py-0.5 bg-cjp-maroon/10 text-cjp-maroon border border-cjp-maroon/30">{t("liveFeed.featured") || "Featured"}</span>}
+                    </div>
                     <p className="text-xs text-ph-text-muted mt-0.5 leading-relaxed">{a.description}</p>
                   </div>
                 </div>

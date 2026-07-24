@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Plus, Edit3, Trash2, Radio } from "lucide-react";
+import { Plus, Edit3, Trash2, Radio, Star } from "lucide-react";
 import { Button } from "../../components/ui/Button";
 import { Modal } from "../../components/ui/Modal";
 import { Pagination } from "../../components/ui/Pagination";
@@ -47,6 +47,11 @@ export default function AdminAlerts() {
     catch { toast.error(t("common.error")); }
   };
 
+  const feature = async (id: number) => {
+    try { await api.patch(`/admin/alerts/${id}/feature`); toast.success(t("common.updated")); fetch(); }
+    catch { toast.error(t("common.error")); }
+  };
+
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between">
@@ -72,6 +77,7 @@ export default function AdminAlerts() {
                 {a.location && <p className="text-xs text-ph-text-muted">{a.location}</p>}
               </div>
               <div className="flex shrink-0 gap-1">
+                <button onClick={() => feature(a.id)} className={`p-2 ${a.featured ? "text-ph-orange" : "text-ph-text-muted hover:text-ph-orange"}`} aria-label="Feature alert"><Star className="h-4 w-4" /></button>
                 <button onClick={() => openE(a)} className="p-2 text-ph-text-muted hover:text-ph-text-dark dark:hover:text-white" aria-label={t("admin.editAria").replace("{title}", a.title)}><Edit3 className="h-4 w-4" /></button>
                 <button onClick={() => del(a.id)} className="p-2 text-ph-text-muted hover:text-ph-red" aria-label={t("admin.deleteAria").replace("{title}", a.title)}><Trash2 className="h-4 w-4" /></button>
               </div>

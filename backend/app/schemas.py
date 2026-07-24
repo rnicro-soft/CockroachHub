@@ -48,6 +48,7 @@ class AlertUpdate(BaseModel):
     severity: str | None = None
     location: str | None = None
     is_active: bool | None = None
+    featured: bool | None = None
 
 
 class AlertOut(BaseModel):
@@ -58,6 +59,7 @@ class AlertOut(BaseModel):
     severity: str
     location: str | None
     is_active: bool
+    featured: bool = False
     created_by: int
     created_at: datetime
     updated_at: datetime
