@@ -248,6 +248,7 @@ class MetroDisruption(Base):
     source: Mapped[str] = mapped_column(String(20), default="admin")  # admin | crowd
     submitted_by: Mapped[int | None] = mapped_column(ForeignKey("admins.id"), nullable=True)
     published: Mapped[bool] = mapped_column(Boolean, default=False)
+    featured: Mapped[bool] = mapped_column(Boolean, default=False)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, onupdate=utcnow)
 

@@ -12,7 +12,7 @@ import stationsData from "../data/metroStations.json";
 
 interface Line { name: string; color: string }
 interface Station { id: string; name: string; lines: Line[]; interchange: boolean; type: string; area: string; alternatives: string[]; lat: number; lng: number }
-interface Disruption { station_id: string; status: string; reason: string; created_at: string }
+interface Disruption { station_id: string; status: string; reason: string; featured?: boolean; created_at: string }
 
 const lineNames = ["Blue", "Yellow", "Red", "Violet", "Pink", "Magenta", "Green", "Airport Express"];
 
@@ -143,7 +143,7 @@ export default function Metro() {
               className="text-left bg-white dark:bg-ph-dark-2 border border-ph-border-light dark:border-ph-border p-4 hover:border-ph-orange/40 transition-colors">
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
-                  <h4 className="text-sm font-bold text-ph-text-dark dark:text-white truncate">{station.name}</h4>
+                  <h4 className="text-sm font-bold text-ph-text-dark dark:text-white truncate flex items-center gap-1">{station.name}{d?.featured && <span className="text-[9px] font-bold px-1 py-0.5 bg-cjp-maroon/10 text-cjp-maroon border border-cjp-maroon/30 shrink-0">Featured</span>}</h4>
                   <p className="text-xs text-ph-text-muted">{station.area}</p>
                 </div>
                 <span className={`shrink-0 text-[10px] font-bold px-2 py-0.5 text-white ${statusColor(status)}`}>

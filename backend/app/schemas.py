@@ -321,6 +321,7 @@ class MetroDisruptionOut(BaseModel):
     source: str
     submitted_by: int | None = None
     published: bool
+    featured: bool = False
     created_at: datetime
     updated_at: datetime
 
@@ -345,6 +346,7 @@ class MetroDisruptionUpdate(BaseModel):
     status: str | None = None
     reason: str | None = None
     published: bool | None = None
+    featured: bool | None = None
 
 
 # --- Mental Health ---

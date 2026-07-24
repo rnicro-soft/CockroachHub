@@ -903,6 +903,24 @@ async def admin_update_metro_disruption(
     return MetroDisruptionOut.model_validate(d)
 
 
+@router.patch("/metro/disruptions/{disruption_id}/feature", response_model=MetroDisruptionOut)
+async def admin_feature_metro_disruption(
+    disruption_id: int,
+    db: AsyncSession = Depends(get_db),
+    current_admin: Admin = Depends(get_current_admin),
+):
+    result = await db.execute(select(MetroDisruption).where(MetroDisruption.id == disruption_id))
+    d = result.scalar_one_or_none()
+    if not d:
+        raise HTTPException(status_code=404, detail="Disruption not found")
+    d.featured = not d.featured
+    d.updated_at = datetime.now(timezone.utc)
+    await _log_action(db, current_admin.id, "feature", "metro_disruption", disruption_id, f"featured={d.featured}")
+    await db.commit()
+    await db.refresh(d)
+    return MetroDisruptionOut.model_validate(d)
+
+
 @router.delete("/metro/disruptions/{disruption_id}", status_code=204)
 async def admin_delete_metro_disruption(
     disruption_id: int,

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { Plus, Pencil, Trash2, Send } from "lucide-react";
+import { Plus, Pencil, Trash2, Send, Star } from "lucide-react";
 import { Modal } from "../../components/ui/Modal";
 import { CardSkeleton } from "../../components/ui/Skeleton";
 import { useLocale } from "../../hooks/useLocale";
 import api from "../../lib/api";
 import toast from "react-hot-toast";
 
-interface Disruption { id: number; station_id: string; status: string; reason: string; source: string; published: boolean; created_at: string }
+interface Disruption { id: number; station_id: string; status: string; reason: string; source: string; published: boolean; featured: boolean; created_at: string }
 interface Station { id: string; name: string; lines: { name: string; color: string }[] }
 
 export default function AdminMetroDisruptions() {
@@ -50,6 +50,11 @@ export default function AdminMetroDisruptions() {
     } catch { toast.error(t("common.error")); }
   };
 
+  const feature = async (id: number) => {
+    try { await api.patch(`/admin/metro/disruptions/${id}/feature`); toast.success(t("common.updated")); fetch(); }
+    catch { toast.error(t("common.error")); }
+  };
+
   return (
     <div className="space-y-4 max-w-6xl">
       <div className="flex items-center justify-between">
@@ -81,6 +86,7 @@ export default function AdminMetroDisruptions() {
                   <td className="py-2 text-ph-text-muted text-[11px]">{new Date(d.created_at).toLocaleDateString()}</td>
                   <td className="py-2">
                     <div className="flex gap-1">
+                      <button onClick={() => feature(d.id)} className={`p-1 ${d.featured ? "text-ph-orange" : "text-ph-text-muted hover:text-ph-orange"}`} aria-label="Feature"><Star className="h-4 w-4" /></button>
                       <button onClick={() => { setEditing(d); setEditOpen(true); }} className="p-1 text-ph-text-muted hover:text-ph-orange"><Pencil className="h-4 w-4" /></button>
                       <button onClick={() => remove(d.id)} className="p-1 text-ph-text-muted hover:text-ph-red"><Trash2 className="h-4 w-4" /></button>
                     </div>
