@@ -64,11 +64,11 @@ export default function News() {
             <p className="mt-3 text-sm font-bold text-ph-text-muted">{t("news.noPosts")}</p>
           </div>
         ) : (
-          <div className="space-y-0 divide-y divide-ph-border-light dark:divide-ph-border">
+          <div className="space-y-4">
             {posts.map((post) => {
               const date = new Date(post.created_at);
               return (
-                <article key={post.id} className="bg-white dark:bg-ph-dark-2 py-5 sm:py-6">
+                <article key={post.id} className="bg-white dark:bg-ph-dark-2 border border-ph-border-light dark:border-ph-border px-4 sm:px-6 py-5 sm:py-6">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="text-[10px] font-bold uppercase tracking-wider text-ph-text-muted bg-gray-100 dark:bg-ph-card-hover px-1.5 py-0.5">{t(`news.type.${post.post_type}`)}</span>
                     {post.instagram_url && (

@@ -311,6 +311,23 @@ export default function Metro() {
         </div>
       </Card>
 
+      {/* Metro Line Colors Legend */}
+      <Card className="p-4">
+        <h3 className="text-xs font-bold text-ph-text-dark dark:text-white mb-2">{t("metro.lineLegend")}</h3>
+        <div className="flex flex-wrap gap-x-4 gap-y-1.5">
+          {lineNames.map((name) => {
+            const color = stations.find((s) => s.lines.some((l) => l.name === name))?.lines.find((l) => l.name === name)?.color || "#888";
+            return (
+              <span key={name} className="text-[11px] flex items-center gap-1.5">
+                <span className="w-3 h-3 rounded-sm shrink-0" style={{ backgroundColor: color }} />
+                <span className="font-bold text-ph-text-dark dark:text-white">{name}</span>
+                <span className="text-ph-text-muted">{t("metro.line")}</span>
+              </span>
+            );
+          })}
+        </div>
+      </Card>
+
       {/* Station grid */}
       {filtered.length === 0 ? (
         <div className="py-16 text-center text-sm text-ph-text-muted">{t("common.noResults")}</div>

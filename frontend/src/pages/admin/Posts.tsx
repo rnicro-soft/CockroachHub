@@ -169,6 +169,13 @@ export default function AdminPosts() {
       )}
 
       <Modal open={editOpen} onClose={() => setEditOpen(false)} title={editPost ? t("admin.edit") : t("admin.create")}>
+        <div className="bg-ph-orange/10 border border-ph-orange/20 p-3 mb-4 text-xs text-ph-text-dark dark:text-white">
+          <p className="font-bold mb-1">💡 {t("admin.postsTipsTitle")}</p>
+          <ul className="list-disc pl-4 space-y-1 text-ph-text-secondary">
+            <li>{t("admin.postsTipPhoto")}</li>
+            <li>{t("admin.postsTipReel")}</li>
+          </ul>
+        </div>
         <form onSubmit={save} className="space-y-3">
           <div>
             <label className="ph-label">{t("admin.title")}</label>

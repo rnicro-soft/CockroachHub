@@ -749,7 +749,10 @@
       "alert": "Alert",
       "instagram": "Instagram"
     },
-    "imageUrl": "Image URL (optional)"
+    "imageUrl": "Image URL (optional)",
+    "postsTipsTitle": "How to post",
+    "postsTipPhoto": "Photo post: Open Instagram post → tap ⋮ → Copy embed code → paste in Content below",
+    "postsTipReel": "Reel/Video: Copy the Instagram URL → paste in 'Instagram URL' field below"
   },
   "common": {
     "loading": "Loading...",
@@ -992,6 +995,8 @@
     "totalStations": "Total Stations",
     "activeDisruptions": "Active Disruptions",
     "interchanges": "Interchanges",
+    "line": "Line",
+    "lineLegend": "Metro Lines",
     "reportDisruption": "Report Disruption",
     "reportTitle": "Report a Metro Disruption",
     "reportDesc": "Report station closure or limited service at this station",
