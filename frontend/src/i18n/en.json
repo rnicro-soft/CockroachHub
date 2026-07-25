@@ -952,7 +952,29 @@
     "reportSelectStatus": "Select status",
     "offlineData": "Showing cached metro data",
     "seoTitle": "Delhi Metro Status — CJP Helpline",
-    "seoDesc": "Real-time Delhi Metro station disruptions during protests. Check station status, report closures, see alternative routes. Crowdsourced."
+    "seoDesc": "Real-time Delhi Metro station disruptions during protests. Check station status, report closures, see alternative routes. Crowdsourced.",
+    "protestHub": {
+      "title": "🎯 Protest Hub: Jantar Mantar",
+      "subtitle": "Your navigation hub for getting to and from the protest site",
+      "destination": "Jantar Mantar, Delhi",
+      "destinationDesc": "Main protest site • Connaught Place area",
+      "yourLocation": "📍 Your Location",
+      "detecting": "Detecting your location...",
+      "gpsFailed": "Enable location access to find your nearest open station",
+      "gpsDenied": "Location access denied. Search for a station below or allow location in your browser.",
+      "nearestStation": "Nearest Open Station",
+      "noOpenNearby": "No open stations found near you",
+      "stationsNear": "Stations near Jantar Mantar",
+      "walkingDistance": "Walking distance",
+      "estTime": "Est. walking time",
+      "getDirections": "Get Directions",
+      "openInMaps": "🗺️ Open Jantar Mantar in Google Maps",
+      "viaStation": "via {station}",
+      "allClosed": "All nearby stations are affected by disruptions",
+      "minutes": "min",
+      "meters": "m",
+      "km": "km"
+    }
   },
   "bailGuide": {
     "bailable": {
