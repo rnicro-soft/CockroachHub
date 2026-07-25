@@ -83,7 +83,7 @@ export function PanicTrigger() {
   return (
     <button
       onClick={togglePanic}
-      className="flex items-center gap-1.5 rounded px-2.5 py-1.5 text-[12px] font-bold bg-ph-red/20 text-ph-red hover:bg-ph-red/30 transition-colors"
+      className="flex items-center gap-1.5 rounded px-3 py-2 sm:px-2.5 sm:py-1.5 text-[12px] font-bold bg-ph-red/20 text-ph-red hover:bg-ph-red/30 transition-colors"
       aria-label={t("panic.quickExit")}
       title={t("nav.exit") + " (Esc)"}
     >

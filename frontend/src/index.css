@@ -47,7 +47,7 @@
   .ph-btn-danger {
     @apply ph-btn bg-ph-red text-white hover:bg-[#c0392b];
   }
-  .ph-btn-sm { @apply px-2.5 py-1.5 text-xs; }
+  .ph-btn-sm { @apply px-2.5 py-2 sm:py-1.5 text-xs; }
 
   /* --- Cards --- */
   .ph-card {

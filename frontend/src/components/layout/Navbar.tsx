@@ -150,7 +150,7 @@ export const Navbar = memo(function Navbar({ onLogoClick }: { onLogoClick?: () =
           <Link to="/submit" className="hidden sm:inline-flex items-center gap-1.5 ph-btn-primary ph-btn-sm">
             <Send className="h-3.5 w-3.5" />{t("nav.submit")}
           </Link>
-          <button onClick={() => setOpen(!open)} className="p-2 text-ph-text-secondary hover:text-white md:hidden" aria-label={t("footer.menu")}>
+          <button onClick={() => setOpen(!open)} className="p-3 text-ph-text-secondary hover:text-white md:hidden" aria-label={t("footer.menu")}>
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
@@ -221,8 +221,8 @@ export const Navbar = memo(function Navbar({ onLogoClick }: { onLogoClick?: () =
 
     {/* Mobile Bottom Navigation */}
     <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-ph-border bg-ph-dark md:hidden safe-area-bottom">
-      <div className="flex items-center justify-around h-14 px-1">
-          {[
+      <div className="flex items-center justify-around min-h-[56px] px-1">
+        {[
             { to: "/", key: "home", icon: Flame },
             { to: "/sos", key: "sos", icon: AlertTriangle, urgent: true },
             { to: "/metro", key: "metro", icon: Train },
@@ -232,7 +232,7 @@ export const Navbar = memo(function Navbar({ onLogoClick }: { onLogoClick?: () =
           <Link
             key={to}
             to={to}
-            className={`flex flex-col items-center gap-0.5 px-3 py-1.5 min-w-0 ${
+            className={`flex flex-col items-center gap-0.5 px-3 py-2 min-w-0 ${
               urgent
                 ? "text-ph-red"
                 : loc.pathname === to
@@ -248,7 +248,7 @@ export const Navbar = memo(function Navbar({ onLogoClick }: { onLogoClick?: () =
     </nav>
 
     {/* Spacer for bottom nav on mobile */}
-    <div className="h-14 md:hidden" />
+    <div className="h-[56px] md:hidden" />
     </>
   );
 });

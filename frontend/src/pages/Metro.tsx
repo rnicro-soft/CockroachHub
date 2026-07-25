@@ -175,14 +175,14 @@ export default function Metro() {
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs font-bold text-ph-text-muted uppercase tracking-wider">{t("metro.protestHub.yourLocation")}</span>
                 {gpsStatus === "idle" && (
-                  <button onClick={detectLocation} className="text-xs text-ph-orange hover:underline flex items-center gap-1">
-                    <LocateFixed className="h-3 w-3" /> Detect
+                  <button onClick={detectLocation} className="ph-btn-outline ph-btn-sm text-xs flex items-center gap-1">
+                    <LocateFixed className="h-3.5 w-3.5" /> Detect
                   </button>
                 )}
                 {gpsStatus === "detecting" && <span className="text-xs text-ph-text-muted animate-pulse">{t("metro.protestHub.detecting")}</span>}
                 {(gpsStatus === "denied" || gpsStatus === "error") && (
-                  <button onClick={detectLocation} className="text-xs text-ph-red hover:underline flex items-center gap-1">
-                    <LocateFixed className="h-3 w-3" /> Retry
+                  <button onClick={detectLocation} className="ph-btn-outline ph-btn-sm text-xs flex items-center gap-1">
+                    <LocateFixed className="h-3.5 w-3.5" /> Retry
                   </button>
                 )}
               </div>
@@ -243,7 +243,7 @@ export default function Metro() {
                 return (
                   <button key={s.id} onClick={() => handleSelect(s)}
                     className="w-full text-left flex items-center gap-2 p-2 bg-ph-black/30 hover:bg-ph-card-hover transition-colors">
-                    <div className="flex flex-col items-center gap-0.5 w-12 shrink-0">
+                    <div className="flex flex-col items-center gap-0.5 w-8 sm:w-12 shrink-0">
                       {s.lines.slice(0, 2).map((l) => (
                         <span key={l.name} className="w-3 h-3 rounded-full" style={{ backgroundColor: l.color }} />
                       ))}
@@ -268,21 +268,25 @@ export default function Metro() {
 
       {/* Search + filters */}
       <div className="flex flex-col gap-3 sm:flex-row">
-        <div className="relative flex-1">
+        <div className="relative sm:max-w-xs w-full">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-ph-text-muted" />
           <input type="text" value={search} onChange={(e) => setSearch(e.target.value)}
             placeholder={t("metro.searchPlaceholder")} className="ph-input pl-10 w-full" />
           {search && <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-ph-text-muted hover:text-white"><X className="h-4 w-4" /></button>}
         </div>
-        <button onClick={() => setLineFilter(null)} className={`ph-btn-sm ${!lineFilter && !nearJMFilter ? "ph-btn-primary" : "ph-btn-outline"}`}>{t("metro.filterAll")}</button>
-        <button onClick={() => setNearJMFilter(!nearJMFilter)}
-          className={`ph-btn-sm ${nearJMFilter ? "ph-btn-primary" : "ph-btn-outline"}`}>
-          <MapPin className="h-3.5 w-3.5" /> JM
-        </button>
-        {lineNames.map((name) => (
-          <button key={name} onClick={() => setLineFilter(lineFilter === name ? null : name)}
-            className={`ph-btn-sm ${lineFilter === name ? "ph-btn-primary" : "ph-btn-outline"}`}>{name}</button>
-        ))}
+      </div>
+      <div className="overflow-x-auto pb-1" style={{ scrollbarWidth: "none" }}>
+        <div className="flex gap-2 whitespace-nowrap">
+          <button onClick={() => setLineFilter(null)} className={`ph-btn-sm ${!lineFilter && !nearJMFilter ? "ph-btn-primary" : "ph-btn-outline"}`}>{t("metro.filterAll")}</button>
+          <button onClick={() => setNearJMFilter(!nearJMFilter)}
+            className={`ph-btn-sm ${nearJMFilter ? "ph-btn-primary" : "ph-btn-outline"}`}>
+            <MapPin className="h-3.5 w-3.5" /> JM
+          </button>
+          {lineNames.map((name) => (
+            <button key={name} onClick={() => setLineFilter(lineFilter === name ? null : name)}
+              className={`ph-btn-sm ${lineFilter === name ? "ph-btn-primary" : "ph-btn-outline"}`}>{name}</button>
+          ))}
+        </div>
       </div>
 
       {/* Network Overview */}
@@ -310,13 +314,13 @@ export default function Metro() {
           const status = d?.status || "open";
           return (
             <button key={station.id} onClick={() => handleSelect(station)}
-              className="text-left bg-white dark:bg-ph-dark-2 border border-ph-border-light dark:border-ph-border p-4 hover:border-ph-orange/40 transition-colors">
+              className="text-left bg-white dark:bg-ph-dark-2 border border-ph-border-light dark:border-ph-border p-3 sm:p-4 hover:border-ph-orange/40 transition-colors min-h-[72px]">
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
                   <h4 className="text-sm font-bold text-ph-text-dark dark:text-white truncate flex items-center gap-1">
-                {station.name}
-                {(station as any).distToJM < nearJMThreshold && <span className="text-[9px] font-bold px-1 py-0.5 bg-cjp-maroon/10 text-cjp-maroon border border-cjp-maroon/30 shrink-0">📍 JM {formatDist((station as any).distToJM)}</span>}
-                {d?.featured && <span className="text-[9px] font-bold px-1 py-0.5 bg-cjp-maroon/10 text-cjp-maroon border border-cjp-maroon/30 shrink-0">Featured</span>}
+                <span className="truncate">{station.name}</span>
+                {(station as any).distToJM < nearJMThreshold && <span className="text-[8px] sm:text-[9px] font-bold px-1 py-0.5 bg-cjp-maroon/10 text-cjp-maroon border border-cjp-maroon/30 shrink-0">📍 JM {formatDist((station as any).distToJM)}</span>}
+                {d?.featured && <span className="text-[8px] sm:text-[9px] font-bold px-1 py-0.5 bg-cjp-maroon/10 text-cjp-maroon border border-cjp-maroon/30 shrink-0">Featured</span>}
               </h4>
                   <p className="text-xs text-ph-text-muted">{station.area}</p>
                   {(station as any).distToJM < nearJMThreshold && (
@@ -325,7 +329,7 @@ export default function Metro() {
                     </p>
                   )}
                 </div>
-                <span className={`shrink-0 text-[10px] font-bold px-2 py-0.5 text-white ${statusColor(status)}`}>{statusText(status)}</span>
+                <span className={`shrink-0 text-[9px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 text-white ${statusColor(status)}`}>{statusText(status)}</span>
               </div>
               <div className="flex flex-wrap gap-1 mt-2">
                 {station.lines.map((l) => (

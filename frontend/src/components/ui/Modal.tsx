@@ -43,7 +43,7 @@ export function Modal({ open, onClose, title, children }: Props) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" ref={ref} onClick={(e) => { if (e.target === ref.current) onClose(); }}>
       <div className="fixed inset-0 bg-black/70" />
-      <div className="relative z-10 w-full max-w-lg bg-white dark:bg-ph-dark-2 border border-ph-border-light dark:border-ph-border p-6">
+      <div className="relative z-10 w-full max-w-lg bg-white dark:bg-ph-dark-2 border border-ph-border-light dark:border-ph-border p-4 sm:p-6">
         <div className="flex items-center justify-between border-b border-ph-border-light dark:border-ph-border pb-3 mb-5">
           <h2 className="text-base font-bold text-ph-text-dark dark:text-white">{title}</h2>
           <button onClick={onClose} className="p-1 text-ph-text-muted hover:bg-gray-100 dark:hover:bg-ph-card-hover" aria-label="Close"><X className="h-5 w-5" /></button>
