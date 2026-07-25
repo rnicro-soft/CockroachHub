@@ -6,9 +6,11 @@ interface Props { open: boolean; onClose: () => void; title: string; children: R
 export function Modal({ open, onClose, title, children }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const prevFocus = useRef<HTMLElement | null>(null);
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
-    if (e.key === "Escape") onClose();
+    if (e.key === "Escape") onCloseRef.current();
     if (e.key === "Tab" && ref.current) {
       const focusable = ref.current.querySelectorAll<HTMLElement>(
         'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
@@ -19,7 +21,7 @@ export function Modal({ open, onClose, title, children }: Props) {
       if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     }
-  }, [onClose]);
+  }, []);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -34,7 +36,7 @@ export function Modal({ open, onClose, title, children }: Props) {
     return () => {
       document.body.style.overflow = "";
       document.removeEventListener("keydown", handleKeyDown);
-      prevFocus.current?.focus();
+      if (!open) prevFocus.current?.focus();
     };
   }, [open, handleKeyDown]);
 
