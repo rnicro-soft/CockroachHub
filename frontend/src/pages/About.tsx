@@ -65,6 +65,17 @@ export default function About() {
         </div>
       </Card>
 
+      {/* Fundraiser — quiet QR card */}
+      <Card className="p-5 border border-dashed border-ph-orange/30 bg-ph-orange/[0.02]">
+        <div className="flex flex-col sm:flex-row items-center gap-4">
+          <img src="/fundraiser.png" alt="Fundraiser QR" className="w-32 h-32 sm:w-28 sm:h-28 object-contain" />
+          <div className="text-center sm:text-left">
+            <h3 className="text-sm font-bold text-ph-text-dark dark:text-white">{t("about.fundraiserTitle")}</h3>
+            <p className="text-xs text-ph-text-muted mt-1 leading-relaxed">{t("about.fundraiserDesc")}</p>
+          </div>
+        </div>
+      </Card>
+
       <Card className="p-5">
         <h3 className="text-sm font-bold text-ph-text-dark dark:text-white mb-3 flex items-center gap-2">
           <Shield className="h-4 w-4 text-ph-orange" /> {t("about.aboutApp")}

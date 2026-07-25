@@ -447,7 +447,9 @@
     "communityDesc": "Youth Unmuted is a community-driven platform amplifying student voices across India. We believe in free speech, factual reporting, and standing together during protests and political unrest.",
     "communityWhatsApp": "WhatsApp Channel",
     "communityInstagram": "Instagram",
-    "communityDiscord": "Discord Server"
+    "communityDiscord": "Discord Server",
+    "fundraiserTitle": "Support the Movement",
+    "fundraiserDesc": "Scan to contribute. Funds go towards legal aid, medical supplies, and protest relief efforts coordinated by Youth Unmuted."
   },
   "sos": {
     "title": "SOS Emergency",
