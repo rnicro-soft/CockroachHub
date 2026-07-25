@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, lazy, Suspense, useCallback } from "react";
-import { Routes, Route, Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Routes, Route, Navigate, Outlet, useLocation, useNavigate, Link } from "react-router-dom";
 import { Menu, RefreshCw, Loader } from "lucide-react";
 import { useAuthStore } from "./store/authStore";
 import { Navbar } from "./components/layout/Navbar";
@@ -146,6 +146,7 @@ function PublicLayout() {
               <p className="font-bold">{t("app.nameFull")}</p>
               <p className="mt-1">{t("footer.tagline")}</p>
               <p className="mt-1">{t("footer.social")}</p>
+              <Link to="/about" className="mt-2 inline-block text-ph-orange hover:underline font-bold">{t("footer.team")}</Link>
             </div>
           </footer>
         </div>
