@@ -72,7 +72,7 @@ export default function BusRoutes() {
       <div className="relative">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-ph-text-muted" />
         <input type="text" value={search} onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search bus number, start or end point..." className="ph-input pl-10 w-full" />
+          placeholder={t("bus.searchPlaceholder")} className="ph-input pl-10 w-full" />
         {search && <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-ph-text-muted hover:text-white"><X className="h-4 w-4" /></button>}
       </div>
 
@@ -94,11 +94,11 @@ export default function BusRoutes() {
             </thead>
             <tbody>
               {filtered.map((r, i) => (
-                <tr key={r.id || i} className="border-b border-ph-border-light/50 dark:border-ph-border/50 hover:bg-ph-card-hover/50">
-                  <td className="py-2.5 pr-4 font-bold text-ph-orange font-mono">{r.bus_number}</td>
-                  <td className="py-2.5 pr-4 text-ph-text-dark dark:text-white">{r.start}</td>
-                  <td className="py-2.5 text-ph-text-muted">{r.end}</td>
-                </tr>
+                  <tr key={r.id || i} className="border-b border-ph-border-light/50 dark:border-ph-border/50 hover:bg-ph-card-hover/50">
+                    <td className="py-2.5 pr-2 sm:pr-4 font-bold text-ph-orange font-mono whitespace-nowrap">{r.bus_number}</td>
+                    <td className="py-2.5 pr-2 sm:pr-4 text-ph-text-dark dark:text-white max-w-[160px] sm:max-w-none truncate" title={r.start}>{r.start}</td>
+                    <td className="py-2.5 text-ph-text-muted max-w-[160px] sm:max-w-none truncate" title={r.end}>{r.end}</td>
+                  </tr>
               ))}
             </tbody>
           </table>
@@ -106,7 +106,7 @@ export default function BusRoutes() {
       )}
 
       {/* Offline notice */}
-      {!online && <div className="text-xs text-ph-text-muted text-center pt-2">Showing cached bus data</div>}
+      {!online && <div className="text-xs text-ph-text-muted text-center pt-2">{t("common.offline")}</div>}
     </div>
   );
 }

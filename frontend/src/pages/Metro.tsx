@@ -317,17 +317,12 @@ export default function Metro() {
               className="text-left bg-white dark:bg-ph-dark-2 border border-ph-border-light dark:border-ph-border p-3 sm:p-4 hover:border-ph-orange/40 transition-colors min-h-[72px]">
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
-                  <h4 className="text-sm font-bold text-ph-text-dark dark:text-white truncate flex items-center gap-1">
-                <span className="truncate">{station.name}</span>
-                {(station as any).distToJM < nearJMThreshold && <span className="text-[8px] sm:text-[9px] font-bold px-1 py-0.5 bg-cjp-maroon/10 text-cjp-maroon border border-cjp-maroon/30 shrink-0">📍 JM {formatDist((station as any).distToJM)}</span>}
-                {d?.featured && <span className="text-[8px] sm:text-[9px] font-bold px-1 py-0.5 bg-cjp-maroon/10 text-cjp-maroon border border-cjp-maroon/30 shrink-0">Featured</span>}
-              </h4>
+                  <h4 className="text-sm font-bold text-ph-text-dark dark:text-white truncate">{station.name}</h4>
                   <p className="text-xs text-ph-text-muted">{station.area}</p>
-                  {(station as any).distToJM < nearJMThreshold && (
-                    <p className="text-[10px] text-ph-orange mt-0.5 flex items-center gap-1">
-                      <MapPin className="h-3 w-3" /> JM {formatDist((station as any).distToJM)}
-                    </p>
-                  )}
+                  <div className="flex flex-wrap gap-1 mt-1">
+                    {(station as any).distToJM < nearJMThreshold && <span className="text-[8px] sm:text-[9px] font-bold px-1 py-0.5 bg-cjp-maroon/10 text-cjp-maroon border border-cjp-maroon/30">📍 JM {formatDist((station as any).distToJM)}</span>}
+                    {d?.featured && <span className="text-[8px] sm:text-[9px] font-bold px-1 py-0.5 bg-cjp-maroon/10 text-cjp-maroon border border-cjp-maroon/30">Featured</span>}
+                  </div>
                 </div>
                 <span className={`shrink-0 text-[9px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 text-white ${statusColor(status)}`}>{statusText(status)}</span>
               </div>
@@ -375,7 +370,7 @@ export default function Metro() {
                 <MapPin className="h-3 w-3" /> Jantar Mantar · {formatDist(haversineDist(selected.lat, selected.lng, JM_LAT, JM_LNG))} · {walkTime(haversineDist(selected.lat, selected.lng, JM_LAT, JM_LNG))} walk
               </span>
             </div>
-            <div className="flex gap-2 mt-2">
+            <div className="flex flex-col sm:flex-row gap-2 mt-2">
               <a href={`https://www.google.com/maps/dir/?api=1&destination=${selected.lat},${selected.lng}`}
                 target="_blank" rel="noopener noreferrer" className="ph-btn-outline flex-1 text-xs"><Navigation className="h-4 w-4" /> {t("safeZones.getDirections")}</a>
               <a href={`https://www.google.com/maps/dir/?api=1&destination=28.6271,77.2174&waypoints=${selected.lat},${selected.lng}`}

@@ -1105,6 +1105,7 @@
       "secretariat": "Central Secretariat"
     },
     "seoTitle": "Bus Routes — CJP Helpline",
-    "seoDesc": "Delhi bus routes to protest sites near Jantar Mantar. DTC bus numbers, starting points, and destinations."
+    "seoDesc": "Delhi bus routes to protest sites near Jantar Mantar. DTC bus numbers, starting points, and destinations.",
+    "searchPlaceholder": "Search bus number, start or end point..."
   }
 }
