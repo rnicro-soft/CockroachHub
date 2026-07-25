@@ -41,6 +41,7 @@ const pageImports: Record<string, () => Promise<any>> = {
 const navLinks: { to: string; key: string; icon: any }[] = [
   { to: "/", key: "home", icon: Flame },
   { to: "/metro", key: "metro", icon: Train },
+  { to: "/bus", key: "bus", icon: Bus },
   { to: "/emergency", key: "emergency", icon: Phone },
   { to: "/live-feed", key: "liveFeed", icon: Radio },
   { to: "/sos", key: "sos", icon: AlertTriangle },
