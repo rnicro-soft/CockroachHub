@@ -11,11 +11,15 @@ interface Post {
   id: number;
   title: string;
   content: string;
+  post_type: string;
+  image_url: string | null;
   is_published: boolean;
   created_by: number;
   created_at: string;
   updated_at: string;
 }
+
+const POST_TYPES = ["news", "update", "announcement", "alert", "instagram"];
 
 export default function AdminPosts() {
   const { t } = useLocale();
@@ -27,7 +31,7 @@ export default function AdminPosts() {
 
   const [editOpen, setEditOpen] = useState(false);
   const [editPost, setEditPost] = useState<Post | null>(null);
-  const [form, setForm] = useState({ title: "", content: "", is_published: false });
+  const [form, setForm] = useState({ title: "", content: "", post_type: "news", image_url: "", is_published: false });
   const [saving, setSaving] = useState(false);
 
   const load = async (p: number) => {
@@ -45,13 +49,13 @@ export default function AdminPosts() {
 
   const openCreate = () => {
     setEditPost(null);
-    setForm({ title: "", content: "", is_published: false });
+    setForm({ title: "", content: "", post_type: "news", image_url: "", is_published: false });
     setEditOpen(true);
   };
 
   const openEdit = (p: Post) => {
     setEditPost(p);
-    setForm({ title: p.title, content: p.content, is_published: p.is_published });
+    setForm({ title: p.title, content: p.content, post_type: p.post_type, image_url: p.image_url || "", is_published: p.is_published });
     setEditOpen(true);
   };
 
@@ -60,11 +64,12 @@ export default function AdminPosts() {
     if (!form.title.trim() || !form.content.trim()) { toast.error(t("admin.errors.fillAllFields")); return; }
     setSaving(true);
     try {
+      const body = { ...form, image_url: form.image_url.trim() || null };
       if (editPost) {
-        await api.put(`/admin/posts/${editPost.id}`, form);
+        await api.put(`/admin/posts/${editPost.id}`, body);
         toast.success(t("common.updated"));
       } else {
-        await api.post("/admin/posts", form);
+        await api.post("/admin/posts", body);
         toast.success(t("admin.actions.create"));
       }
       setEditOpen(false);
@@ -112,6 +117,7 @@ export default function AdminPosts() {
             <thead>
               <tr className="border-b border-ph-border-light dark:border-ph-border text-left text-[11px] font-bold text-ph-text-muted uppercase tracking-wider">
                 <th className="pb-2 pr-3">{t("admin.title")}</th>
+                <th className="pb-2 pr-3">{t("admin.type")}</th>
                 <th className="pb-2 pr-3">{t("admin.status")}</th>
                 <th className="pb-2 pr-3">{t("admin.created")}</th>
                 <th className="pb-2 text-right">{t("common.actions")}</th>
@@ -120,7 +126,10 @@ export default function AdminPosts() {
             <tbody>
               {posts.map((p) => (
                 <tr key={p.id} className="border-b border-ph-border-light/50 dark:border-ph-border/50">
-                  <td className="py-2.5 pr-3 text-ph-text-dark dark:text-white font-bold max-w-[300px] truncate">{p.title}</td>
+                  <td className="py-2.5 pr-3 text-ph-text-dark dark:text-white font-bold max-w-[250px] truncate">{p.title}</td>
+                  <td className="py-2.5 pr-3">
+                    <span className="text-[11px] font-bold uppercase text-ph-text-muted bg-gray-100 dark:bg-ph-card-hover px-1.5 py-0.5">{p.post_type}</span>
+                  </td>
                   <td className="py-2.5 pr-3">{p.is_published
                     ? <span className="text-xs font-bold text-ph-green">{t("admin.active")}</span>
                     : <span className="text-xs font-bold text-ph-text-muted">{t("admin.draft")}</span>
@@ -162,6 +171,22 @@ export default function AdminPosts() {
           <div>
             <label className="ph-label">{t("admin.title")}</label>
             <input value={form.title} onChange={(e) => setForm({...form, title: e.target.value})} className="ph-input" required maxLength={500} />
+          </div>
+          <div>
+            <label className="ph-label">{t("admin.type")}</label>
+            <select value={form.post_type} onChange={(e) => setForm({...form, post_type: e.target.value})} className="ph-select">
+              {POST_TYPES.map((pt) => (
+                <option key={pt} value={pt}>{t(`admin.postType.${pt}`)}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="ph-label">{t("admin.imageUrl")}</label>
+            <input value={form.image_url} onChange={(e) => setForm({...form, image_url: e.target.value})} className="ph-input" placeholder="https://..." maxLength={2000} />
+            {form.image_url && (
+              <img src={form.image_url} alt="" className="mt-2 max-h-40 rounded border border-ph-border-light dark:border-ph-border object-cover"
+                onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+            )}
           </div>
           <div>
             <label className="ph-label">{t("admin.content")}</label>

@@ -9,6 +9,8 @@ interface Post {
   id: number;
   title: string;
   content: string;
+  post_type: string;
+  image_url: string | null;
   is_published: boolean;
   created_at: string;
   updated_at: string;
@@ -54,14 +56,21 @@ export default function News() {
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-sm font-black text-ph-text-dark dark:text-white leading-snug">{post.title}</h3>
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-ph-text-muted bg-gray-100 dark:bg-ph-card-hover px-1.5 py-0.5">{t(`news.type.${post.post_type}`)}</span>
+                      </div>
+                      <h3 className="text-sm font-black text-ph-text-dark dark:text-white leading-snug mt-1">{post.title}</h3>
                       <div className="flex items-center gap-2 mt-1.5 text-[11px] font-bold text-ph-text-muted">
                         <Calendar className="h-3 w-3" />
                         {date.toLocaleDateString(locale === "hi" ? "hi-IN" : "en-IN", { day: "numeric", month: "short", year: "numeric" })}
                       </div>
                       {preview && <p className="mt-2 text-xs text-ph-text-secondary line-clamp-2">{preview}…</p>}
                     </div>
-                    <ChevronRight className="h-4 w-4 shrink-0 text-ph-text-muted mt-1" />
+                    {post.image_url && (
+                      <img src={post.image_url} alt="" className="h-16 w-16 sm:h-20 sm:w-20 rounded object-cover shrink-0"
+                        onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+                    )}
+                    {!post.image_url && <ChevronRight className="h-4 w-4 shrink-0 text-ph-text-muted mt-1" />}
                   </div>
                 </Link>
               );

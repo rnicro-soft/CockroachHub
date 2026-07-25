@@ -10,6 +10,8 @@ SCHEMA_ADDITIONS = [
     ("metro_stations", "is_active", "BOOLEAN DEFAULT TRUE"),
     ("emergency_contacts", "source", "VARCHAR(500)"),
     ("emergency_contacts", "last_verified_at", "TIMESTAMP WITH TIME ZONE"),
+    ("posts", "post_type", "VARCHAR(50) DEFAULT 'news'"),
+    ("posts", "image_url", "VARCHAR(2000)"),
 ]
 
 TABLE_EXISTS_CHECKS = [

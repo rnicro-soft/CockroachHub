@@ -512,7 +512,14 @@
     "seoDesc": "Latest news and updates from CJP. Instagram embeds, field reports, and announcements.",
     "noPosts": "No posts yet",
     "notFound": "Post not found",
-    "back": "Back to News"
+    "back": "Back to News",
+    "type": {
+      "news": "News",
+      "update": "Update",
+      "announcement": "Announcement",
+      "alert": "Alert",
+      "instagram": "Instagram"
+    }
   },
   "admin": {
     "login": "Admin Login",
@@ -728,7 +735,15 @@
     "source": "Source",
     "metroStations": "Metro Stations",
     "posts": "Posts",
-    "postsContentHint": "Paste Instagram embed code, HTML, or plain text. Instagram embeds will render automatically."
+    "postsContentHint": "Paste Instagram embed code, HTML, or plain text. Instagram embeds will render automatically.",
+    "postType": {
+      "news": "News",
+      "update": "Update",
+      "announcement": "Announcement",
+      "alert": "Alert",
+      "instagram": "Instagram"
+    },
+    "imageUrl": "Image URL (optional)"
   },
   "common": {
     "loading": "Loading...",

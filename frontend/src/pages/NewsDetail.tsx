@@ -9,6 +9,8 @@ interface Post {
   id: number;
   title: string;
   content: string;
+  post_type: string;
+  image_url: string | null;
   is_published: boolean;
   created_at: string;
   updated_at: string;
@@ -52,11 +54,18 @@ export default function NewsDetail() {
           <ArrowLeft className="h-3.5 w-3.5" />{t("news.back")}
         </Link>
         <article className="bg-white dark:bg-ph-dark-2 border border-ph-border-light dark:border-ph-border p-4 sm:p-6">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-ph-text-muted bg-gray-100 dark:bg-ph-card-hover px-1.5 py-0.5">{t(`news.type.${post.post_type}`)}</span>
+          </div>
           <h1 className="text-lg font-black text-ph-text-dark dark:text-white">{post.title}</h1>
           <div className="flex items-center gap-2 mt-2 text-[11px] font-bold text-ph-text-muted">
             <Calendar className="h-3 w-3" />
             {date.toLocaleDateString(locale === "hi" ? "hi-IN" : "en-IN", { day: "numeric", month: "short", year: "numeric" })}
           </div>
+          {post.image_url && (
+            <img src={post.image_url} alt="" className="mt-4 w-full max-h-96 rounded object-cover border border-ph-border-light dark:border-ph-border"
+              onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+          )}
           <div
             className="mt-4 prose prose-sm dark:prose-invert max-w-none text-sm text-ph-text-dark dark:text-ph-text-secondary leading-relaxed [&_a]:text-ph-orange [&_a]:font-bold [&_blockquote]:border-l-ph-orange [&_blockquote]:pl-4 [&_blockquote]:italic"
             dangerouslySetInnerHTML={{ __html: post.content }}
