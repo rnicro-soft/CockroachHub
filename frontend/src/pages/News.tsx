@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Newspaper, Calendar, ChevronRight, Loader } from "lucide-react";
+import { Newspaper, Calendar, ChevronRight, Loader, Play } from "lucide-react";
 import { SEO } from "../components/SEO";
 import { useLocale } from "../hooks/useLocale";
 import api from "../lib/api";
@@ -12,6 +12,7 @@ interface Post {
   post_type: string;
   image_url: string | null;
   instagram_url: string | null;
+  instagram_thumbnail: string | null;
   is_published: boolean;
   created_at: string;
   updated_at: string;
@@ -70,11 +71,24 @@ export default function News() {
                       </div>
                       {preview && <p className="mt-2 text-xs text-ph-text-secondary line-clamp-2">{preview}…</p>}
                     </div>
-                    {post.image_url && (
+                    {post.instagram_thumbnail ? (
+                      <div className="relative h-16 w-16 sm:h-20 sm:w-20 shrink-0 rounded overflow-hidden bg-ph-card border border-ph-border-light dark:border-ph-border">
+                        <img src={post.instagram_thumbnail} alt="" className="absolute inset-0 w-full h-full object-cover"
+                          onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                          <Play className="h-5 w-5 text-white" />
+                        </div>
+                      </div>
+                    ) : post.instagram_url ? (
+                      <div className="flex h-16 w-16 sm:h-20 sm:w-20 shrink-0 items-center justify-center rounded bg-ph-orange/10 border border-ph-border-light dark:border-ph-border">
+                        <Play className="h-5 w-5 text-ph-orange" />
+                      </div>
+                    ) : post.image_url ? (
                       <img src={post.image_url} alt="" className="h-16 w-16 sm:h-20 sm:w-20 rounded object-cover shrink-0"
                         onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+                    ) : (
+                      <ChevronRight className="h-4 w-4 shrink-0 text-ph-text-muted mt-1" />
                     )}
-                    {!post.image_url && <ChevronRight className="h-4 w-4 shrink-0 text-ph-text-muted mt-1" />}
                   </div>
                 </Link>
               );

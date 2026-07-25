@@ -14,6 +14,7 @@ interface Post {
   post_type: string;
   image_url: string | null;
   instagram_url: string | null;
+  instagram_thumbnail: string | null;
   is_published: boolean;
   created_by: number;
   created_at: string;
@@ -187,6 +188,10 @@ export default function AdminPosts() {
             <input value={form.instagram_url} onChange={(e) => setForm({...form, instagram_url: e.target.value})} className="ph-input" placeholder="https://www.instagram.com/reel/..." maxLength={2000} />
             {form.instagram_url && (
               <p className="mt-1 text-[11px] text-ph-green font-bold">{t("admin.postsInstagramPreview")}</p>
+            )}
+            {editPost?.instagram_thumbnail && (
+              <img src={editPost.instagram_thumbnail} alt="" className="mt-2 max-h-32 rounded border border-ph-border-light dark:border-ph-border object-cover"
+                onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
             )}
           </div>
           <div>
