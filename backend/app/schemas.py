@@ -335,6 +335,7 @@ class PostCreate(BaseModel):
     content: str = Field(max_length=50000)
     post_type: str = Field("news", max_length=50)
     image_url: str | None = Field(None, max_length=2000)
+    instagram_url: str | None = Field(None, max_length=2000)
     is_published: bool = False
 
 
@@ -343,6 +344,7 @@ class PostUpdate(BaseModel):
     content: str | None = None
     post_type: str | None = None
     image_url: str | None = None
+    instagram_url: str | None = None
     is_published: bool | None = None
 
 
@@ -352,6 +354,7 @@ class PostOut(BaseModel):
     content: str
     post_type: str = "news"
     image_url: str | None = None
+    instagram_url: str | None = None
     is_published: bool
     created_by: int
     created_at: datetime

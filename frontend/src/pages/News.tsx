@@ -11,6 +11,7 @@ interface Post {
   content: string;
   post_type: string;
   image_url: string | null;
+  instagram_url: string | null;
   is_published: boolean;
   created_at: string;
   updated_at: string;
@@ -58,6 +59,9 @@ export default function News() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <span className="text-[10px] font-bold uppercase tracking-wider text-ph-text-muted bg-gray-100 dark:bg-ph-card-hover px-1.5 py-0.5">{t(`news.type.${post.post_type}`)}</span>
+                        {post.instagram_url && (
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-ph-orange bg-ph-orange/10 px-1.5 py-0.5">🎬 Reel</span>
+                        )}
                       </div>
                       <h3 className="text-sm font-black text-ph-text-dark dark:text-white leading-snug mt-1">{post.title}</h3>
                       <div className="flex items-center gap-2 mt-1.5 text-[11px] font-bold text-ph-text-muted">

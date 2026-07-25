@@ -13,6 +13,7 @@ interface Post {
   content: string;
   post_type: string;
   image_url: string | null;
+  instagram_url: string | null;
   is_published: boolean;
   created_by: number;
   created_at: string;
@@ -31,7 +32,7 @@ export default function AdminPosts() {
 
   const [editOpen, setEditOpen] = useState(false);
   const [editPost, setEditPost] = useState<Post | null>(null);
-  const [form, setForm] = useState({ title: "", content: "", post_type: "news", image_url: "", is_published: false });
+  const [form, setForm] = useState({ title: "", content: "", post_type: "news", image_url: "", instagram_url: "", is_published: false });
   const [saving, setSaving] = useState(false);
 
   const load = async (p: number) => {
@@ -49,13 +50,13 @@ export default function AdminPosts() {
 
   const openCreate = () => {
     setEditPost(null);
-    setForm({ title: "", content: "", post_type: "news", image_url: "", is_published: false });
+    setForm({ title: "", content: "", post_type: "news", image_url: "", instagram_url: "", is_published: false });
     setEditOpen(true);
   };
 
   const openEdit = (p: Post) => {
     setEditPost(p);
-    setForm({ title: p.title, content: p.content, post_type: p.post_type, image_url: p.image_url || "", is_published: p.is_published });
+    setForm({ title: p.title, content: p.content, post_type: p.post_type, image_url: p.image_url || "", instagram_url: p.instagram_url || "", is_published: p.is_published });
     setEditOpen(true);
   };
 
@@ -64,7 +65,7 @@ export default function AdminPosts() {
     if (!form.title.trim() || !form.content.trim()) { toast.error(t("admin.errors.fillAllFields")); return; }
     setSaving(true);
     try {
-      const body = { ...form, image_url: form.image_url.trim() || null };
+      const body = { ...form, image_url: form.image_url.trim() || null, instagram_url: form.instagram_url.trim() || null };
       if (editPost) {
         await api.put(`/admin/posts/${editPost.id}`, body);
         toast.success(t("common.updated"));
@@ -181,6 +182,14 @@ export default function AdminPosts() {
             </select>
           </div>
           <div>
+            <label className="ph-label">{t("admin.postsInstagramUrl")}</label>
+            <p className="text-[11px] text-ph-text-muted mb-1">{t("admin.postsInstagramHint")}</p>
+            <input value={form.instagram_url} onChange={(e) => setForm({...form, instagram_url: e.target.value})} className="ph-input" placeholder="https://www.instagram.com/reel/..." maxLength={2000} />
+            {form.instagram_url && (
+              <p className="mt-1 text-[11px] text-ph-green font-bold">{t("admin.postsInstagramPreview")}</p>
+            )}
+          </div>
+          <div>
             <label className="ph-label">{t("admin.imageUrl")}</label>
             <input value={form.image_url} onChange={(e) => setForm({...form, image_url: e.target.value})} className="ph-input" placeholder="https://..." maxLength={2000} />
             {form.image_url && (
@@ -190,7 +199,7 @@ export default function AdminPosts() {
           </div>
           <div>
             <label className="ph-label">{t("admin.content")}</label>
-            <p className="text-[11px] text-ph-text-muted mb-1">{t("admin.postsContentHint")}</p>
+            <p className="text-[11px] text-ph-text-muted mb-1">{t("admin.postsContentHint2")}</p>
             <textarea value={form.content} onChange={(e) => setForm({...form, content: e.target.value})} className="ph-input resize-y font-mono text-xs" rows={10} required />
           </div>
           <label className="flex items-center gap-2 cursor-pointer">

@@ -5,21 +5,27 @@ import { SEO } from "../components/SEO";
 import { useLocale } from "../hooks/useLocale";
 import api from "../lib/api";
 
-declare global {
-  interface Window {
-    instgrm?: { Embeds: { process: () => void } };
-  }
-}
-
 interface Post {
   id: number;
   title: string;
   content: string;
   post_type: string;
   image_url: string | null;
+  instagram_url: string | null;
   is_published: boolean;
   created_at: string;
   updated_at: string;
+}
+
+function instagramEmbedUrl(url: string): string | null {
+  try {
+    const u = new URL(url);
+    if (!u.hostname.includes("instagram.com")) return null;
+    const path = u.pathname.replace(/\/?$/, "");
+    return `https://ddinstagram.com${path}/embed`;
+  } catch {
+    return null;
+  }
 }
 
 export default function NewsDetail() {
@@ -32,22 +38,6 @@ export default function NewsDetail() {
     if (!id) return;
     api.get(`/posts/${id}`).then(({ data }) => setPost(data)).catch(() => {}).finally(() => setLoading(false));
   }, [id]);
-
-  useEffect(() => {
-    if (!post?.content) return;
-    const html = post.content;
-    const hasEmbed = html.includes("instagram.com") && html.includes("instagram-media");
-    if (!hasEmbed) return;
-    if (window.instgrm) {
-      window.instgrm.Embeds.process();
-    } else {
-      const s = document.createElement("script");
-      s.src = "https://www.instagram.com/embed.js";
-      s.async = true;
-      s.onload = () => window.instgrm?.Embeds.process();
-      document.body.appendChild(s);
-    }
-  }, [post?.content]);
 
   if (loading) {
     return (
@@ -92,6 +82,21 @@ export default function NewsDetail() {
             className="mt-4 prose prose-sm dark:prose-invert max-w-none text-sm text-ph-text-dark dark:text-ph-text-secondary leading-relaxed [&_a]:text-ph-orange [&_a]:font-bold [&_blockquote]:border-l-ph-orange [&_blockquote]:pl-4 [&_blockquote]:italic"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
+          {post.instagram_url && (() => {
+            const embedSrc = instagramEmbedUrl(post.instagram_url);
+            return embedSrc ? (
+              <div className="mt-4">
+                <iframe src={embedSrc} className="w-full rounded border border-ph-border-light dark:border-ph-border"
+                  style={{ height: "600px", maxWidth: "400px", margin: "0 auto", display: "block" }}
+                  allowFullScreen loading="lazy" referrerPolicy="no-referrer" />
+              </div>
+            ) : (
+              <a href={post.instagram_url} target="_blank" rel="noopener noreferrer"
+                className="mt-4 inline-flex items-center gap-1 text-xs font-bold text-ph-orange hover:underline">
+                {t("news.viewOnInstagram")}
+              </a>
+            );
+          })()}
         </article>
       </div>
     </>

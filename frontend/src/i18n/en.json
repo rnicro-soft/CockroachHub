@@ -513,6 +513,7 @@
     "noPosts": "No posts yet",
     "notFound": "Post not found",
     "back": "Back to News",
+    "viewOnInstagram": "View on Instagram →",
     "type": {
       "news": "News",
       "update": "Update",
@@ -736,6 +737,11 @@
     "metroStations": "Metro Stations",
     "posts": "Posts",
     "postsContentHint": "Paste Instagram embed code, HTML, or plain text. Instagram embeds will render automatically.",
+    "postsContentHint2": "Write your post text here. Instagram video is added separately below.",
+    "postsInstagramUrl": "Instagram URL (optional)",
+    "postsInstagramHint": "Paste the full Instagram Reel/post URL. Video will play inline via embed.",
+    "postsInstagramPreview": "Video will appear on the post detail page.",
+    "total": "total",
     "postType": {
       "news": "News",
       "update": "Update",

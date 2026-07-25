@@ -272,6 +272,7 @@ class Post(Base):
     content: Mapped[str] = mapped_column(Text, nullable=False)
     post_type: Mapped[str] = mapped_column(String(50), default="news")
     image_url: Mapped[str | None] = mapped_column(String(2000), nullable=True)
+    instagram_url: Mapped[str | None] = mapped_column(String(2000), nullable=True)
     is_published: Mapped[bool] = mapped_column(Boolean, default=False)
     created_by: Mapped[int] = mapped_column(ForeignKey("admins.id"), nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)

@@ -12,6 +12,7 @@ SCHEMA_ADDITIONS = [
     ("emergency_contacts", "last_verified_at", "TIMESTAMP WITH TIME ZONE"),
     ("posts", "post_type", "VARCHAR(50) DEFAULT 'news'"),
     ("posts", "image_url", "VARCHAR(2000)"),
+    ("posts", "instagram_url", "VARCHAR(2000)"),
 ]
 
 async def run_migrations():
