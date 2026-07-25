@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
-import { MapPin, Navigation, Train, LocateFixed, Footprints, Target, ArrowRight, Circle as CircleIcon, Search, X } from "lucide-react";
+import { MapPin, Navigation, Train, LocateFixed, Footprints, Target, ArrowRight, Search, X } from "lucide-react";
 import { SEO } from "../components/SEO";
 import { Card } from "../components/ui/Card";
 import { Badge } from "../components/ui/Badge";
@@ -30,9 +30,8 @@ interface RouteStep { type: "walk" | "line"; label: string; dist?: number }
 function findRoute(a: Station, b: Station, stations: Station[]): RouteStep[] {
   if (a.id === b.id) return [];
   const shared = a.lines.filter(l => b.lines.some(l2 => l2.name === l.name));
-  if (shared.length > 0) return [{ type: "walk" as const, label: a.name, dist: 0 }, { type: "line" as const, label: `Take ${shared[0].name} Line to ${b.name}` }];
+  if (shared.length > 0) return [{ type: "line" as const, label: `Take ${shared[0].name} Line from ${a.name} to ${b.name}` }];
 
-  const stationMap = new Map(stations.map(s => [s.id, s]));
   for (const s of stations) {
     if (s.id === a.id || s.id === b.id) continue;
     const aShares = a.lines.some(l => s.lines.some(l2 => l2.name === l.name));
@@ -41,10 +40,8 @@ function findRoute(a: Station, b: Station, stations: Station[]): RouteStep[] {
       const lineA = a.lines.find(l => s.lines.some(l2 => l2.name === l.name))!;
       const lineB = b.lines.find(l => s.lines.some(l2 => l2.name === l.name))!;
       return [
-        { type: "walk" as const, label: a.name },
-        { type: "line" as const, label: `Take ${lineA.name} Line to ${s.name}` },
-        { type: "line" as const, label: `Take ${lineB.name} Line to ${b.name}` },
-        { type: "walk" as const, label: `Walk to ${b.name} area` },
+        { type: "line" as const, label: `Take ${lineA.name} Line from ${a.name} to ${s.name}` },
+        { type: "line" as const, label: `Switch to ${lineB.name} Line to ${b.name}` },
       ];
     }
   }
@@ -87,8 +84,6 @@ export default function ProtestMap() {
   }, []);
 
   const disruptionMap = useMemo(() => disruptions, [disruptions]);
-
-  const statusColor = (s: string) => s === "open" ? "#22c55e" : s === "limited" ? "#eab308" : "#ef4444";
   const statusLabel = (s: string) => s === "open" ? "Open" : s === "limited" ? "Limited" : "Closed";
 
   const stationsWithDist = useMemo(() => {
@@ -106,21 +101,22 @@ export default function ProtestMap() {
     return sorted.find(s => !disruptionMap.get(s.id) || disruptionMap.get(s.id)!.status === "open");
   }, [stationsWithDist, disruptionMap]);
 
-  const route = useMemo(() => {
-    if (!nearestOpenToUser || !nearestOpenToJM) return null;
-    return findRoute(nearestOpenToUser, nearestOpenToJM, stations);
-  }, [nearestOpenToUser, nearestOpenToJM, stations]);
-
-  const routeStartStation = useMemo(() => {
-    if (!routeSearch) return null;
-    const q = routeSearch.toLowerCase();
-    return stations.find(s => s.name.toLowerCase().includes(q)) || null;
+  // Use manual search station as start if user typed one, else fall back to GPS
+  const manualStart = useMemo(() => {
+    if (routeSearch) {
+      const q = routeSearch.toLowerCase();
+      const found = stations.find(s => s.name.toLowerCase().includes(q));
+      if (found) setRouteStart(found.name);
+      return found || null;
+    }
+    return null;
   }, [routeSearch, stations]);
 
-  const lineColors: Record<string, string> = {
-    Blue: "#1273C4", Yellow: "#F2C230", Red: "#E4342F", Violet: "#8A3FA0",
-    Pink: "#E3479A", Magenta: "#9C1461", Green: "#2CA85B", "Airport Express": "#F5821F",
-  };
+  const route = useMemo(() => {
+    const from = manualStart || nearestOpenToUser;
+    if (!from || !nearestOpenToJM) return null;
+    return findRoute(from, nearestOpenToJM, stations);
+  }, [manualStart, nearestOpenToUser, nearestOpenToJM, stations]);
 
   const embedUrl = "https://www.openstreetmap.org/export/embed.html?bbox=77.09%2C28.55%2C77.32%2C28.70&layer=transportmap&marker=28.6271%2C77.2174";
 
@@ -136,7 +132,7 @@ export default function ProtestMap() {
       {/* Map embed */}
       <div className="relative w-full h-[300px] sm:h-[400px] bg-ph-dark-2 border border-ph-border overflow-hidden">
         <iframe title="OpenStreetMap" width="100%" height="100%" frameBorder="0" scrolling="no" marginHeight={0} marginWidth={0}
-          src={embedUrl} className="absolute inset-0" style={{ filter: "invert(0.9) hue-rotate(180deg)" }} />
+          src={embedUrl} className="absolute inset-0 dark:invert dark:hue-rotate-180" />
         <div className="absolute top-2 left-2 bg-ph-dark/80 text-[10px] text-ph-text-muted px-2 py-1 z-10">{t("map.embedMap")}</div>
       </div>
 
@@ -265,38 +261,37 @@ export default function ProtestMap() {
 
           {/* Right: route steps */}
           <div>
-            {(routeStart || gpsStatus === "ok") && nearestOpenToUser && nearestOpenToJM ? (
+            {(route && nearestOpenToJM) ? (
               <div className="space-y-2">
                 <div className="flex items-center gap-2 text-xs text-ph-text-muted mb-1">
                   <Train className="h-3.5 w-3.5 text-ph-orange" />
-                  {t("map.routeFrom")} {routeStart || "Current location"} → {t("map.routeTo")}
+                  {t("map.routeFrom")} {routeStart || nearestOpenToUser?.name || "Current location"} → {t("map.routeTo")}
                 </div>
                 <div className="space-y-1.5 pl-2 border-l-2 border-ph-orange/30">
-                  {/* Walk to start station */}
-                  <div className="flex items-center gap-2 text-xs">
-                    <Footprints className="h-3.5 w-3.5 text-ph-orange shrink-0" />
-                    <span className="text-ph-text-secondary">{t("map.routeStepWalk").replace("{station}", nearestOpenToUser.name)}
-                      <span className="text-ph-text-muted ml-1">({fmt(nearestOpenToUser.d)} · {walk(nearestOpenToUser.d)})</span>
-                    </span>
-                  </div>
+                  {/* Walk from current location to start station */}
+                  {!manualStart && nearestOpenToUser && (
+                    <div className="flex items-center gap-2 text-xs">
+                      <Footprints className="h-3.5 w-3.5 text-ph-orange shrink-0" />
+                      <span className="text-ph-text-secondary">{t("map.routeStepWalk").replace("{station}", nearestOpenToUser.name)}
+                        <span className="text-ph-text-muted ml-1">({fmt(nearestOpenToUser.d)} · {walk(nearestOpenToUser.d)})</span>
+                      </span>
+                    </div>
+                  )}
                   {/* Route steps */}
-                  {route?.map((step, i) => (
+                  {route.map((step, i) => (
                     <div key={i} className="flex items-center gap-2 text-xs">
-                      {step.type === "walk" ? (
-                        <Footprints className="h-3.5 w-3.5 text-ph-orange shrink-0" />
-                      ) : (
-                        <Train className="h-3.5 w-3.5 text-ph-orange shrink-0" />
-                      )}
+                      {step.type === "walk" ? <Footprints className="h-3.5 w-3.5 text-ph-orange shrink-0" />
+                        : <Train className="h-3.5 w-3.5 text-ph-orange shrink-0" />}
                       <span className="text-ph-text-secondary">{step.label}</span>
                     </div>
                   ))}
                   {/* Walk to JM */}
                   <div className="flex items-center gap-2 text-xs">
                     <MapPin className="h-3.5 w-3.5 text-ph-orange shrink-0" />
-                    <span className="text-white font-bold">{t("map.routeStepWalkTo").replace("{dist}", `${fmt(nearestOpenToJM.dJM)} · ${walk(nearestOpenToJM.dJM)}`)}</span>
+                    <span className="text-white font-bold">{t("map.routeStepWalkTo").replace("{dist}", `${fmt(nearestOpenToJM!.dJM)} · ${walk(nearestOpenToJM!.dJM)}`)}</span>
                   </div>
                 </div>
-                <a href={`https://www.google.com/maps/dir/?api=1&destination=28.6271,77.2174&waypoints=${nearestOpenToUser.lat},${nearestOpenToUser.lng}`}
+                <a href={`https://www.google.com/maps/dir/?api=1&destination=28.6271,77.2174&waypoints=${(manualStart || nearestOpenToUser)!.lat},${(manualStart || nearestOpenToUser)!.lng}`}
                   target="_blank" rel="noopener noreferrer" className="ph-btn-primary ph-btn-sm w-full mt-2">
                   <Navigation className="h-4 w-4" /> Open route in Google Maps
                 </a>
