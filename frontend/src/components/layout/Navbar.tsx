@@ -2,7 +2,7 @@ import { Link, useLocation, useNavigate, useSearchParams } from "react-router-do
 import {
   Flame, Phone, Radio, Scale, ShieldCheck, Menu, X, Send, Search, Shield,
   Moon, Sun, Download, Bell, BellOff, Heart, AlertTriangle, Sun as SunIcon,
-  ClipboardList, MapPin, Lock, BookOpen, Droplets, Globe, Eye, Train,
+  ClipboardList, MapPin, Lock, BookOpen, Droplets, Globe, Eye, Train, Users,
 } from "lucide-react";
 import { memo, useCallback, useRef, useState } from "react";
 import { useTheme } from "../../hooks/useTheme";
@@ -32,6 +32,8 @@ const pageImports: Record<string, () => Promise<any>> = {
   "/privacy": () => import("../../pages/Privacy"),
   "/evidence": () => import("../../pages/Evidence"),
   "/metro": () => import("../../pages/Metro"),
+  "/map": () => import("../../pages/Map"),
+  "/group": () => import("../../pages/GroupCheckin"),
 };
 
 const navLinks: { to: string; key: string; icon: any }[] = [
@@ -223,12 +225,12 @@ export const Navbar = memo(function Navbar({ onLogoClick }: { onLogoClick?: () =
     <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-ph-border bg-ph-dark md:hidden safe-area-bottom">
       <div className="flex items-center justify-around min-h-[56px] px-1">
         {[
-            { to: "/", key: "home", icon: Flame },
-            { to: "/sos", key: "sos", icon: AlertTriangle, urgent: true },
-            { to: "/metro", key: "metro", icon: Train },
-            { to: "/live-feed", key: "liveFeed", icon: Radio },
-            { to: "/emergency", key: "emergency", icon: Phone },
-          ].map(({ to, key, icon: Icon, urgent }) => (
+          { to: "/", key: "home", icon: Flame },
+          { to: "/sos", key: "sos", icon: AlertTriangle, urgent: true },
+          { to: "/metro", key: "metro", icon: Train },
+          { to: "/live-feed", key: "liveFeed", icon: Radio },
+          { to: "/emergency", key: "emergency", icon: Phone },
+        ].map(({ to, key, icon: Icon, urgent }) => (
           <Link
             key={to}
             to={to}

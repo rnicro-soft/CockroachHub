@@ -22,6 +22,8 @@ const staticPaths = [
   "/privacy",
   "/evidence",
   "/metro",
+  "/map",
+  "/group",
   "/admin/login",
 ];
 

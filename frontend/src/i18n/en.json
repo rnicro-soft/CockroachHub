@@ -27,7 +27,9 @@
     "exit": "Exit",
     "privacy": "Privacy Guide",
     "evidence": "Evidence",
-    "metro": "Metro"
+    "metro": "Metro",
+    "map": "Map",
+    "group": "Group"
   },
   "home": {
     "trending": "Trending",
@@ -992,5 +994,36 @@
     "legalAid": {
       "title": "Free legal aid & lawyer contacts"
     }
+  },
+  "map": {
+    "title": "Protest Map",
+    "subtitle": "Jantar Mantar · Metro stations · Safe zones — all on one map",
+    "embedMap": "OpenStreetMap (free, no API key needed)",
+    "markers": "Points on this map",
+    "stations": "Metro Stations",
+    "safeZones": "Safe Zones",
+    "yourLocation": "Your Location",
+    "detecting": "Detecting...",
+    "detect": "Detect My Location",
+    "noLocation": "Enable GPS to see your position on the map",
+    "legend": "Legend",
+    "legendOpen": "Open station",
+    "legendLimited": "Limited service",
+    "legendClosed": "Closed station",
+    "legendLegal": "Legal aid",
+    "legendMedical": "Medical tent",
+    "legendSafe": "Safe house",
+    "legendJm": "Jantar Mantar",
+    "routePlanner": "Route Planner",
+    "routePlannerDesc": "Find the best way to Jantar Mantar from your location",
+    "routeFrom": "From",
+    "routeTo": "Jantar Mantar, Delhi",
+    "routeStepWalk": "Walk to {station}",
+    "routeStepLine": "Take {line} Line to {station}",
+    "routeStepWalkTo": "Walk to Jantar Mantar ({dist})",
+    "routeNoPath": "Could not find a route — check station statuses",
+    "routeOpenNow": "Open now",
+    "routeStartSearch": "Enter your starting point or enable GPS",
+    "startSearch": "Search starting station..."
   }
 }

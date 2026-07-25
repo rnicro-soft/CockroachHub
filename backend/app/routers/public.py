@@ -1,5 +1,6 @@
 import asyncio
 import json as json_mod
+from datetime import datetime, timezone
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from fastapi.responses import StreamingResponse
@@ -9,10 +10,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from pydantic import BaseModel
 
 from app.database import get_db
-from app.models import AidOrganization, Alert, Announcement, EmergencyContact, FactCheck, LegalRight, MentalHealthProvider, MetroDisruption, MetroStation, NewsSource, PushSubscription, SafeZone, Submission
+from app.models import AidOrganization, Alert, Announcement, EmergencyContact, FactCheck, GroupCheckin, LegalRight, MentalHealthProvider, MetroDisruption, MetroStation, NewsSource, PushSubscription, SafeZone, Submission
 from app.push import get_vapid_public_key
 from app.ratelimit import check_ip_blacklist, rate_limit_submissions
-from app.schemas import AidOrganizationOut, AlertOut, AnnouncementOut, ContactOut, FactCheckOut, LegalRightOut, MentalHealthOut, MetroDisruptionOut, MetroStationOut, MetroSubmitRequest, NewsSourceOut, SafeZoneOut, SubmissionCreate, SubmissionOut
+from app.schemas import AidOrganizationOut, AlertOut, AnnouncementOut, ContactOut, FactCheckOut, GroupCreateRequest, GroupJoinRequest, GroupCheckinRequest, GroupMemberOut, GroupStatusOut, LegalRightOut, MentalHealthOut, MetroDisruptionOut, MetroStationOut, MetroSubmitRequest, NewsSourceOut, SafeZoneOut, SubmissionCreate, SubmissionOut
 
 router = APIRouter(prefix="/api", tags=["public"])
 
@@ -187,6 +188,55 @@ async def submit_metro_disruption(
     await db.refresh(d)
     print(f"[METRO] Crowd report: {body.station_id} → {body.status}")
     return MetroDisruptionOut.model_validate(d)
+
+
+# --- Group Check-in ---
+import random
+import string
+
+
+@router.post("/group/create")
+async def group_create(body: GroupCreateRequest, request: Request, db: AsyncSession = Depends(get_db)):
+    code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+    member = GroupCheckin(group_code=code, member_name=body.member_name, ip_address=request.client.host if request.client else None)
+    db.add(member)
+    await db.commit()
+    await db.refresh(member)
+    return {"group_code": code, "member": GroupMemberOut.model_validate(member)}
+
+
+@router.post("/group/join")
+async def group_join(body: GroupJoinRequest, request: Request, db: AsyncSession = Depends(get_db)):
+    existing = await db.execute(select(GroupCheckin).where(GroupCheckin.group_code == body.group_code, GroupCheckin.member_name == body.member_name))
+    if existing.scalar_one_or_none():
+        raise HTTPException(status_code=400, detail="Name already used in this group")
+    member = GroupCheckin(group_code=body.group_code, member_name=body.member_name, ip_address=request.client.host if request.client else None)
+    db.add(member)
+    await db.commit()
+    await db.refresh(member)
+    return {"member": GroupMemberOut.model_validate(member)}
+
+
+@router.post("/group/checkin")
+async def group_checkin(body: GroupCheckinRequest, request: Request, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(GroupCheckin).where(GroupCheckin.group_code == body.group_code, GroupCheckin.member_name == body.member_name))
+    member = result.scalar_one_or_none()
+    if not member:
+        raise HTTPException(status_code=404, detail="Member not found")
+    member.lat = body.lat
+    member.lng = body.lng
+    member.status = body.status
+    member.updated_at = datetime.now(timezone.utc)
+    await db.commit()
+    await db.refresh(member)
+    return GroupMemberOut.model_validate(member)
+
+
+@router.get("/group/{group_code}")
+async def group_status(group_code: str, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(GroupCheckin).where(GroupCheckin.group_code == group_code).order_by(GroupCheckin.updated_at.desc()))
+    members = [GroupMemberOut.model_validate(m) for m in result.scalars().all()]
+    return {"group_code": group_code, "members": members}
 
 
 # --- Mental Health ---

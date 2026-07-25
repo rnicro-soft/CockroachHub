@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import {
   Radio, MapPin, Clock, AlertTriangle, Info, Stethoscope, Shield, RefreshCw, WifiOff,
@@ -64,6 +64,31 @@ export default function LiveFeed() {
   const shown = filter ? alerts.filter((a) => a.type === filter) : alerts;
   const alertTitles = shown.map((a) => a.title);
 
+  // Timeline grouping
+  const grouped = useMemo(() => {
+    const groups: { label: string; alerts: Alert[] }[] = [];
+    const today = new Date();
+    const todayStr = today.toDateString();
+    const yesterdayStr = new Date(today.getTime() - 86400000).toDateString();
+    let current: { label: string; alerts: Alert[] } | null = null;
+
+    for (const a of shown) {
+      const d = new Date(a.created_at);
+      const ds = d.toDateString();
+      let label: string;
+      if (ds === todayStr) label = "Today";
+      else if (ds === yesterdayStr) label = "Yesterday";
+      else label = ds === todayStr ? "Today" : d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+
+      if (!current || current.label !== label) {
+        current = { label, alerts: [] };
+        groups.push(current);
+      }
+      current.alerts.push(a);
+    }
+    return groups;
+  }, [shown]);
+
   return (
     <>
 <SEO title={t("liveFeed.seoTitle")} description={t("liveFeed.seoDesc")} path="/live-feed" />
@@ -98,44 +123,48 @@ export default function LiveFeed() {
         ))}
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 cv-auto">
-        {shown.length === 0 && (
-          <div className="col-span-full py-20 text-center"><Radio className="mx-auto h-8 w-8 text-ph-text-muted" /><p className="mt-2 text-sm text-ph-text-muted">{t("liveFeed.noAlerts")}</p></div>
-        )}
-        {shown.map((a) => {
-          const Icon = icons[a.type as keyof typeof icons] || Info;
-          return (
-<div key={a.id} className={`bg-white dark:bg-ph-dark-2 border border-ph-border-light dark:border-ph-border ${sevBorder[a.severity]}`}>
-              <div className="p-4">
-                <div className="flex items-start gap-3 mb-3">
-                  <div className={`p-2.5 ${
-                    a.severity === "red" ? "bg-ph-red/10" : a.severity === "yellow" ? "bg-ph-yellow/10" : "bg-ph-green/10"
-                  }`}>
-                    <Icon className={`h-4 w-4 ${
-                      a.severity === "red" ? "text-ph-red" : a.severity === "yellow" ? "text-ph-yellow" : "text-ph-green"
-                    }`} />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <h3 className="text-[14px] font-bold text-ph-text-dark dark:text-white">{a.title}</h3>
-                      {a.featured && <span className="text-[10px] font-bold px-1.5 py-0.5 bg-cjp-maroon/10 text-cjp-maroon border border-cjp-maroon/30">{t("liveFeed.featured") || "Featured"}</span>}
-                    </div>
-                    <p className="text-xs text-ph-text-muted mt-0.5 leading-relaxed">{a.description}</p>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between border-t border-ph-border-light dark:border-ph-border pt-3 text-[11px] text-ph-text-muted">
-                  <div className="flex flex-wrap gap-3">
-                    {a.location && <span className="flex items-center gap-1"><MapPin className="h-3 w-3" />{a.location}</span>}
-                    <span className="flex items-center gap-1"><Clock className="h-3 w-3" />{timeAgo(a.created_at)}</span>
-                  </div>
-                  <span className={`ph-chip text-[10px] ${
-                    a.severity === "red" ? "ph-badge-red" : a.severity === "yellow" ? "ph-badge-yellow" : "ph-badge-green"
-                  }`}>{a.severity === "red" ? t("liveFeed.severity.red") : a.severity === "yellow" ? t("liveFeed.severity.yellow") : t("liveFeed.severity.green")}</span>
-                </div>
-              </div>
+      {shown.length === 0 && (
+        <div className="py-20 text-center"><Radio className="mx-auto h-8 w-8 text-ph-text-muted" /><p className="mt-2 text-sm text-ph-text-muted">{t("liveFeed.noAlerts")}</p></div>
+      )}
+      <div className="space-y-6">
+        {grouped.map((group) => (
+          <div key={group.label}>
+            <div className="sticky top-0 z-10 bg-ph-light dark:bg-ph-black py-2 mb-3 border-b border-ph-border-light dark:border-ph-border">
+              <h3 className="text-xs font-bold text-ph-text-muted uppercase tracking-wider">{group.label} · {group.alerts.length} alert{group.alerts.length !== 1 ? "s" : ""}</h3>
             </div>
-      );
-})}
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 cv-auto">
+              {group.alerts.map((a) => {
+                const Icon = icons[a.type as keyof typeof icons] || Info;
+                return (
+                <div key={a.id} className={`bg-white dark:bg-ph-dark-2 border border-ph-border-light dark:border-ph-border ${sevBorder[a.severity]}`}>
+                  <div className="p-4">
+                    <div className="flex items-start gap-3 mb-3">
+                      <div className={`p-2.5 ${a.severity === "red" ? "bg-ph-red/10" : a.severity === "yellow" ? "bg-ph-yellow/10" : "bg-ph-green/10"}`}>
+                        <Icon className={`h-4 w-4 ${a.severity === "red" ? "text-ph-red" : a.severity === "yellow" ? "text-ph-yellow" : "text-ph-green"}`} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <h3 className="text-[14px] font-bold text-ph-text-dark dark:text-white">{a.title}</h3>
+                          {a.featured && <span className="text-[10px] font-bold px-1.5 py-0.5 bg-cjp-maroon/10 text-cjp-maroon border border-cjp-maroon/30">{t("liveFeed.featured")}</span>}
+                        </div>
+                        <p className="text-xs text-ph-text-muted mt-0.5 leading-relaxed">{a.description}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between border-t border-ph-border-light dark:border-ph-border pt-3 text-[11px] text-ph-text-muted">
+                      <div className="flex flex-wrap gap-3">
+                        {a.location && <span className="flex items-center gap-1"><MapPin className="h-3 w-3" />{a.location}</span>}
+                        <span className="flex items-center gap-1"><Clock className="h-3 w-3" />{timeAgo(a.created_at)}</span>
+                      </div>
+                      <span className={`ph-chip text-[10px] ${a.severity === "red" ? "ph-badge-red" : a.severity === "yellow" ? "ph-badge-yellow" : "ph-badge-green"}`}>
+                        {a.severity === "red" ? t("liveFeed.severity.red") : a.severity === "yellow" ? t("liveFeed.severity.yellow") : t("liveFeed.severity.green")}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              );})}
+            </div>
+          </div>
+        ))}
       </div>
       <LiveAnnouncer messages={alertTitles} />
     </div>

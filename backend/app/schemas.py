@@ -292,6 +292,43 @@ class LegalRightOut(BaseModel):
     model_config = {"from_attributes": True}
 
 
+# --- Group Check-in ---
+class GroupCreateRequest(BaseModel):
+    member_name: str = Field(max_length=100)
+
+
+class GroupJoinRequest(BaseModel):
+    group_code: str = Field(max_length=10)
+    member_name: str = Field(max_length=100)
+
+
+class GroupCheckinRequest(BaseModel):
+    group_code: str = Field(max_length=10)
+    member_name: str = Field(max_length=100)
+    lat: float | None = None
+    lng: float | None = None
+    status: str = "safe"
+
+
+class GroupMemberOut(BaseModel):
+    id: int
+    member_name: str
+    lat: float | None = None
+    lng: float | None = None
+    status: str
+    created_at: datetime
+    updated_at: datetime
+
+    model_config = {"from_attributes": True}
+
+
+class GroupStatusOut(BaseModel):
+    group_code: str
+    members: list[GroupMemberOut]
+
+    model_config = {"from_attributes": True}
+
+
 # --- Metro ---
 class MetroLineOut(BaseModel):
     name: str

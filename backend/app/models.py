@@ -212,6 +212,20 @@ class NewsSource(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
 
 
+class GroupCheckin(Base):
+    __tablename__ = "group_checkins"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    group_code: Mapped[str] = mapped_column(String(10), index=True, nullable=False)
+    member_name: Mapped[str] = mapped_column(String(100), nullable=False)
+    lat: Mapped[float | None] = mapped_column(Float, nullable=True)
+    lng: Mapped[float | None] = mapped_column(Float, nullable=True)
+    status: Mapped[str] = mapped_column(String(20), default="safe")  # safe | help | unknown
+    ip_address: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, onupdate=utcnow)
+
+
 class TokenBlacklist(Base):
     __tablename__ = "token_blacklist"
 
