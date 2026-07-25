@@ -112,13 +112,9 @@ export default function Metro() {
 
   // --- Protest Hub: Jantar Mantar ---
 
-  const stationsNearJM = useMemo(() => {
-    const jmStations = stations
-      .map((s) => ({ ...s, distToJM: haversineDist(s.lat, s.lng, JM_LAT, JM_LNG) }))
-      .filter((s) => s.distToJM < 3000)
-      .sort((a, b) => a.distToJM - b.distToJM);
-    return jmStations;
-  }, [stations]);
+  const stationsNearJM = useMemo(() =>
+    stationsWithJM.filter((s) => s.distToJM < 3000),
+  [stationsWithJM]);
 
   const nearestOpen = useMemo(() => {
     if (userLat === null || userLng === null) return null;
