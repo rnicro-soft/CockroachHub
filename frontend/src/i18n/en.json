@@ -31,7 +31,8 @@
     "map": "Map",
     "group": "Group",
     "prepare": "Prepare",
-    "bus": "Bus"
+    "bus": "Bus",
+    "news": "News"
   },
   "home": {
     "trending": "Trending",
@@ -505,6 +506,14 @@
     "seoTitle": "Page Not Found — 404",
     "seoDesc": "This page has scurried away like a cockroach. But don't worry — we always come back."
   },
+  "news": {
+    "title": "News & Updates",
+    "seoTitle": "News & Updates — CJP Helpline",
+    "seoDesc": "Latest news and updates from CJP. Instagram embeds, field reports, and announcements.",
+    "noPosts": "No posts yet",
+    "notFound": "Post not found",
+    "back": "Back to News"
+  },
   "admin": {
     "login": "Admin Login",
     "loginSubtitle": "CockroachHub Admin Panel",
@@ -567,7 +576,8 @@
       "detainees": "No detainees recorded",
       "ipBlacklist": "No blacklisted IPs",
       "loginAttempts": "No login attempts",
-      "auditLog": "No log entries"
+      "auditLog": "No log entries",
+      "posts": "No posts yet"
     },
     "stats": {
       "activeAlerts": "Active Alerts",
@@ -716,7 +726,9 @@
     "allDisruptions": "All",
     "created": "Created",
     "source": "Source",
-    "metroStations": "Metro Stations"
+    "metroStations": "Metro Stations",
+    "posts": "Posts",
+    "postsContentHint": "Paste Instagram embed code, HTML, or plain text. Instagram embeds will render automatically."
   },
   "common": {
     "loading": "Loading...",

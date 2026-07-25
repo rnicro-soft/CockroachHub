@@ -24,6 +24,7 @@ class Admin(Base):
     alerts = relationship("Alert", back_populates="created_by_admin")
     fact_checks = relationship("FactCheck", back_populates="created_by_admin")
     reviewed_submissions = relationship("Submission", back_populates="reviewed_by_admin")
+    posts = relationship("Post", back_populates="created_by_admin")
 
 
 class Alert(Base):
@@ -261,6 +262,20 @@ class MetroStation(Base):
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
 
     disruptions = relationship("MetroDisruption", back_populates="station")
+
+
+class Post(Base):
+    __tablename__ = "posts"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    title: Mapped[str] = mapped_column(String(500), nullable=False)
+    content: Mapped[str] = mapped_column(Text, nullable=False)
+    is_published: Mapped[bool] = mapped_column(Boolean, default=False)
+    created_by: Mapped[int] = mapped_column(ForeignKey("admins.id"), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, onupdate=utcnow)
+
+    created_by_admin = relationship("Admin", back_populates="posts")
 
 
 class MetroDisruption(Base):

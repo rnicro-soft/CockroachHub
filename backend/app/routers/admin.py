@@ -9,7 +9,7 @@ from app.auth import get_current_admin
 from app.database import get_db
 import json as json_mod
 from app.helpline_sync import sync_helpline_data
-from app.models import Admin, Alert, Announcement, AuditLog, Detainee, EmergencyContact, FactCheck, IPBlacklist, LegalRight, LoginAttempt, MetroDisruption, MetroStation, PushSubscription, SafeZone, Submission
+from app.models import Admin, Alert, Announcement, AuditLog, Detainee, EmergencyContact, FactCheck, IPBlacklist, LegalRight, LoginAttempt, MetroDisruption, MetroStation, Post, PushSubscription, SafeZone, Submission
 from app.push import send_push_notification
 from app.schemas import (
     AdminOut,
@@ -34,6 +34,9 @@ from app.schemas import (
     MetroDisruptionOut,
     MetroDisruptionUpdate,
     MetroStationOut,
+    PostCreate,
+    PostOut,
+    PostUpdate,
     SafeZoneCreate,
     SafeZoneOut,
     SafeZoneUpdate,
@@ -997,4 +1000,91 @@ async def admin_delete_safe_zone(
         raise HTTPException(status_code=404, detail="Safe zone not found")
     await _log_action(db, current_admin.id, "delete", "safe_zone", zone_id)
     await db.delete(z)
+    await db.commit()
+
+
+# --- Posts Admin ---
+@router.get("/posts")
+async def admin_list_posts(
+    page: int = Query(1, ge=1),
+    per_page: int = Query(20, ge=1, le=100),
+    db: AsyncSession = Depends(get_db),
+    current_admin: Admin = Depends(get_current_admin),
+):
+    query = select(Post).order_by(Post.created_at.desc())
+    count_q = select(func.count(Post.id))
+    total = (await db.execute(count_q)).scalar()
+    offset = (page - 1) * per_page
+    result = await db.execute(query.offset(offset).limit(per_page))
+    items = [PostOut.model_validate(p) for p in result.scalars().all()]
+    return {"items": items, "total": total, "page": page, "per_page": per_page}
+
+
+@router.post("/posts", response_model=PostOut, status_code=201)
+async def admin_create_post(
+    body: PostCreate,
+    db: AsyncSession = Depends(get_db),
+    current_admin: Admin = Depends(get_current_admin),
+):
+    p = Post(**body.model_dump(), created_by=current_admin.id)
+    db.add(p)
+    await _log_action(db, current_admin.id, "create", "post", p.id)
+    await db.commit()
+    await db.refresh(p)
+    print(f"[ADMIN] {current_admin.email} created post #{p.id}: {body.title}")
+    return PostOut.model_validate(p)
+
+
+@router.put("/posts/{post_id}", response_model=PostOut)
+async def admin_update_post(
+    post_id: int,
+    body: PostUpdate,
+    db: AsyncSession = Depends(get_db),
+    current_admin: Admin = Depends(get_current_admin),
+):
+    result = await db.execute(select(Post).where(Post.id == post_id))
+    p = result.scalar_one_or_none()
+    if not p:
+        raise HTTPException(status_code=404, detail="Post not found")
+    for field, value in body.model_dump(exclude_unset=True).items():
+        setattr(p, field, value)
+    p.updated_at = datetime.now(timezone.utc)
+    await _log_action(db, current_admin.id, "update", "post", post_id)
+    await db.commit()
+    await db.refresh(p)
+    print(f"[ADMIN] {current_admin.email} updated post #{post_id}")
+    return PostOut.model_validate(p)
+
+
+@router.patch("/posts/{post_id}/publish", response_model=PostOut)
+async def admin_toggle_publish_post(
+    post_id: int,
+    db: AsyncSession = Depends(get_db),
+    current_admin: Admin = Depends(get_current_admin),
+):
+    result = await db.execute(select(Post).where(Post.id == post_id))
+    p = result.scalar_one_or_none()
+    if not p:
+        raise HTTPException(status_code=404, detail="Post not found")
+    p.is_published = not p.is_published
+    p.updated_at = datetime.now(timezone.utc)
+    await _log_action(db, current_admin.id, "publish" if p.is_published else "unpublish", "post", post_id)
+    await db.commit()
+    await db.refresh(p)
+    print(f"[ADMIN] {current_admin.email} {'published' if p.is_published else 'unpublished'} post #{post_id}")
+    return PostOut.model_validate(p)
+
+
+@router.delete("/posts/{post_id}", status_code=204)
+async def admin_delete_post(
+    post_id: int,
+    db: AsyncSession = Depends(get_db),
+    current_admin: Admin = Depends(get_current_admin),
+):
+    result = await db.execute(select(Post).where(Post.id == post_id))
+    p = result.scalar_one_or_none()
+    if not p:
+        raise HTTPException(status_code=404, detail="Post not found")
+    await _log_action(db, current_admin.id, "delete", "post", post_id)
+    await db.delete(p)
     await db.commit()

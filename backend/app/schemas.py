@@ -329,6 +329,31 @@ class GroupStatusOut(BaseModel):
     model_config = {"from_attributes": True}
 
 
+# --- Posts ---
+class PostCreate(BaseModel):
+    title: str = Field(max_length=500)
+    content: str = Field(max_length=50000)
+    is_published: bool = False
+
+
+class PostUpdate(BaseModel):
+    title: str | None = None
+    content: str | None = None
+    is_published: bool | None = None
+
+
+class PostOut(BaseModel):
+    id: int
+    title: str
+    content: str
+    is_published: bool
+    created_by: int
+    created_at: datetime
+    updated_at: datetime
+
+    model_config = {"from_attributes": True}
+
+
 # --- Bus Routes ---
 class BusRouteOut(BaseModel):
     id: int

@@ -44,6 +44,8 @@ const ProtestMap = lazy(() => import("./pages/Map"));
 const GroupCheckin = lazy(() => import("./pages/GroupCheckin"));
 const Prepare = lazy(() => import("./pages/Prepare"));
 const BusRoutes = lazy(() => import("./pages/BusRoutes"));
+const News = lazy(() => import("./pages/News"));
+const NewsDetail = lazy(() => import("./pages/NewsDetail"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const AdminLogin = lazy(() => import("./pages/admin/Login"));
 const ChangePassword = lazy(() => import("./pages/admin/ChangePassword"));
@@ -61,6 +63,7 @@ const AdminIPBlacklist = lazy(() => import("./pages/admin/IPBlacklist"));
 const AdminLoginAttempts = lazy(() => import("./pages/admin/LoginAttempts"));
 const AdminMetroDisruptions = lazy(() => import("./pages/admin/MetroDisruptions"));
 const AdminMetroStations = lazy(() => import("./pages/admin/MetroStations"));
+const AdminPosts = lazy(() => import("./pages/admin/Posts"));
 
 const PageLoader = () => (
   <div className="flex items-center justify-center min-h-[40vh] bg-ph-light dark:bg-ph-black">
@@ -237,6 +240,8 @@ export default function App() {
             <Route path="/group" element={<GroupCheckin />} />
             <Route path="/prepare" element={<Prepare />} />
             <Route path="/bus" element={<BusRoutes />} />
+            <Route path="/news" element={<News />} />
+            <Route path="/news/:id" element={<NewsDetail />} />
           </Route>
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/change-password" element={<ChangePassword />} />
@@ -256,6 +261,7 @@ export default function App() {
               <Route path="/admin/login-attempts" element={<AdminLoginAttempts />} />
               <Route path="/admin/metro" element={<AdminMetroDisruptions />} />
               <Route path="/admin/metro-stations" element={<AdminMetroStations />} />
+              <Route path="/admin/posts" element={<AdminPosts />} />
             </Route>
           </Route>
           <Route path="*" element={<NotFound />} />

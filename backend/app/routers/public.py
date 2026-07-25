@@ -10,10 +10,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from pydantic import BaseModel
 
 from app.database import get_db
-from app.models import AidOrganization, Alert, Announcement, BusRoute, EmergencyContact, FactCheck, GroupCheckin, LegalRight, MentalHealthProvider, MetroDisruption, MetroStation, NewsSource, PushSubscription, SafeZone, Submission
+from app.models import AidOrganization, Alert, Announcement, BusRoute, EmergencyContact, FactCheck, GroupCheckin, LegalRight, MentalHealthProvider, MetroDisruption, MetroStation, NewsSource, Post, PushSubscription, SafeZone, Submission
 from app.push import get_vapid_public_key
 from app.ratelimit import check_ip_blacklist, rate_limit_submissions
-from app.schemas import AidOrganizationOut, AlertOut, AnnouncementOut, BusRouteOut, ContactOut, FactCheckOut, GroupCreateRequest, GroupJoinRequest, GroupCheckinRequest, GroupMemberOut, GroupStatusOut, LegalRightOut, MentalHealthOut, MetroDisruptionOut, MetroStationOut, MetroSubmitRequest, NewsSourceOut, SafeZoneOut, SubmissionCreate, SubmissionOut
+from app.schemas import AidOrganizationOut, AlertOut, AnnouncementOut, BusRouteOut, ContactOut, FactCheckOut, GroupCreateRequest, GroupJoinRequest, GroupCheckinRequest, GroupMemberOut, GroupStatusOut, LegalRightOut, MentalHealthOut, MetroDisruptionOut, MetroStationOut, MetroSubmitRequest, NewsSourceOut, PostOut, SafeZoneOut, SubmissionCreate, SubmissionOut
 
 router = APIRouter(prefix="/api", tags=["public"])
 
@@ -273,6 +273,22 @@ async def get_aid_organizations(db: AsyncSession = Depends(get_db)):
 async def get_news_sources(db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(NewsSource).order_by(NewsSource.name))
     return [NewsSourceOut.model_validate(n) for n in result.scalars().all()]
+
+
+# --- Posts ---
+@router.get("/posts", response_model=list[PostOut])
+async def get_posts(limit: int = Query(50, ge=1, le=100), offset: int = Query(0, ge=0), db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(Post).where(Post.is_published == True).order_by(Post.created_at.desc()).offset(offset).limit(limit))
+    return [PostOut.model_validate(p) for p in result.scalars().all()]
+
+
+@router.get("/posts/{post_id}", response_model=PostOut)
+async def get_post(post_id: int, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(Post).where(Post.id == post_id, Post.is_published == True))
+    p = result.scalar_one_or_none()
+    if not p:
+        raise HTTPException(status_code=404, detail="Post not found")
+    return PostOut.model_validate(p)
 
 
 # --- Safe Zones ---

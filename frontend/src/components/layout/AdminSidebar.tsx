@@ -1,7 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard, Inbox, Radio, ShieldCheck, Phone, Scale, Users, LogOut, ChevronLeft, Megaphone,
-  ClipboardList, Ban, History, UserPlus, Train,
+  ClipboardList, Ban, History, UserPlus, Train, Newspaper,
 } from "lucide-react";
 import { useAuthStore } from "../../store/authStore";
 import { useLocale } from "../../hooks/useLocale";
@@ -14,6 +14,7 @@ const links: { to: string; key: string; icon: any }[] = [
   { to: "/admin/fact-checks", key: "factChecks", icon: ShieldCheck },
   { to: "/admin/contacts", key: "contacts", icon: Phone },
   { to: "/admin/rights", key: "rights", icon: Scale },
+  { to: "/admin/posts", key: "posts", icon: Newspaper },
   { to: "/admin/announcements", key: "announcements", icon: Megaphone },
   { to: "/admin/ip-blacklist", key: "ipBlacklist", icon: Ban },
   { to: "/admin/metro", key: "metroDisruptions", icon: Radio },
