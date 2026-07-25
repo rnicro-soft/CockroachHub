@@ -147,7 +147,10 @@
     "privacyTitle": "Privacy — We Don't Snitch",
     "privacyDesc": "Every number cached on your phone. When internet goes down, they still work. Zero data collected. Period.",
     "seoTitle": "Numbers They Don't Want You to Have",
-    "seoDesc": "One-tap emergency contacts and legal aid helplines for CJP student protesters. Verified numbers cached offline — works when internet is cut."
+    "seoDesc": "One-tap emergency contacts and legal aid helplines for CJP student protesters. Verified numbers cached offline — works when internet is cut.",
+    "lawyerTitle": "Need a lawyer?",
+    "lawyerDesc": "Free legal aid is your right. Call NALSA for immediate assistance.",
+    "callLawyer": "Call NALSA Free Legal Aid"
   },
   "liveFeed": {
     "title": "Live Field Feed",

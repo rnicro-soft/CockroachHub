@@ -1,6 +1,6 @@
 import asyncio
 import json as json_mod
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from fastapi.responses import StreamingResponse
@@ -234,6 +234,11 @@ async def group_checkin(body: GroupCheckinRequest, request: Request, db: AsyncSe
 
 @router.get("/group/{group_code}")
 async def group_status(group_code: str, db: AsyncSession = Depends(get_db)):
+    cutoff = datetime.now(timezone.utc) - timedelta(hours=24)
+    stale = await db.execute(select(GroupCheckin).where(GroupCheckin.group_code == group_code, GroupCheckin.updated_at < cutoff))
+    for m in stale.scalars().all():
+        await db.delete(m)
+    await db.commit()
     result = await db.execute(select(GroupCheckin).where(GroupCheckin.group_code == group_code).order_by(GroupCheckin.updated_at.desc()))
     members = [GroupMemberOut.model_validate(m) for m in result.scalars().all()]
     return {"group_code": group_code, "members": members}

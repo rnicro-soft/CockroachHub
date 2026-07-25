@@ -45,6 +45,20 @@ export default function Emergency() {
         </div>
       </div>
 
+      {/* Need a lawyer? — prominent one-tap card */}
+      <div className="bg-ph-orange-muted border border-ph-orange/20 p-4 flex items-center gap-4">
+        <div className="p-2.5 bg-ph-orange/20 rounded-full shrink-0">
+          <Shield className="h-5 w-5 text-ph-orange" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-bold text-ph-text-dark dark:text-white">{t("emergency.lawyerTitle")}</p>
+          <p className="text-xs text-ph-text-muted">{t("emergency.lawyerDesc")}</p>
+        </div>
+        <a href="tel:15100" className="ph-btn-primary ph-btn-sm shrink-0 text-xs whitespace-nowrap">
+          <Phone className="h-3.5 w-3.5" /> {t("emergency.callLawyer")}
+        </a>
+      </div>
+
       <div className="ph-tabs">
         {cats.map(({ key, label }) => (
           <button key={key} onClick={() => setCat(key)}
