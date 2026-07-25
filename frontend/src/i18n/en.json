@@ -441,7 +441,13 @@
     "officialWebsite": "Official Website",
     "footer": "Built for the swarm. Works when the internet doesn't.",
     "seoTitle": "About CJP Helpline",
-    "seoDesc": "CockroachHub is a protest resource hub built for the Cockroach Janta Party. Works offline. Zero data collection. Student support network."
+    "seoDesc": "CockroachHub is a protest resource hub built for the Cockroach Janta Party. Works offline. Zero data collection. Student support network.",
+    "communityTitle": "Youth Unmuted",
+    "communityTagline": "Amplifying the voices of young India",
+    "communityDesc": "Youth Unmuted is a community-driven platform amplifying student voices across India. We believe in free speech, factual reporting, and standing together during protests and political unrest.",
+    "communityWhatsApp": "WhatsApp Channel",
+    "communityInstagram": "Instagram",
+    "communityDiscord": "Discord Server"
   },
   "sos": {
     "title": "SOS Emergency",
