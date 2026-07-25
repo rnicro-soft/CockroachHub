@@ -13,7 +13,7 @@ from docx import Document
 
 
 NTFY_TOPIC = "cockroachhub"
-DOCX_URL = "https://docs.google.com/document/d/1y5NTy0f_L6sBw3s8aKAnQAoDEG_EdrmLR38o_0YCcqM/export?format=docx"
+DOCX_URL = "https://docs.google.com/document/d/1y5NTy0f_L6sBw3s8aKAnQAoDEG_EdrmLR38o0_YCcqM/export?format=docx"
 
 
 def _clean(val: str | None) -> str:
@@ -61,9 +61,36 @@ async def sync_from_docx() -> dict[str, Any]:
     # 0: heading, 1: heading, 2: heading, 3: Medical contacts,
     # 4: Legal (Delhi advocates), 5: Legal (volunteers), 6: Legal (Mumbai),
     # 7: Mental Health (online), 8: Mental Health (offline), 9: Support groups,
-    # 10: Accommodation links, 11: Aid orgs, 12: News sources
+    # 10: Accommodation links, 11: Aid orgs, 12: Contact (aid extras), 13: News sources
 
     async with async_session() as db:
+        # ── Table 10: Accommodation links (skip — unstructured) ──
+
+        # ── Table 12: Contact aid extras ──────────────────────────
+        if len(tables) > 12:
+            try:
+                count = 0
+                for row in tables[12].rows[1:]:
+                    c = _cells(row)
+                    if not c[0] or len(c[0]) < 3:
+                        continue
+                    parts = c[0].split(" on IG")
+                    name = _clean(parts[0]) if parts else _clean(c[0])
+                    purpose = _clean(c[2]) if len(c) > 2 else ""
+                    if not name or len(name) < 3:
+                        continue
+                    contact = c[0].strip()
+                    result = await db.execute(select(AidOrganization).where(AidOrganization.name == name))
+                    if not result.scalar_one_or_none():
+                        db.add(AidOrganization(name=name, purpose=purpose, contact=contact))
+                        count += 1
+                summary["aid_orgs"] += count
+                await db.commit()
+            except Exception as e:
+                summary["errors"].append(f"Contact aid table 12: {e}")
+                await db.rollback()
+
+        # ── Table 13: News sources ───────────────────────────────
         # ── Table 3: Medical contacts ─────────────────────────────
         if len(tables) > 3:
             try:
@@ -192,8 +219,8 @@ async def sync_from_docx() -> dict[str, Any]:
                 summary["errors"].append(f"Aid table: {e}")
                 await db.rollback()
 
-        # ── Table 12: News sources ───────────────────────────────
-        if len(tables) > 12:
+        # ── Table 13: News sources ───────────────────────────────
+        if len(tables) > 13:
             try:
                 count = 0
                 for row in tables[12].rows[1:]:
