@@ -43,3 +43,4 @@ test/*.docx
 
 graphify-out/
 *.cpuprofile
+assets/
