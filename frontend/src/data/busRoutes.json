@@ -1,0 +1,350 @@
+[
+  {
+    "direction": "Towards Pallika Kendra",
+    "bus_number": "816A",
+    "start": "Mori Gate Terminal",
+    "end": "Kair Depot"
+  },
+  {
+    "direction": "Towards Pallika Kendra",
+    "bus_number": "91",
+    "start": "Kendriya Terminal (Church Road)",
+    "end": "Jai Mata Market, Tri Nagar Terminal"
+  },
+  {
+    "direction": "Towards Pallika Kendra",
+    "bus_number": "433CL",
+    "start": "New Delhi Railway Station Gate 2",
+    "end": "Badarpur Border"
+  },
+  {
+    "direction": "Towards Pallika Kendra",
+    "bus_number": "181A",
+    "start": "Nizamuddin Railway Station",
+    "end": "Jahangirpuri E-Block"
+  },
+  {
+    "direction": "Towards Pallika Kendra",
+    "bus_number": "19A",
+    "start": "Palika Kendra",
+    "end": "Jahangirpuri E-Block"
+  },
+  {
+    "direction": "Towards Pallika Kendra",
+    "bus_number": "185",
+    "start": "Kendriya Terminal (Church Road)",
+    "end": "Keshav Nagar (Mukti Ashram/Nathupura)"
+  },
+  {
+    "direction": "Towards Pallika Kendra",
+    "bus_number": "187",
+    "start": "Palika Kendra",
+    "end": "Siraspur"
+  },
+  {
+    "direction": "Towards Pallika Kendra",
+    "bus_number": "255",
+    "start": "Kendriya Terminal",
+    "end": "Sabhapur Village"
+  },
+  {
+    "direction": "Towards Pallika Kendra",
+    "bus_number": "271",
+    "start": "Kendriya Terminal",
+    "end": "Jagatpur Temple"
+  },
+  {
+    "direction": "Towards Pallika Kendra",
+    "bus_number": "590",
+    "start": "Shivaji Stadium",
+    "end": "Chhatarpur Pahari (Syndicate Bank)"
+  },
+  {
+    "direction": "Towards Pallika Kendra",
+    "bus_number": "604",
+    "start": "New Delhi Railway Station Gate 2",
+    "end": "Chhatarpur Metro Station"
+  },
+  {
+    "direction": "Towards Pallika Kendra",
+    "bus_number": "620",
+    "start": "Shivaji Stadium",
+    "end": "Hauz Khas Terminal"
+  },
+  {
+    "direction": "Towards Pallika Kendra",
+    "bus_number": "840 Extn.",
+    "start": "New Delhi Railway Station Gate 1",
+    "end": "Mahavir Enclave Part III (Dwarka Sector 2)"
+  },
+  {
+    "direction": "Towards Pallika Kendra",
+    "bus_number": "988",
+    "start": "Palika Kendra",
+    "end": "Qutubgarh Border"
+  },
+  {
+    "direction": "Towards Pallika Kendra",
+    "bus_number": "157",
+    "start": "Palika Kendra",
+    "end": "Ashok Vihar Phase II"
+  },
+  {
+    "direction": "Towards Pallika Kendra",
+    "bus_number": "817A",
+    "start": "Inderlok Metro Station",
+    "end": "Daurala Border"
+  },
+  {
+    "direction": "Towards Pallika Kendra",
+    "bus_number": "RL-77",
+    "start": "New Delhi Railway Station Gate 2",
+    "end": "Mangla Puri Terminal"
+  },
+  {
+    "direction": "Towards Pallika Kendra",
+    "bus_number": "781",
+    "start": "New Delhi Railway Station Gate 2",
+    "end": "Dwarka Sector 16C / GGSIP University"
+  },
+  {
+    "direction": "Towards Pallika Kendra",
+    "bus_number": "548Ext",
+    "start": "Minto Road Terminal",
+    "end": "Okhla Depot IV (CWS II)"
+  },
+  {
+    "direction": "Towards Pallika Kendra",
+    "bus_number": "460STL",
+    "start": "Minto Road Terminal",
+    "end": "Kushak Nallah Depot"
+  },
+  {
+    "direction": "Towards Pallika Kendra",
+    "bus_number": "824LnkSTL",
+    "start": "Uttam Nagar Terminal",
+    "end": "Kair Depot"
+  },
+  {
+    "direction": "Towards Pallika Kendra",
+    "bus_number": "460CL",
+    "start": "Minto Road Terminal",
+    "end": "Badarpur Border"
+  },
+  {
+    "direction": "Towards Pallika Kendra",
+    "bus_number": "729",
+    "start": "Mori Gate Terminal",
+    "end": "Kapashera Border"
+  },
+  {
+    "direction": "Towards Pallika Kendra",
+    "bus_number": "548CL",
+    "start": "Minto Road Terminal",
+    "end": "Sangam Vihar"
+  },
+  {
+    "direction": "Towards Pallika Kendra",
+    "bus_number": "817",
+    "start": "Inderlok Metro Station",
+    "end": "Kair Village"
+  },
+  {
+    "direction": "Towards Pallika Kendra",
+    "bus_number": "400",
+    "start": "Minto Road Terminal",
+    "end": "Okhla Extension / Abul Fazal Enclave"
+  },
+  {
+    "direction": "Towards Pallika Kendra",
+    "bus_number": "433LnkSTL",
+    "start": "New Delhi Railway Station Gate 2",
+    "end": "Okhla Depot IV (CWS II)"
+  },
+  {
+    "direction": "Towards Patel Chowk Metro Station",
+    "bus_number": "120",
+    "start": "Kendriya Terminal",
+    "end": "Narela Terminal"
+  },
+  {
+    "direction": "Towards Patel Chowk Metro Station",
+    "bus_number": "448A",
+    "start": "West Enclave",
+    "end": "Hamdard Nagar"
+  },
+  {
+    "direction": "Towards Patel Chowk Metro Station",
+    "bus_number": "706",
+    "start": "Mori Gate Terminal",
+    "end": "Rajokari Harijan Basti"
+  },
+  {
+    "direction": "Towards Patel Chowk Metro Station",
+    "bus_number": "722 (Up)",
+    "start": "Ambedkar Stadium Terminal",
+    "end": "Badu Sarai"
+  },
+  {
+    "direction": "Towards Patel Chowk Metro Station",
+    "bus_number": "722 (Down)",
+    "start": "Ambedkar Stadium Terminal",
+    "end": "Badu Sarai"
+  },
+  {
+    "direction": "Towards Patel Chowk Metro Station",
+    "bus_number": "773",
+    "start": "Ambedkar Stadium Terminal",
+    "end": "Barthal Village"
+  },
+  {
+    "direction": "Towards Patel Chowk Metro Station",
+    "bus_number": "790",
+    "start": "Ambedkar Stadium Terminal",
+    "end": "Najafgarh"
+  },
+  {
+    "direction": "Towards Patel Chowk Metro Station",
+    "bus_number": "540CL",
+    "start": "Kendriya Terminal (Church Road)",
+    "end": "Tara Apartment"
+  },
+  {
+    "direction": "Towards Patel Chowk Metro Station",
+    "bus_number": "RL-77",
+    "start": "New Delhi Railway Station Gate 2",
+    "end": "Mangla Puri Terminal"
+  },
+  {
+    "direction": "Towards Patel Chowk Metro Station",
+    "bus_number": "480",
+    "start": "Kendriya Terminal (Church Road)",
+    "end": "DDA Flats, Kalkaji"
+  },
+  {
+    "direction": "Towards Patel Chowk Metro Station",
+    "bus_number": "47ACL",
+    "start": "Inderpuri JJ Colony",
+    "end": "Tehkhand Depot (DTC)"
+  },
+  {
+    "direction": "Towards Patel Chowk Metro Station",
+    "bus_number": "408CL",
+    "start": "Raghubir Nagar F-Block",
+    "end": "Nizamuddin Railway Station"
+  },
+  {
+    "direction": "Towards Patel Chowk Metro Station",
+    "bus_number": "410CL",
+    "start": "Subhash Nagar Crossing",
+    "end": "Jal Vihar Terminal"
+  },
+  {
+    "direction": "Towards Patel Chowk Metro Station",
+    "bus_number": "729",
+    "start": "Mori Gate Terminal",
+    "end": "Kapashera Border"
+  },
+  {
+    "direction": "Towards Patel Chowk Metro Station",
+    "bus_number": "410ACL",
+    "start": "Khayala More / Subhash Nagar Crossing",
+    "end": "Police Station Nizamuddin"
+  },
+  {
+    "direction": "Towards Central Secretariat",
+    "bus_number": "135",
+    "start": "Delhi Secretariat",
+    "end": "Narela Terminal"
+  },
+  {
+    "direction": "Towards Central Secretariat",
+    "bus_number": "783",
+    "start": "Delhi Secretariat",
+    "end": "Najafgarh"
+  },
+  {
+    "direction": "Towards Central Secretariat",
+    "bus_number": "851",
+    "start": "Delhi Secretariat",
+    "end": "Uttam Nagar Terminal"
+  },
+  {
+    "direction": "Towards Central Secretariat",
+    "bus_number": "917",
+    "start": "Delhi Secretariat",
+    "end": "Madipur JJ Colony"
+  },
+  {
+    "direction": "Towards Central Secretariat",
+    "bus_number": "918",
+    "start": "Delhi Secretariat",
+    "end": "Kamruddin Nagar"
+  },
+  {
+    "direction": "Towards Central Secretariat",
+    "bus_number": "949",
+    "start": "Delhi Secretariat",
+    "end": "Tikri Border"
+  },
+  {
+    "direction": "Towards Central Secretariat",
+    "bus_number": "85",
+    "start": "Anand Vihar ISBT (Vivekanand ISBT)",
+    "end": "Punjabi Bagh Terminal"
+  },
+  {
+    "direction": "Towards Central Secretariat",
+    "bus_number": "740 Ext.",
+    "start": "Anand Vihar ISBT (Vivekanand ISBT)",
+    "end": "Uttam Nagar Terminal"
+  },
+  {
+    "direction": "Towards Central Secretariat",
+    "bus_number": "623 Ext.",
+    "start": "Dilshad Garden Depot (New Seemapuri)",
+    "end": "CPWD Colony, Vasant Vihar"
+  },
+  {
+    "direction": "Towards Central Secretariat",
+    "bus_number": "624B LnkSTL",
+    "start": "Anand Vihar ISBT (Vivekanand ISBT)",
+    "end": "JLN Stadium (Sunhari Pullah Nallah Parking)"
+  },
+  {
+    "direction": "Towards Central Secretariat",
+    "bus_number": "623",
+    "start": "Shahdara Terminal",
+    "end": "CPWD Colony, Vasant Vihar"
+  },
+  {
+    "direction": "Towards Central Secretariat",
+    "bus_number": "73",
+    "start": "Anand Vihar ISBT (Vivekanand ISBT)",
+    "end": "Hari Nagar Clock Tower"
+  },
+  {
+    "direction": "Towards Central Secretariat",
+    "bus_number": "624ACL",
+    "start": "Munirka",
+    "end": "Anand Vihar Terminal"
+  },
+  {
+    "direction": "Towards Central Secretariat",
+    "bus_number": "418 Ext.",
+    "start": "Shahdara Terminal",
+    "end": "Kushak Nallah Depot"
+  },
+  {
+    "direction": "Towards Central Secretariat",
+    "bus_number": "418A",
+    "start": "Shahdara Terminal",
+    "end": "Badarpur Border"
+  },
+  {
+    "direction": "Towards Central Secretariat",
+    "bus_number": "73 LnkSTL",
+    "start": "Anand Vihar ISBT (Vivekanand ISBT)",
+    "end": "Rajghat Cluster Depot"
+  }
+]

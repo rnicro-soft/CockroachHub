@@ -329,6 +329,17 @@ class GroupStatusOut(BaseModel):
     model_config = {"from_attributes": True}
 
 
+# --- Bus Routes ---
+class BusRouteOut(BaseModel):
+    id: int
+    direction: str
+    bus_number: str
+    start: str
+    end: str
+
+    model_config = {"from_attributes": True}
+
+
 # --- Metro ---
 class MetroLineOut(BaseModel):
     name: str

@@ -22,6 +22,7 @@ CockroachHub is a Progressive Web App built for the Cockroach Janta Party (CJP) 
 - Protest Map: /map — Unified map of Jantar Mantar, metro stations, and safe zones
 - Group Check-in: /group — Create or join a protest group to share your location and status
 - Offline Packs: /prepare — Verify what protest resources are cached on your phone for each location
+- Bus Routes: /bus — DTC bus routes to protest sites near Jantar Mantar
 
 ## Verified Contacts
 - NHRC: 14440

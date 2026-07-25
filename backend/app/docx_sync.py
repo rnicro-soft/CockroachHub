@@ -14,6 +14,7 @@ from docx import Document
 
 NTFY_TOPIC = "cockroachhub"
 DOCX_URL = "https://docs.google.com/document/d/1y5NTy0f_L6sBw3s8aKAnQAoDEG_EdrmLR38o0_YCcqM/export?format=docx"
+BUS_DOCX_URL = "https://docs.google.com/document/d/15To5fuN41Q1Qo4Nr0A0f7a28pAjPTL09_dtugDKEOSs/export?format=docx"
 
 
 def _clean(val: str | None) -> str:
@@ -242,10 +243,48 @@ async def sync_from_docx() -> dict[str, Any]:
                 summary["errors"].append(f"News table: {e}")
                 await db.rollback()
 
+    # ── Bus Routes (separate doc) ────────────────────────────────
+    try:
+        bus_req = urllib.request.Request(BUS_DOCX_URL, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(bus_req, timeout=30) as resp:
+            bus_doc = Document(BytesIO(resp.read()))
+    except Exception as e:
+        summary["errors"].append(f"Bus doc download failed: {e}")
+
+    if "bus_doc" in dir():
+        from app.models import BusRoute
+        for table in bus_doc.tables:
+            if len(table.rows) < 3 or len(table.columns) < 3:
+                continue
+            try:
+                direction = _clean(table.rows[0].cells[0].text) if table.rows else "Unknown"
+                count = 0
+                for row in table.rows[2:]:  # skip title + header rows
+                    cells = _cells(row)
+                    if len(cells) < 3 or not _clean(cells[0]):
+                        continue
+                    bus_no = _clean(cells[0])
+                    start = _clean(cells[1])
+                    end = _clean(cells[2])
+                    if not bus_no or not start:
+                        continue
+                    result = await db.execute(
+                        select(BusRoute).where(BusRoute.bus_number == bus_no, BusRoute.direction == direction)
+                    )
+                    if not result.scalar_one_or_none():
+                        db.add(BusRoute(direction=direction, bus_number=bus_no, start=start, end=end))
+                        count += 1
+                await db.commit()
+                summary["bus_routes"] = summary.get("bus_routes", 0) + count
+            except Exception as e:
+                summary["errors"].append(f"Bus table parse: {e}")
+                await db.rollback()
+
     # Notify
     msg = (
         f"Contacts: {summary['contacts']} · MH: {summary['mental_health']} · "
-        f"Aid: {summary['aid_orgs']} · News: {summary['news']}"
+        f"Aid: {summary['aid_orgs']} · News: {summary['news']} · "
+        f"Bus: {summary.get('bus_routes', 0)}"
     )
     if summary["errors"]:
         msg += f" · Errors: {len(summary['errors'])}"

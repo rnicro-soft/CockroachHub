@@ -30,7 +30,8 @@
     "metro": "Metro",
     "map": "Map",
     "group": "Group",
-    "prepare": "Prepare"
+    "prepare": "Prepare",
+    "bus": "Bus"
   },
   "home": {
     "trending": "Trending",
@@ -1090,5 +1091,20 @@
       "central-secretariat": "Central Secretariat",
       "mandi-house": "Mandi House"
     }
+  },
+  "bus": {
+    "title": "Bus Routes to Protest Sites",
+    "subtitle": "DTG bus routes heading towards Jantar Mantar, Patel Chowk, and Central Secretariat",
+    "busNumber": "Bus No.",
+    "from": "Starting Point",
+    "to": "Ending Point / Towards",
+    "noRoutes": "No bus routes found",
+    "tabs": {
+      "pallika": "Pallika Kendra",
+      "patel": "Patel Chowk",
+      "secretariat": "Central Secretariat"
+    },
+    "seoTitle": "Bus Routes — CJP Helpline",
+    "seoDesc": "Delhi bus routes to protest sites near Jantar Mantar. DTC bus numbers, starting points, and destinations."
   }
 }

@@ -212,6 +212,17 @@ class NewsSource(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
 
 
+class BusRoute(Base):
+    __tablename__ = "bus_routes"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    direction: Mapped[str] = mapped_column(String(100), nullable=False)
+    bus_number: Mapped[str] = mapped_column(String(30), nullable=False)
+    start: Mapped[str] = mapped_column(String(500), nullable=False)
+    end: Mapped[str] = mapped_column(String(500), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
 class GroupCheckin(Base):
     __tablename__ = "group_checkins"
 

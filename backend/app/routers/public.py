@@ -10,10 +10,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from pydantic import BaseModel
 
 from app.database import get_db
-from app.models import AidOrganization, Alert, Announcement, EmergencyContact, FactCheck, GroupCheckin, LegalRight, MentalHealthProvider, MetroDisruption, MetroStation, NewsSource, PushSubscription, SafeZone, Submission
+from app.models import AidOrganization, Alert, Announcement, BusRoute, EmergencyContact, FactCheck, GroupCheckin, LegalRight, MentalHealthProvider, MetroDisruption, MetroStation, NewsSource, PushSubscription, SafeZone, Submission
 from app.push import get_vapid_public_key
 from app.ratelimit import check_ip_blacklist, rate_limit_submissions
-from app.schemas import AidOrganizationOut, AlertOut, AnnouncementOut, ContactOut, FactCheckOut, GroupCreateRequest, GroupJoinRequest, GroupCheckinRequest, GroupMemberOut, GroupStatusOut, LegalRightOut, MentalHealthOut, MetroDisruptionOut, MetroStationOut, MetroSubmitRequest, NewsSourceOut, SafeZoneOut, SubmissionCreate, SubmissionOut
+from app.schemas import AidOrganizationOut, AlertOut, AnnouncementOut, BusRouteOut, ContactOut, FactCheckOut, GroupCreateRequest, GroupJoinRequest, GroupCheckinRequest, GroupMemberOut, GroupStatusOut, LegalRightOut, MentalHealthOut, MetroDisruptionOut, MetroStationOut, MetroSubmitRequest, NewsSourceOut, SafeZoneOut, SubmissionCreate, SubmissionOut
 
 router = APIRouter(prefix="/api", tags=["public"])
 
@@ -188,6 +188,16 @@ async def submit_metro_disruption(
     await db.refresh(d)
     print(f"[METRO] Crowd report: {body.station_id} → {body.status}")
     return MetroDisruptionOut.model_validate(d)
+
+
+# --- Bus Routes ---
+@router.get("/bus-routes", response_model=list[BusRouteOut])
+async def get_bus_routes(direction: str | None = None, db: AsyncSession = Depends(get_db)):
+    query = select(BusRoute).order_by(BusRoute.direction, BusRoute.bus_number)
+    if direction:
+        query = query.where(BusRoute.direction.ilike(f"%{direction}%"))
+    result = await db.execute(query)
+    return [BusRouteOut.model_validate(r) for r in result.scalars().all()]
 
 
 # --- Group Check-in ---

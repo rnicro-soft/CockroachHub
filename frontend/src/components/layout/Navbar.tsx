@@ -2,7 +2,7 @@ import { Link, useLocation, useNavigate, useSearchParams } from "react-router-do
 import {
   Flame, Phone, Radio, Scale, ShieldCheck, Menu, X, Send, Search, Shield,
   Moon, Sun, Download, Bell, BellOff, Heart, AlertTriangle, Sun as SunIcon,
-  ClipboardList, MapPin, Lock, BookOpen, Droplets, Globe, Eye, Train, Users,
+  ClipboardList, MapPin, Lock, BookOpen, Droplets, Globe, Eye, Train, Users, Bus,
 } from "lucide-react";
 import { memo, useCallback, useRef, useState } from "react";
 import { useTheme } from "../../hooks/useTheme";
@@ -35,6 +35,7 @@ const pageImports: Record<string, () => Promise<any>> = {
   "/map": () => import("../../pages/Map"),
   "/group": () => import("../../pages/GroupCheckin"),
   "/prepare": () => import("../../pages/Prepare"),
+  "/bus": () => import("../../pages/BusRoutes"),
 };
 
 const navLinks: { to: string; key: string; icon: any }[] = [
@@ -229,7 +230,8 @@ export const Navbar = memo(function Navbar({ onLogoClick }: { onLogoClick?: () =
         {[
           { to: "/", key: "home", icon: Flame },
           { to: "/sos", key: "sos", icon: AlertTriangle, urgent: true },
-          { to: "/metro", key: "metro", icon: Train },
+  { to: "/metro", key: "metro", icon: Train },
+  { to: "/bus", key: "bus", icon: Bus },
           { to: "/live-feed", key: "liveFeed", icon: Radio },
           { to: "/emergency", key: "emergency", icon: Phone },
         ].map(({ to, key, icon: Icon, urgent }) => (
