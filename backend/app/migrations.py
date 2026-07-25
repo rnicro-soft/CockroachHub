@@ -8,6 +8,8 @@ SCHEMA_ADDITIONS = [
     ("alerts", "featured", "BOOLEAN DEFAULT FALSE"),
     ("metro_disruptions", "featured", "BOOLEAN DEFAULT FALSE"),
     ("metro_stations", "is_active", "BOOLEAN DEFAULT TRUE"),
+    ("emergency_contacts", "source", "VARCHAR(500)"),
+    ("emergency_contacts", "last_verified_at", "TIMESTAMP WITH TIME ZONE"),
 ]
 
 
@@ -29,6 +31,7 @@ async def run_migrations():
                 print(f"  Added {table}.{column}")
             else:
                 print(f"  {table}.{column} exists")
+        await db.commit()
 
         # Seed metro stations
         result = await db.execute(select(MetroStation).limit(1))
