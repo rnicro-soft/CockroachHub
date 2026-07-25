@@ -78,7 +78,7 @@ export default function Prepare() {
           const ready = packs[loc.id];
           return (
             <div key={loc.id} className={`bg-white dark:bg-ph-dark-2 border ${ready ? "border-ph-green/20" : "border-ph-border-light dark:border-ph-border"} p-5 hover:border-ph-orange/30 transition-colors`}>
-              <div className="flex items-start justify-between gap-4">
+              <div className="flex flex-col sm:flex-row sm:items-start gap-4">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
                     <MapPin className="h-4 w-4 text-ph-orange shrink-0" />
@@ -108,7 +108,7 @@ export default function Prepare() {
                 <button
                   onClick={() => downloadPack(loc.id)}
                   disabled={ready}
-                  className={`ph-btn-sm shrink-0 ${ready ? "ph-btn-ghost text-ph-green" : "ph-btn-primary"}`}
+                  className={`ph-btn-sm w-full sm:w-auto ${ready ? "ph-btn-ghost text-ph-green" : "ph-btn-primary"}`}
                 >
                   {ready ? <CheckCircle className="h-3.5 w-3.5" /> : <Download className="h-3.5 w-3.5" />}
                   {ready ? t("prepare.ready") : t("prepare.download")}

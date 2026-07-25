@@ -158,7 +158,7 @@ export default function GroupCheckin() {
                       {m.lat && m.lng && <a href={`https://www.google.com/maps?q=${m.lat},${m.lng}`} target="_blank" rel="noopener noreferrer" className="text-ph-orange ml-2 hover:underline inline-flex items-center gap-0.5"><MapPin className="h-3 w-3" /> {t("group.map")}</a>}
                     </p>
                   </div>
-                  <span className="text-[10px] text-ph-text-muted">{new Date(m.updated_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span>
+                  <span className="text-[10px] text-ph-text-muted shrink-0">{new Date(m.updated_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span>
                 </div>
               ))}
             </div>
