@@ -156,16 +156,16 @@ export default function Metro() {
             <p className="text-sm text-ph-text-secondary mt-1">{t("metro.protestHub.subtitle")}</p>
 
             {/* Destination card */}
-            <div className="mt-3 bg-ph-black/30 border border-ph-border-light p-3 flex items-center gap-3">
-              <div className="p-2 bg-cjp-maroon/20 rounded-full">
+            <div className="mt-3 bg-ph-black/30 border border-ph-border-light p-3 pr-2 sm:pr-3 flex items-center gap-2 sm:gap-3">
+              <div className="p-2 bg-cjp-maroon/20 rounded-full shrink-0">
                 <MapPin className="h-5 w-5 text-ph-orange" />
               </div>
-              <div className="flex-1">
-                <p className="text-sm font-bold text-white">{t("metro.protestHub.destination")}</p>
-                <p className="text-xs text-ph-text-muted">{t("metro.protestHub.destinationDesc")}</p>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-bold text-white truncate">{t("metro.protestHub.destination")}</p>
+                <p className="text-xs text-ph-text-muted truncate">{t("metro.protestHub.destinationDesc")}</p>
               </div>
               <a href="https://www.google.com/maps/dir/?api=1&destination=28.6271,77.2174" target="_blank" rel="noopener noreferrer"
-                className="ph-btn-outline ph-btn-sm shrink-0 text-xs">
+                className="ph-btn-outline ph-btn-sm shrink-0 text-[10px] sm:text-xs">
                 <Navigation className="h-3.5 w-3.5" /> {t("metro.protestHub.openInMaps")}
               </a>
             </div>
