@@ -1,0 +1,20 @@
+[
+  {
+    "stationId": "s36",
+    "status": "Open",
+    "reason": "Normal service",
+    "lastUpdated": "2026-07-25T06:00:00Z"
+  },
+  {
+    "stationId": "s1",
+    "status": "Limited",
+    "reason": "Security protocols and heavy crowd management near protest site",
+    "lastUpdated": "2026-07-25T06:00:00Z"
+  },
+  {
+    "stationId": "s32",
+    "status": "Limited",
+    "reason": "Student protests around campus area",
+    "lastUpdated": "2026-07-25T06:00:00Z"
+  }
+]

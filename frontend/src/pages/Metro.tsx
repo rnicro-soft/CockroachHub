@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
-import { Search, X, AlertTriangle, Send, MapPin, Navigation, Target, LocateFixed, Crosshair, Footprints } from "lucide-react";
+import { Search, X, AlertTriangle, Send, MapPin, Navigation, Target, LocateFixed, Footprints } from "lucide-react";
 import toast from "react-hot-toast";
 import { SEO } from "../components/SEO";
 import { Card } from "../components/ui/Card";
@@ -8,6 +8,7 @@ import { useLocale } from "../hooks/useLocale";
 import { useOnlineStatus } from "../hooks/useOnlineStatus";
 import api from "../lib/api";
 import stationsData from "../data/metroStations.json";
+import fallbackDisruptions from "../data/metroDisruptions.json";
 
 const JM_LAT = 28.6271;
 const JM_LNG = 77.2174;
@@ -39,7 +40,10 @@ export default function Metro() {
   const { t } = useLocale();
   const online = useOnlineStatus();
   const [stations, setStations] = useState<Station[]>(() => stationsData as Station[]);
-  const [disruptions, setDisruptions] = useState<Disruption[]>([]);
+  const [disruptions, setDisruptions] = useState<Disruption[]>(() => {
+    const fb = fallbackDisruptions as any[];
+    return fb.map((d: any) => ({ station_id: d.stationId, status: d.status === "Open" ? "open" : d.status === "Limited" ? "limited" : "closed", reason: d.reason, created_at: d.lastUpdated }));
+  });
   const [search, setSearch] = useState("");
   const [lineFilter, setLineFilter] = useState<string | null>(null);
   const [nearJMFilter, setNearJMFilter] = useState(false);
@@ -315,7 +319,7 @@ export default function Metro() {
                 <div className="min-w-0">
                   <h4 className="text-sm font-bold text-ph-text-dark dark:text-white truncate flex items-center gap-1">
                 {station.name}
-                {(station as any).distToJM < nearJMThreshold && <span className="text-[9px] font-bold px-1 py-0.5 bg-cjp-maroon/10 text-cjp-maroon border border-cjp-maroon/30 shrink-0">📍 JM</span>}
+                {(station as any).distToJM < nearJMThreshold && <span className="text-[9px] font-bold px-1 py-0.5 bg-cjp-maroon/10 text-cjp-maroon border border-cjp-maroon/30 shrink-0">📍 JM {formatDist((station as any).distToJM)}</span>}
                 {d?.featured && <span className="text-[9px] font-bold px-1 py-0.5 bg-cjp-maroon/10 text-cjp-maroon border border-cjp-maroon/30 shrink-0">Featured</span>}
               </h4>
                   <p className="text-xs text-ph-text-muted">{station.area}</p>
@@ -367,10 +371,8 @@ export default function Metro() {
               </>
             )}
             <div className="border-t border-ph-border-light pt-2">
-              <span className="text-sm text-ph-text-muted">{t("metro.card.area")}</span>
-              <p className="text-sm text-white font-bold">{selected.area}</p>
-              <span className="text-xs text-ph-orange flex items-center gap-1 mt-1">
-                <MapPin className="h-3 w-3" /> JM · {formatDist(haversineDist(selected.lat, selected.lng, JM_LAT, JM_LNG))} · {walkTime(haversineDist(selected.lat, selected.lng, JM_LAT, JM_LNG))}
+              <span className="text-xs text-ph-orange flex items-center gap-1">
+                <MapPin className="h-3 w-3" /> Jantar Mantar · {formatDist(haversineDist(selected.lat, selected.lng, JM_LAT, JM_LNG))} · {walkTime(haversineDist(selected.lat, selected.lng, JM_LAT, JM_LNG))} walk
               </span>
             </div>
             <div className="flex gap-2 mt-2">
