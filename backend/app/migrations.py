@@ -14,11 +14,6 @@ SCHEMA_ADDITIONS = [
     ("posts", "image_url", "VARCHAR(2000)"),
 ]
 
-TABLE_EXISTS_CHECKS = [
-    "posts",
-]
-
-
 async def run_migrations():
     """Add missing columns, create missing tables, seed data. Safe to run multiple times."""
     # Create all tables (no-op for existing ones)
@@ -26,17 +21,6 @@ async def run_migrations():
         await conn.run_sync(Base.metadata.create_all)
 
     async with async_session() as db:
-        # Ensure required tables exist
-        for table in TABLE_EXISTS_CHECKS:
-            exists = await db.execute(
-                text("SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = :table)"),
-                {"table": table},
-            )
-            if not exists.scalar():
-                await conn.run_sync(Base.metadata.create_all)
-                print(f"  Created tables (including {table})")
-                break
-
         # Add missing columns
         for table, column, col_def in SCHEMA_ADDITIONS:
             exists = await db.execute(

@@ -11,6 +11,7 @@ from starlette.responses import Response
 from sqlalchemy import select, text
 
 from app.database import async_session
+from app.migrations import run_migrations
 from app.routers import admin, auth, public
 from app.seed import seed_database, seed_metro_stations, seed_safe_zones
 from app.docx_sync import sync_from_docx
@@ -18,6 +19,11 @@ from app.docx_sync import sync_from_docx
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    print("Running migrations...")
+    try:
+        await run_migrations()
+    except Exception as e:
+        print(f"Migration error: {e}", file=sys.stderr)
     print("Starting up — seeding database if needed...")
     try:
         await seed_database()
