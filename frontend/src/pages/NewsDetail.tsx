@@ -5,6 +5,12 @@ import { SEO } from "../components/SEO";
 import { useLocale } from "../hooks/useLocale";
 import api from "../lib/api";
 
+declare global {
+  interface Window {
+    instgrm?: { Embeds: { process: () => void } };
+  }
+}
+
 interface Post {
   id: number;
   title: string;
@@ -26,6 +32,22 @@ export default function NewsDetail() {
     if (!id) return;
     api.get(`/posts/${id}`).then(({ data }) => setPost(data)).catch(() => {}).finally(() => setLoading(false));
   }, [id]);
+
+  useEffect(() => {
+    if (!post?.content) return;
+    const html = post.content;
+    const hasEmbed = html.includes("instagram.com") && html.includes("instagram-media");
+    if (!hasEmbed) return;
+    if (window.instgrm) {
+      window.instgrm.Embeds.process();
+    } else {
+      const s = document.createElement("script");
+      s.src = "https://www.instagram.com/embed.js";
+      s.async = true;
+      s.onload = () => window.instgrm?.Embeds.process();
+      document.body.appendChild(s);
+    }
+  }, [post?.content]);
 
   if (loading) {
     return (
@@ -72,7 +94,6 @@ export default function NewsDetail() {
           />
         </article>
       </div>
-      <script async src="//www.instagram.com/embed.js" />
     </>
   );
 }
