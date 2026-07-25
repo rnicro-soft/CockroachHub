@@ -23,7 +23,7 @@ export default function AdminAnnouncements() {
 
   const fetch = () => {
     setLoading(true);
-    api.get("/admin/announcements").then(({ data }) => setItems(data)).catch(() => toast.error(t("common.error"))).finally(() => setLoading(false));
+    api.get("/admin/announcements?page=1&per_page=50").then(({ data }) => setItems(data.items)).catch(() => toast.error(t("common.error"))).finally(() => setLoading(false));
   };
   useEffect(() => { fetch(); }, []);
 

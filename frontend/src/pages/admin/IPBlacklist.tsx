@@ -19,7 +19,7 @@ export default function AdminIPBlacklist() {
 
   const fetch = () => {
     setLoading(true);
-    api.get("/admin/ip-blacklist").then(({ data }) => setItems(data)).catch(() => {}).finally(() => setLoading(false));
+    api.get("/admin/ip-blacklist?page=1&per_page=50").then(({ data }) => setItems(data.items)).catch(() => {}).finally(() => setLoading(false));
   };
   useEffect(() => { fetch(); }, []);
 
