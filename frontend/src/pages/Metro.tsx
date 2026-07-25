@@ -42,6 +42,7 @@ export default function Metro() {
   const [disruptions, setDisruptions] = useState<Disruption[]>([]);
   const [search, setSearch] = useState("");
   const [lineFilter, setLineFilter] = useState<string | null>(null);
+  const [nearJMFilter, setNearJMFilter] = useState(false);
   const [selected, setSelected] = useState<Station | null>(null);
   const [reportOpen, setReportOpen] = useState(false);
   const [reportStatus, setReportStatus] = useState("closed");
@@ -77,12 +78,19 @@ export default function Metro() {
     return m;
   }, [disruptions]);
 
+  const stationsWithJM = useMemo(() =>
+    stations.map((s) => ({ ...s, distToJM: haversineDist(s.lat, s.lng, JM_LAT, JM_LNG) })).sort((a, b) => a.distToJM - b.distToJM),
+  [stations]);
+
+  const nearJMThreshold = 3000;
+
   const filtered = useMemo(() => {
-    let s = stations;
+    let s = stationsWithJM;
     if (search) { const q = search.toLowerCase(); s = s.filter((st) => st.name.toLowerCase().includes(q) || st.area.toLowerCase().includes(q)); }
     if (lineFilter) s = s.filter((st) => st.lines.some((l) => l.name === lineFilter));
+    if (nearJMFilter) s = s.filter((st) => st.distToJM < nearJMThreshold);
     return s;
-  }, [stations, search, lineFilter]);
+  }, [stationsWithJM, search, lineFilter, nearJMFilter]);
 
   const statusColor = (status: string) => status === "open" ? "bg-ph-green" : status === "limited" ? "bg-ph-yellow" : "bg-ph-red";
   const statusText = (status: string) => t(`metro.status.${status}`);
@@ -266,7 +274,11 @@ export default function Metro() {
             placeholder={t("metro.searchPlaceholder")} className="ph-input pl-10 w-full" />
           {search && <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-ph-text-muted hover:text-white"><X className="h-4 w-4" /></button>}
         </div>
-        <button onClick={() => setLineFilter(null)} className={`ph-btn-sm ${!lineFilter ? "ph-btn-primary" : "ph-btn-outline"}`}>{t("metro.filterAll")}</button>
+        <button onClick={() => setLineFilter(null)} className={`ph-btn-sm ${!lineFilter && !nearJMFilter ? "ph-btn-primary" : "ph-btn-outline"}`}>{t("metro.filterAll")}</button>
+        <button onClick={() => setNearJMFilter(!nearJMFilter)}
+          className={`ph-btn-sm ${nearJMFilter ? "ph-btn-primary" : "ph-btn-outline"}`}>
+          <MapPin className="h-3.5 w-3.5" /> JM
+        </button>
         {lineNames.map((name) => (
           <button key={name} onClick={() => setLineFilter(lineFilter === name ? null : name)}
             className={`ph-btn-sm ${lineFilter === name ? "ph-btn-primary" : "ph-btn-outline"}`}>{name}</button>
@@ -301,8 +313,17 @@ export default function Metro() {
               className="text-left bg-white dark:bg-ph-dark-2 border border-ph-border-light dark:border-ph-border p-4 hover:border-ph-orange/40 transition-colors">
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
-                  <h4 className="text-sm font-bold text-ph-text-dark dark:text-white truncate flex items-center gap-1">{station.name}{d?.featured && <span className="text-[9px] font-bold px-1 py-0.5 bg-cjp-maroon/10 text-cjp-maroon border border-cjp-maroon/30 shrink-0">Featured</span>}</h4>
+                  <h4 className="text-sm font-bold text-ph-text-dark dark:text-white truncate flex items-center gap-1">
+                {station.name}
+                {(station as any).distToJM < nearJMThreshold && <span className="text-[9px] font-bold px-1 py-0.5 bg-cjp-maroon/10 text-cjp-maroon border border-cjp-maroon/30 shrink-0">📍 JM</span>}
+                {d?.featured && <span className="text-[9px] font-bold px-1 py-0.5 bg-cjp-maroon/10 text-cjp-maroon border border-cjp-maroon/30 shrink-0">Featured</span>}
+              </h4>
                   <p className="text-xs text-ph-text-muted">{station.area}</p>
+                  {(station as any).distToJM < nearJMThreshold && (
+                    <p className="text-[10px] text-ph-orange mt-0.5 flex items-center gap-1">
+                      <MapPin className="h-3 w-3" /> JM {formatDist((station as any).distToJM)}
+                    </p>
+                  )}
                 </div>
                 <span className={`shrink-0 text-[10px] font-bold px-2 py-0.5 text-white ${statusColor(status)}`}>{statusText(status)}</span>
               </div>
@@ -345,9 +366,18 @@ export default function Metro() {
                 <div className="text-xs text-ph-text-muted">{t("metro.detail.lastUpdated")}: {new Date(detailDisruption.created_at).toLocaleString()}</div>
               </>
             )}
+            <div className="border-t border-ph-border-light pt-2">
+              <span className="text-sm text-ph-text-muted">{t("metro.card.area")}</span>
+              <p className="text-sm text-white font-bold">{selected.area}</p>
+              <span className="text-xs text-ph-orange flex items-center gap-1 mt-1">
+                <MapPin className="h-3 w-3" /> JM · {formatDist(haversineDist(selected.lat, selected.lng, JM_LAT, JM_LNG))} · {walkTime(haversineDist(selected.lat, selected.lng, JM_LAT, JM_LNG))}
+              </span>
+            </div>
             <div className="flex gap-2 mt-2">
               <a href={`https://www.google.com/maps/dir/?api=1&destination=${selected.lat},${selected.lng}`}
                 target="_blank" rel="noopener noreferrer" className="ph-btn-outline flex-1 text-xs"><Navigation className="h-4 w-4" /> {t("safeZones.getDirections")}</a>
+              <a href={`https://www.google.com/maps/dir/?api=1&destination=28.6271,77.2174&waypoints=${selected.lat},${selected.lng}`}
+                target="_blank" rel="noopener noreferrer" className="ph-btn-outline flex-1 text-xs"><MapPin className="h-4 w-4" /> To JM</a>
               <button onClick={() => { setReportOpen(true); }} className="ph-btn-outline flex-1 text-xs"><AlertTriangle className="h-4 w-4" /> {t("metro.reportDisruption")}</button>
             </div>
           </div>
