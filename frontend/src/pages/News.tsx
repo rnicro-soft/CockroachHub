@@ -23,7 +23,7 @@ export default function News() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get("/posts").then(({ data }) => setPosts(data)).catch(() => {}).finally(() => setLoading(false));
+    api.get("/posts").then(({ data }) => { console.log("Posts loaded:", data.length); setPosts(data); }).catch((err) => { console.error("Posts fetch failed:", err); }).finally(() => setLoading(false));
   }, []);
 
   return (
