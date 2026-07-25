@@ -59,12 +59,16 @@ export default function Metro() {
   const [userLng, setUserLng] = useState<number | null>(null);
   const [gpsStatus, setGpsStatus] = useState<"idle" | "detecting" | "ok" | "denied" | "error">("idle");
 
-  const detectLocation = useCallback(() => {
+      const detectLocation = useCallback(() => {
     if (!navigator.geolocation) { setGpsStatus("error"); return; }
     setGpsStatus("detecting");
     navigator.geolocation.getCurrentPosition(
       (pos) => { setUserLat(pos.coords.latitude); setUserLng(pos.coords.longitude); setGpsStatus("ok"); },
-      (err) => { setGpsStatus(err.code === err.PERMISSION_DENIED ? "denied" : "error"); },
+      (err) => {
+        if (err.code === err.PERMISSION_DENIED) setGpsStatus("denied");
+        else if (err.code === err.TIMEOUT) setGpsStatus("error");
+        else setGpsStatus("error");
+      },
       { enableHighAccuracy: true, timeout: 10000 }
     );
   }, []);
@@ -156,16 +160,18 @@ export default function Metro() {
             <p className="text-sm text-ph-text-secondary mt-1">{t("metro.protestHub.subtitle")}</p>
 
             {/* Destination card */}
-            <div className="mt-3 bg-ph-black/30 border border-ph-border-light p-3 pr-2 sm:pr-3 flex items-center gap-2 sm:gap-3">
-              <div className="p-2 bg-cjp-maroon/20 rounded-full shrink-0">
-                <MapPin className="h-5 w-5 text-ph-orange" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-bold text-white truncate">{t("metro.protestHub.destination")}</p>
-                <p className="text-xs text-ph-text-muted truncate">{t("metro.protestHub.destinationDesc")}</p>
+            <div className="mt-3 bg-ph-black/30 border border-ph-border-light p-3">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="p-2 bg-cjp-maroon/20 rounded-full shrink-0">
+                  <MapPin className="h-5 w-5 text-ph-orange" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-bold text-white">{t("metro.protestHub.destination")}</p>
+                  <p className="text-xs text-ph-text-muted">{t("metro.protestHub.destinationDesc")}</p>
+                </div>
               </div>
               <a href="https://www.google.com/maps/dir/?api=1&destination=28.6271,77.2174" target="_blank" rel="noopener noreferrer"
-                className="ph-btn-outline ph-btn-sm shrink-0 text-[10px] sm:text-xs">
+                className="ph-btn-outline ph-btn-sm w-full text-[11px] sm:text-xs justify-center">
                 <Navigation className="h-3.5 w-3.5" /> {t("metro.protestHub.openInMaps")}
               </a>
             </div>
@@ -176,13 +182,13 @@ export default function Metro() {
                 <span className="text-xs font-bold text-ph-text-muted uppercase tracking-wider">{t("metro.protestHub.yourLocation")}</span>
                 {gpsStatus === "idle" && (
                   <button onClick={detectLocation} className="ph-btn-outline ph-btn-sm text-xs flex items-center gap-1">
-                    <LocateFixed className="h-3.5 w-3.5" /> Detect
+                    <LocateFixed className="h-3.5 w-3.5" /> {t("metro.protestHub.detect") || "Detect"}
                   </button>
                 )}
                 {gpsStatus === "detecting" && <span className="text-xs text-ph-text-muted animate-pulse">{t("metro.protestHub.detecting")}</span>}
                 {(gpsStatus === "denied" || gpsStatus === "error") && (
                   <button onClick={detectLocation} className="ph-btn-outline ph-btn-sm text-xs flex items-center gap-1">
-                    <LocateFixed className="h-3.5 w-3.5" /> Retry
+                    <LocateFixed className="h-3.5 w-3.5" /> {t("common.retry") || "Retry"}
                   </button>
                 )}
               </div>

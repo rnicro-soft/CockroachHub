@@ -989,7 +989,8 @@
       "allClosed": "All nearby stations are affected by disruptions",
       "minutes": "min",
       "meters": "m",
-      "km": "km"
+      "km": "km",
+      "detect": "Detect"
     }
   },
   "bailGuide": {
