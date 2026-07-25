@@ -42,6 +42,7 @@ const Evidence = lazy(() => import("./pages/Evidence"));
 const Metro = lazy(() => import("./pages/Metro"));
 const ProtestMap = lazy(() => import("./pages/Map"));
 const GroupCheckin = lazy(() => import("./pages/GroupCheckin"));
+const Prepare = lazy(() => import("./pages/Prepare"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const AdminLogin = lazy(() => import("./pages/admin/Login"));
 const ChangePassword = lazy(() => import("./pages/admin/ChangePassword"));
@@ -233,6 +234,7 @@ export default function App() {
             <Route path="/metro" element={<Metro />} />
             <Route path="/map" element={<ProtestMap />} />
             <Route path="/group" element={<GroupCheckin />} />
+            <Route path="/prepare" element={<Prepare />} />
           </Route>
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/change-password" element={<ChangePassword />} />

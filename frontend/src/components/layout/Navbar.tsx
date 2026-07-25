@@ -34,6 +34,7 @@ const pageImports: Record<string, () => Promise<any>> = {
   "/metro": () => import("../../pages/Metro"),
   "/map": () => import("../../pages/Map"),
   "/group": () => import("../../pages/GroupCheckin"),
+  "/prepare": () => import("../../pages/Prepare"),
 };
 
 const navLinks: { to: string; key: string; icon: any }[] = [
@@ -48,6 +49,7 @@ const navLinks: { to: string; key: string; icon: any }[] = [
   { to: "/bail-info", key: "bail", icon: Scale },
   { to: "/checklist", key: "checklist", icon: ClipboardList },
   { to: "/preparation", key: "prep", icon: BookOpen },
+  { to: "/prepare", key: "prepare", icon: Download },
   { to: "/mental-health", key: "mentalHealth", icon: Heart },
   { to: "/aid", key: "aid", icon: Droplets },
   { to: "/resources", key: "resources", icon: Globe },

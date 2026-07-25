@@ -29,7 +29,8 @@
     "evidence": "Evidence",
     "metro": "Metro",
     "map": "Map",
-    "group": "Group"
+    "group": "Group",
+    "prepare": "Prepare"
   },
   "home": {
     "trending": "Trending",
@@ -1066,5 +1067,28 @@
     "needsHelp": "Needs help!",
     "map": "Map",
     "gpsWarning": "Location not available — checkin sent without GPS"
+  },
+  "prepare": {
+    "title": "Prepare — Offline Packs",
+    "subtitle": "See what's cached on your phone for each protest site. Everything works offline.",
+    "ready": "Ready ✅",
+    "download": "Download Pack",
+    "downloading": "Preparing...",
+    "stations": "Metro stations",
+    "safeZones": "Safe zones",
+    "contacts": "Emergency contacts",
+    "guides": "First Aid + Bail + Rights",
+    "cached": "Cached",
+    "allReady": "Everything is cached — you're good to go!",
+    "allReadyDesc": "All guides, contacts, metro data, and safe zones are stored on your phone. No internet needed.",
+    "packReady": "Pack ready — all resources cached for this area",
+    "resourcesAvailable": "Resources available for this area",
+    "locations": {
+      "jantar-mantar": "Jantar Mantar",
+      "india-gate": "India Gate",
+      "ramlila-maidan": "Ramlila Maidan",
+      "central-secretariat": "Central Secretariat",
+      "mandi-house": "Mandi House"
+    }
   }
 }
