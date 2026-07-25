@@ -22,7 +22,7 @@ export function useBackendStatus() {
 
   useEffect(() => {
     check();
-    const id = setInterval(check, 15000);
+    const id = setInterval(check, 8000);
     return () => clearInterval(id);
   }, [check]);
 
