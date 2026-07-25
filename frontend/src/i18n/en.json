@@ -737,9 +737,9 @@
     "metroStations": "Metro Stations",
     "posts": "Posts",
     "postsContentHint": "Paste Instagram embed code, HTML, or plain text. Instagram embeds will render automatically.",
-    "postsContentHint2": "Write your post text here. Instagram video is added separately below.",
+    "postsContentHint2": "Write your post text here. For photo posts, paste Instagram embed code (blockquote) to show inline.",
     "postsInstagramUrl": "Instagram URL (optional)",
-    "postsInstagramHint": "Paste the full Instagram Reel/post URL. Video will play inline via embed.",
+    "postsInstagramHint": "Paste the full Instagram URL for Reels. Photo posts: paste embed code in Content instead.",
     "postsInstagramPreview": "Video will appear on the post detail page.",
     "total": "total",
     "postType": {

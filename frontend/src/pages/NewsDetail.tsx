@@ -5,6 +5,10 @@ import { SEO } from "../components/SEO";
 import { useLocale } from "../hooks/useLocale";
 import api from "../lib/api";
 
+declare global {
+  interface Window { instgrm?: { Embeds: { process: () => void } } }
+}
+
 interface Post {
   id: number;
   title: string;
@@ -28,6 +32,21 @@ export default function NewsDetail() {
     if (!id) return;
     api.get(`/posts/${id}`).then(({ data }) => setPost(data)).catch(() => {}).finally(() => setLoading(false));
   }, [id]);
+
+  useEffect(() => {
+    if (!post?.content) return;
+    const hasEmbed = post.content.includes("instagram-media");
+    if (!hasEmbed) return;
+    if (window.instgrm) {
+      window.instgrm.Embeds.process();
+    } else {
+      const s = document.createElement("script");
+      s.src = "https://www.instagram.com/embed.js";
+      s.async = true;
+      s.onload = () => window.instgrm?.Embeds.process();
+      document.body.appendChild(s);
+    }
+  }, [post?.content]);
 
   if (loading) {
     return (
@@ -94,7 +113,7 @@ export default function NewsDetail() {
                     <Play className="h-6 w-6 text-ph-orange ml-0.5" />
                   </div>
                   <div>
-                    <p className="text-sm font-bold text-ph-text-dark dark:text-white">Instagram Reel</p>
+                    <p className="text-sm font-bold text-ph-text-dark dark:text-white">{t("news.type.instagram")}</p>
                     <p className="text-xs text-ph-text-muted mt-0.5">{t("news.viewOnInstagram")}</p>
                   </div>
                 </div>
