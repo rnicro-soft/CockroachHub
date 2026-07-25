@@ -62,7 +62,7 @@ export default function AdminPosts() {
 
   const save = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.title.trim() || !form.content.trim()) { toast.error(t("admin.errors.fillAllFields")); return; }
+    if (!form.title.trim()) { toast.error(t("admin.errors.fillAllFields")); return; }
     setSaving(true);
     try {
       const body = { ...form, image_url: form.image_url.trim() || null, instagram_url: form.instagram_url.trim() || null };
@@ -200,7 +200,7 @@ export default function AdminPosts() {
           <div>
             <label className="ph-label">{t("admin.content")}</label>
             <p className="text-[11px] text-ph-text-muted mb-1">{t("admin.postsContentHint2")}</p>
-            <textarea value={form.content} onChange={(e) => setForm({...form, content: e.target.value})} className="ph-input resize-y font-mono text-xs" rows={10} required />
+            <textarea value={form.content} onChange={(e) => setForm({...form, content: e.target.value})} className="ph-input resize-y font-mono text-xs" rows={10} />
           </div>
           <label className="flex items-center gap-2 cursor-pointer">
             <input type="checkbox" checked={form.is_published} onChange={(e) => setForm({...form, is_published: e.target.checked})} className="rounded border-gray-300 dark:border-ph-border" />

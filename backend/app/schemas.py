@@ -332,7 +332,7 @@ class GroupStatusOut(BaseModel):
 # --- Posts ---
 class PostCreate(BaseModel):
     title: str = Field(max_length=500)
-    content: str = Field(max_length=50000)
+    content: str = Field("", max_length=50000)
     post_type: str = Field("news", max_length=50)
     image_url: str | None = Field(None, max_length=2000)
     instagram_url: str | None = Field(None, max_length=2000)
