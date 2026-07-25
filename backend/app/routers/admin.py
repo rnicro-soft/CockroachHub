@@ -817,9 +817,14 @@ async def trigger_sync(
     db: AsyncSession = Depends(get_db),
     current_admin: Admin = Depends(get_current_admin),
 ):
-    """Trigger helpline data sync from helpline_sync module."""
-    await sync_helpline_data()
-    return {"status": "synced"}
+    """Download docx from Google Docs, parse, and upsert data."""
+    from app.docx_sync import sync_from_docx
+    result = await sync_from_docx()
+    status = "error" if result.get("errors") else "synced"
+    if result["errors"]:
+        print(f"[SYNC] Errors: {'; '.join(result['errors'])}")
+    print(f"[SYNC] Contacts: {result['contacts']} · MH: {result['mental_health']} · Aid: {result['aid_orgs']} · News: {result['news']}")
+    return {"status": status, **result}
 
 
 # --- Metro Admin ---
