@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { Plus, Pencil, Trash2, Eye, EyeOff, Loader, Bold, Italic, Heading, Link, Image, List, ListOrdered } from "lucide-react";
+import { Plus, Pencil, Trash2, Eye, EyeOff, Loader, Bold, Italic, Heading, Link, Image, List, ListOrdered, ScrollText, FileCode } from "lucide-react";
+import DOMPurify from "dompurify";
 import { Button } from "../../components/ui/Button";
 import { Modal } from "../../components/ui/Modal";
 import { CardSkeleton } from "../../components/ui/Skeleton";
@@ -42,6 +43,7 @@ export default function AdminPosts() {
   const [editPost, setEditPost] = useState<Post | null>(null);
   const [form, setForm] = useState({ title: "", content: "", post_type: "news", image_url: "", instagram_url: "", is_published: false });
   const [saving, setSaving] = useState(false);
+  const [preview, setPreview] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const load = async (p: number) => {
@@ -254,11 +256,28 @@ export default function AdminPosts() {
             )}
           </div>
           <div>
-            <label className="ph-label">{t("admin.content")}</label>
+            <div className="flex items-center justify-between mb-1">
+              <label className="ph-label mb-0">{t("admin.content")}</label>
+              {cfg.toolbar && (
+                <button type="button" onClick={() => setPreview(!preview)}
+                  className="flex items-center gap-1 text-[11px] font-bold text-ph-text-muted hover:text-ph-orange transition-colors">
+                  {preview ? <FileCode className="h-3.5 w-3.5" /> : <ScrollText className="h-3.5 w-3.5" />}
+                  {preview ? "Edit" : "Preview"}
+                </button>
+              )}
+            </div>
             <p className="text-[11px] text-ph-text-muted mb-1">{t(cfg.hint)}</p>
-            {toolbar}
-            <textarea ref={textareaRef} value={form.content} onChange={(e) => setForm({...form, content: e.target.value})}
-              className="ph-input resize-y font-mono text-xs" rows={cfg.rows} />
+            {preview ? (
+              <div className="min-h-[100px] p-3 border border-ph-border-light dark:border-ph-border bg-white dark:bg-ph-card text-sm text-ph-text-dark dark:text-ph-text-secondary prose prose-sm dark:prose-invert max-w-none leading-relaxed [&_a]:text-ph-orange [&_a]:font-bold [&_blockquote]:border-l-ph-orange [&_blockquote]:pl-4 [&_blockquote]:italic"
+                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(form.content || "<p class='text-ph-text-muted italic'>No content yet</p>") }}
+              />
+            ) : (
+              <>
+                {toolbar}
+                <textarea ref={textareaRef} value={form.content} onChange={(e) => setForm({...form, content: e.target.value})}
+                  className="ph-input resize-y font-mono text-xs" rows={cfg.rows} />
+              </>
+            )}
           </div>
           <label className="flex items-center gap-2 cursor-pointer">
             <input type="checkbox" checked={form.is_published} onChange={(e) => setForm({...form, is_published: e.target.checked})} className="rounded border-gray-300 dark:border-ph-border" />
