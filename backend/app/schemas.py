@@ -356,6 +356,7 @@ class PostOut(BaseModel):
     image_url: str | None = None
     instagram_url: str | None = None
     is_published: bool
+    author_name: str = "Admin"
     created_by: int
     created_at: datetime
     updated_at: datetime

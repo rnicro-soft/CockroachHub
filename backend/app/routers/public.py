@@ -10,7 +10,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from pydantic import BaseModel
 
 from app.database import get_db
-from app.models import AidOrganization, Alert, Announcement, BusRoute, EmergencyContact, FactCheck, GroupCheckin, LegalRight, MentalHealthProvider, MetroDisruption, MetroStation, NewsSource, Post, PushSubscription, SafeZone, Submission
+from app.models import Admin, AidOrganization, Alert, Announcement, BusRoute, EmergencyContact, FactCheck, GroupCheckin, LegalRight, MentalHealthProvider, MetroDisruption, MetroStation, NewsSource, Post, PushSubscription, SafeZone, Submission
 from app.push import get_vapid_public_key
 from app.ratelimit import check_ip_blacklist, rate_limit_submissions
 from app.schemas import AidOrganizationOut, AlertOut, AnnouncementOut, BusRouteOut, ContactOut, FactCheckOut, GroupCreateRequest, GroupJoinRequest, GroupCheckinRequest, GroupMemberOut, GroupStatusOut, LegalRightOut, MentalHealthOut, MetroDisruptionOut, MetroStationOut, MetroSubmitRequest, NewsSourceOut, PostOut, SafeZoneOut, SubmissionCreate, SubmissionOut
@@ -276,7 +276,15 @@ async def get_news_sources(db: AsyncSession = Depends(get_db)):
 @router.get("/posts", response_model=list[PostOut])
 async def get_posts(limit: int = Query(50, ge=1, le=100), offset: int = Query(0, ge=0), db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(Post).where(Post.is_published == True).order_by(Post.created_at.desc()).offset(offset).limit(limit))
-    return [PostOut.model_validate(p) for p in result.scalars().all()]
+    posts = result.scalars().all()
+    out = []
+    for p in posts:
+        r = await db.execute(select(Admin).where(Admin.id == p.created_by))
+        a = r.scalar_one_or_none()
+        d = PostOut.model_validate(p).model_dump()
+        d["author_name"] = a.name if a else "Admin"
+        out.append(PostOut(**d))
+    return out
 
 
 @router.get("/posts/{post_id}", response_model=PostOut)
@@ -285,7 +293,11 @@ async def get_post(post_id: int, db: AsyncSession = Depends(get_db)):
     p = result.scalar_one_or_none()
     if not p:
         raise HTTPException(status_code=404, detail="Post not found")
-    return PostOut.model_validate(p)
+    r = await db.execute(select(Admin).where(Admin.id == p.created_by))
+    a = r.scalar_one_or_none()
+    d = PostOut.model_validate(p).model_dump()
+    d["author_name"] = a.name if a else "Admin"
+    return PostOut(**d)
 
 
 # --- Safe Zones ---
