@@ -233,7 +233,7 @@
     "submitAnother": "Submit Another",
     "validationError": "Enter a description",
     "privacyTitle": "Privacy — We Don't Track You",
-    "privacyDesc": "No name. No phone. No location history. Nothing to seize.",
+    "privacyDesc": "No name. No phone. No account required. Your report description + optional location are stored temporarily.",
     "seoTitle": "Send a Rant — Report What You See",
     "seoDesc": "Send anonymous field reports to CJP admins. No personal data collected. Zero tracking."
   },

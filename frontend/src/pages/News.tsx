@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Newspaper, Calendar, Loader } from "lucide-react";
+import DOMPurify from "dompurify";
 import { SEO } from "../components/SEO";
 import { useLocale } from "../hooks/useLocale";
 import api from "../lib/api";
@@ -78,7 +79,7 @@ export default function News() {
                   {post.content && (
                     <div
                       className="prose prose-sm dark:prose-invert max-w-none text-sm text-ph-text-dark dark:text-ph-text-secondary leading-relaxed [&_a]:text-ph-orange [&_a]:font-bold [&_blockquote]:border-l-ph-orange [&_blockquote]:pl-4 [&_blockquote]:italic"
-                      dangerouslySetInnerHTML={{ __html: post.content }}
+                      dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }}
                     />
                   )}
 

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
 
-const STORAGE_KEYS = ["auth", "cockroachhub-theme", "cockroachhub-locale", "protest-checklist"];
+const ERASE_PREFIXES = ["auth", "cockroachhub-", "protest-", "offline-"];
 
 export function useAutoErase(enabled: boolean, timeoutMinutes: number = 30, t?: (s: string) => string) {
   const timerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -10,12 +10,14 @@ export function useAutoErase(enabled: boolean, timeoutMinutes: number = 30, t?: 
   const translate = t || ((s: string) => s);
 
   const erase = useCallback(() => {
-    STORAGE_KEYS.forEach((key) => localStorage.removeItem(key));
-    // Clear IndexedDB caches
+    Object.keys(localStorage).forEach((key) => {
+      if (ERASE_PREFIXES.some((p) => key === p || key.startsWith(p))) {
+        localStorage.removeItem(key);
+      }
+    });
     if ("caches" in window) {
       caches.keys().then((names) => names.forEach((n) => caches.delete(n)));
     }
-    // Clear service worker cache
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.getRegistrations().then((regs) =>
         regs.forEach((r) => r.unregister())
@@ -32,7 +34,6 @@ export function useAutoErase(enabled: boolean, timeoutMinutes: number = 30, t?: 
 
     if (!enabled) return;
 
-    // Show warning 30s before erase
     warningRef.current = setTimeout(() => {
       if (!warnedRef.current) {
         warnedRef.current = true;

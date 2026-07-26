@@ -4,8 +4,8 @@ from pydantic import BaseModel, EmailStr, Field
 
 # --- Auth ---
 class LoginRequest(BaseModel):
-    email: str
-    password: str
+    email: str = Field(max_length=255)
+    password: str = Field(max_length=255)
 
 
 class TokenResponse(BaseModel):
@@ -411,7 +411,7 @@ class MetroDisruptionOut(BaseModel):
 
 
 class MetroSubmitRequest(BaseModel):
-    station_id: str
+    station_id: str = Field(max_length=50)
     status: str = Field(max_length=20)
     reason: str = Field(max_length=2000)
 

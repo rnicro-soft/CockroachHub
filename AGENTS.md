@@ -3,7 +3,7 @@
 ## Stack
 - Frontend: React 19 + Vite 6 + Tailwind 3 + PWA (vite-plugin-pwa injectManifest)
 - Backend: FastAPI + SQLAlchemy async + PostgreSQL 17 (Docker)
-- Auth: JWT (jose) + bcrypt, 2h expiry, jti blacklist
+- Auth: JWT (jose) + bcrypt, 2h expiry (config.py:120), jti blacklist
 - Queue: in-memory rate limiter (5/min submissions, 10/5min login)
 
 ## Project structure

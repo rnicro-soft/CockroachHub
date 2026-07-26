@@ -140,14 +140,11 @@ async def submit_report(
         type=body.type,
         description=body.description,
         location=body.location,
-        ip_address=request.client.host if request.client else None,
     )
     db.add(submission)
     await db.commit()
     await db.refresh(submission)
-    ip = request.client.host if request.client else "unknown"
-    sos_prefix = "[SOS]" if "[SOS]" in (body.description or "") else ""
-    print(f"[SUBMIT]{sos_prefix} type={body.type} ip={ip} loc={body.location or 'none'}")
+    print(f"[SUBMIT] type={body.type} loc={body.location or 'none'}")
     return SubmissionOut.model_validate(submission)
 
 
@@ -201,14 +198,14 @@ async def get_bus_routes(direction: str | None = None, db: AsyncSession = Depend
 
 
 # --- Group Check-in ---
-import random
+import secrets
 import string
 
 
 @router.post("/group/create")
 async def group_create(body: GroupCreateRequest, request: Request, db: AsyncSession = Depends(get_db)):
-    code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
-    member = GroupCheckin(group_code=code, member_name=body.member_name, ip_address=request.client.host if request.client else None)
+    code = ''.join(secrets.choice(string.ascii_uppercase + string.digits) for _ in range(6))
+    member = GroupCheckin(group_code=code, member_name=body.member_name)
     db.add(member)
     await db.commit()
     await db.refresh(member)
@@ -220,7 +217,7 @@ async def group_join(body: GroupJoinRequest, request: Request, db: AsyncSession 
     existing = await db.execute(select(GroupCheckin).where(GroupCheckin.group_code == body.group_code, GroupCheckin.member_name == body.member_name))
     if existing.scalar_one_or_none():
         raise HTTPException(status_code=400, detail="Name already used in this group")
-    member = GroupCheckin(group_code=body.group_code, member_name=body.member_name, ip_address=request.client.host if request.client else None)
+    member = GroupCheckin(group_code=body.group_code, member_name=body.member_name)
     db.add(member)
     await db.commit()
     await db.refresh(member)
@@ -228,7 +225,7 @@ async def group_join(body: GroupJoinRequest, request: Request, db: AsyncSession 
 
 
 @router.post("/group/checkin")
-async def group_checkin(body: GroupCheckinRequest, request: Request, db: AsyncSession = Depends(get_db)):
+async def group_checkin(body: GroupCheckinRequest, db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(GroupCheckin).where(GroupCheckin.group_code == body.group_code, GroupCheckin.member_name == body.member_name))
     member = result.scalar_one_or_none()
     if not member:
