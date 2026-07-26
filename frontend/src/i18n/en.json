@@ -753,7 +753,11 @@
     "postsTipsTitle": "How to post",
     "postsTipPhoto": "Photo post: Paste Instagram URL below → renders as embed iframe with image",
     "postsTipReel": "Reel/Video: Paste the Instagram URL below → embed shows thumbnail",
-    "postsTipContent": "Content: Write text or embed code here. Can be left empty if using Instagram URL"
+    "postsTipContent": "Content: Write text or embed code here. Can be left empty if using Instagram URL",
+    "postsContentDefault": "Write an update. Use the toolbar to format text, add links, and images.",
+    "postsContentArticle": "Write your article. Use the toolbar to add headings, images, links, and lists.",
+    "postsContentAnnouncement": "Short announcement — keep it brief.",
+    "postsContentInstagram": "Content is optional when using an Instagram URL."
   },
   "common": {
     "loading": "Loading...",

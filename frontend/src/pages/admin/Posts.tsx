@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Plus, Pencil, Trash2, Eye, EyeOff, Loader } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Plus, Pencil, Trash2, Eye, EyeOff, Loader, Bold, Italic, Heading, Link, Image, List, ListOrdered } from "lucide-react";
 import { Button } from "../../components/ui/Button";
 import { Modal } from "../../components/ui/Modal";
 import { CardSkeleton } from "../../components/ui/Skeleton";
@@ -22,6 +22,14 @@ interface Post {
 
 const POST_TYPES = ["news", "update", "announcement", "alert", "instagram"];
 
+const CONTENT_CFG: Record<string, { rows: number; hint: string; toolbar: boolean }> = {
+  article: { rows: 15, hint: "admin.postsContentArticle", toolbar: true },
+  announcement: { rows: 5, hint: "admin.postsContentAnnouncement", toolbar: true },
+  news: { rows: 10, hint: "admin.postsContentDefault", toolbar: true },
+  update: { rows: 8, hint: "admin.postsContentDefault", toolbar: true },
+  instagram: { rows: 5, hint: "admin.postsContentInstagram", toolbar: false },
+};
+
 export default function AdminPosts() {
   const { t } = useLocale();
   const [posts, setPosts] = useState<Post[]>([]);
@@ -34,6 +42,7 @@ export default function AdminPosts() {
   const [editPost, setEditPost] = useState<Post | null>(null);
   const [form, setForm] = useState({ title: "", content: "", post_type: "news", image_url: "", instagram_url: "", is_published: false });
   const [saving, setSaving] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const load = async (p: number) => {
     setLoading(true);
@@ -97,6 +106,48 @@ export default function AdminPosts() {
   };
 
   const totalPages = Math.ceil(total / perPage);
+
+  const wrap = (open: string, close: string) => {
+    const ta = textareaRef.current;
+    if (!ta) return;
+    const s = ta.selectionStart, e = ta.selectionEnd;
+    const sel = form.content.substring(s, e) || "text";
+    const next = form.content.substring(0, s) + open + sel + close + form.content.substring(e);
+    setForm({ ...form, content: next });
+    requestAnimationFrame(() => { ta.focus(); ta.setSelectionRange(s + open.length, s + open.length + sel.length); });
+  };
+
+  const insertTag = (label: string, fn: (input: string) => string) => {
+    const input = prompt(label);
+    if (!input) return;
+    const ta = textareaRef.current;
+    if (!ta) return;
+    const s = ta.selectionStart, e = ta.selectionEnd;
+    const ins = fn(input);
+    const next = form.content.substring(0, s) + ins + form.content.substring(e);
+    setForm({ ...form, content: next });
+  };
+
+  const cfg = CONTENT_CFG[form.post_type] || CONTENT_CFG.news;
+
+  const toolbar = cfg.toolbar ? (
+    <div className="flex flex-wrap gap-0.5 mb-1.5 border border-ph-border-light dark:border-ph-border p-1 bg-gray-50 dark:bg-ph-card">
+      <button type="button" onClick={() => wrap("<strong>", "</strong>")} className="p-1.5 text-ph-text-muted hover:text-white hover:bg-gray-200 dark:hover:bg-ph-card-hover" title="Bold"><Bold className="h-3.5 w-3.5" /></button>
+      <button type="button" onClick={() => wrap("<em>", "</em>")} className="p-1.5 text-ph-text-muted hover:text-white hover:bg-gray-200 dark:hover:bg-ph-card-hover" title="Italic"><Italic className="h-3.5 w-3.5" /></button>
+      <button type="button" onClick={() => wrap("<h3>", "</h3>")} className="p-1.5 text-ph-text-muted hover:text-white hover:bg-gray-200 dark:hover:bg-ph-card-hover" title="Heading"><Heading className="h-3.5 w-3.5" /></button>
+      <span className="w-px mx-0.5 bg-ph-border-light dark:bg-ph-border self-stretch" />
+      <button type="button" onClick={() => insertTag("Enter link URL", (url) => {
+        const ta = textareaRef.current;
+        if (!ta) return `<a href="${url}">link</a>`;
+        const sel = form.content.substring(ta.selectionStart, ta.selectionEnd);
+        return `<a href="${url}">${sel || "link"}</a>`;
+      })} className="p-1.5 text-ph-text-muted hover:text-white hover:bg-gray-200 dark:hover:bg-ph-card-hover" title="Insert link"><Link className="h-3.5 w-3.5" /></button>
+      <button type="button" onClick={() => insertTag("Enter image URL", (url) => `<img src="${url}" alt="" />`)} className="p-1.5 text-ph-text-muted hover:text-white hover:bg-gray-200 dark:hover:bg-ph-card-hover" title="Insert image"><Image className="h-3.5 w-3.5" /></button>
+      <span className="w-px mx-0.5 bg-ph-border-light dark:bg-ph-border self-stretch" />
+      <button type="button" onClick={() => wrap("<ul>\n  <li>", "</li>\n</ul>")} className="p-1.5 text-ph-text-muted hover:text-white hover:bg-gray-200 dark:hover:bg-ph-card-hover" title="Bullet list"><List className="h-3.5 w-3.5" /></button>
+      <button type="button" onClick={() => wrap("<ol>\n  <li>", "</li>\n</ol>")} className="p-1.5 text-ph-text-muted hover:text-white hover:bg-gray-200 dark:hover:bg-ph-card-hover" title="Numbered list"><ListOrdered className="h-3.5 w-3.5" /></button>
+    </div>
+  ) : null;
 
   return (
     <div className="space-y-4 max-w-6xl">
@@ -204,8 +255,10 @@ export default function AdminPosts() {
           </div>
           <div>
             <label className="ph-label">{t("admin.content")}</label>
-            <p className="text-[11px] text-ph-text-muted mb-1">{t("admin.postsContentHint2")}</p>
-            <textarea value={form.content} onChange={(e) => setForm({...form, content: e.target.value})} className="ph-input resize-y font-mono text-xs" rows={10} />
+            <p className="text-[11px] text-ph-text-muted mb-1">{t(cfg.hint)}</p>
+            {toolbar}
+            <textarea ref={textareaRef} value={form.content} onChange={(e) => setForm({...form, content: e.target.value})}
+              className="ph-input resize-y font-mono text-xs" rows={cfg.rows} />
           </div>
           <label className="flex items-center gap-2 cursor-pointer">
             <input type="checkbox" checked={form.is_published} onChange={(e) => setForm({...form, is_published: e.target.checked})} className="rounded border-gray-300 dark:border-ph-border" />
