@@ -739,8 +739,8 @@
     "postsContentHint": "Paste Instagram embed code, HTML, or plain text. Instagram embeds will render automatically.",
     "postsContentHint2": "Write your post text here. For photo posts, paste Instagram embed code (blockquote) to show inline.",
     "postsInstagramUrl": "Instagram URL (optional)",
-    "postsInstagramHint": "Paste the full Instagram URL for Reels. Photo posts: paste embed code in Content instead.",
-    "postsInstagramPreview": "Video will appear on the post detail page.",
+    "postsInstagramHint": "Paste any Instagram URL (photo, Reel, carousel). Renders as embed iframe.",
+
     "total": "total",
     "postType": {
       "news": "News",
@@ -751,8 +751,9 @@
     },
     "imageUrl": "Image URL (optional)",
     "postsTipsTitle": "How to post",
-    "postsTipPhoto": "Photo post: Open Instagram post → tap ⋮ → Copy embed code → paste in Content below",
-    "postsTipReel": "Reel/Video: Copy the Instagram URL → paste in 'Instagram URL' field below"
+    "postsTipPhoto": "Photo post: Paste Instagram URL below → renders as embed iframe with image",
+    "postsTipReel": "Reel/Video: Paste the Instagram URL below → embed shows thumbnail",
+    "postsTipContent": "Content: Write text or embed code here. Can be left empty if using Instagram URL"
   },
   "common": {
     "loading": "Loading...",

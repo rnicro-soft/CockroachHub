@@ -345,7 +345,6 @@ class PostUpdate(BaseModel):
     post_type: str | None = None
     image_url: str | None = None
     instagram_url: str | None = None
-    instagram_thumbnail: str | None = None
     is_published: bool | None = None
 
 
@@ -356,7 +355,6 @@ class PostOut(BaseModel):
     post_type: str = "news"
     image_url: str | None = None
     instagram_url: str | None = None
-    instagram_thumbnail: str | None = None
     is_published: bool
     created_by: int
     created_at: datetime

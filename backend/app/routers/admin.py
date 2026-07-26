@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from pydantic import BaseModel
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -1004,27 +1004,6 @@ async def admin_delete_safe_zone(
 
 
 # --- Posts Admin ---
-async def _fetch_instagram_thumbnail(host: str, post_id: int):
-    """Background task: fetch Instagram thumbnail and store it."""
-    from app.instagram import fetch_thumbnail
-    from app.database import async_session
-    from app.models import Post as PostModel
-    from app.schemas import PostUpdate as PostUpdateSchema
-    try:
-        async with async_session() as db:
-            result = await db.execute(select(PostModel).where(PostModel.id == post_id))
-            p = result.scalar_one_or_none()
-            if not p or not p.instagram_url:
-                return
-            thumb = fetch_thumbnail(p.instagram_url)
-            if thumb:
-                p.instagram_thumbnail = thumb
-                await db.commit()
-                print(f"[INSTAGRAM] Thumbnail saved for post #{post_id}")
-    except Exception as e:
-        print(f"[INSTAGRAM] Thumbnail fetch failed for post #{post_id}: {e}")
-
-
 @router.get("/posts")
 async def admin_list_posts(
     page: int = Query(1, ge=1),
@@ -1044,7 +1023,6 @@ async def admin_list_posts(
 @router.post("/posts", response_model=PostOut, status_code=201)
 async def admin_create_post(
     body: PostCreate,
-    tasks: BackgroundTasks,
     db: AsyncSession = Depends(get_db),
     current_admin: Admin = Depends(get_current_admin),
 ):
@@ -1054,8 +1032,6 @@ async def admin_create_post(
     await db.refresh(p)
     await _log_action(db, current_admin.id, "create", "post", p.id)
     print(f"[ADMIN] {current_admin.email} created post #{p.id}: {body.title}")
-    if p.instagram_url:
-        tasks.add_task(_fetch_instagram_thumbnail, "cockroachhub.lol", p.id)
     return PostOut.model_validate(p)
 
 
@@ -1063,7 +1039,6 @@ async def admin_create_post(
 async def admin_update_post(
     post_id: int,
     body: PostUpdate,
-    tasks: BackgroundTasks,
     db: AsyncSession = Depends(get_db),
     current_admin: Admin = Depends(get_current_admin),
 ):
@@ -1071,18 +1046,13 @@ async def admin_update_post(
     p = result.scalar_one_or_none()
     if not p:
         raise HTTPException(status_code=404, detail="Post not found")
-    changed_instagram = body.instagram_url is not None and body.instagram_url != p.instagram_url
     for field, value in body.model_dump(exclude_unset=True).items():
         setattr(p, field, value)
-    if not p.instagram_url:
-        p.instagram_thumbnail = None
     p.updated_at = datetime.now(timezone.utc)
     await _log_action(db, current_admin.id, "update", "post", post_id)
     await db.commit()
     await db.refresh(p)
     print(f"[ADMIN] {current_admin.email} updated post #{post_id}")
-    if changed_instagram and p.instagram_url:
-        tasks.add_task(_fetch_instagram_thumbnail, "cockroachhub.lol", p.id)
     return PostOut.model_validate(p)
 
 

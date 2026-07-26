@@ -13,7 +13,6 @@ SCHEMA_ADDITIONS = [
     ("posts", "post_type", "VARCHAR(50) DEFAULT 'news'"),
     ("posts", "image_url", "VARCHAR(2000)"),
     ("posts", "instagram_url", "VARCHAR(2000)"),
-    ("posts", "instagram_thumbnail", "VARCHAR(2000)"),
 ]
 
 async def run_migrations():

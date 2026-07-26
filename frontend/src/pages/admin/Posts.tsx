@@ -14,7 +14,6 @@ interface Post {
   post_type: string;
   image_url: string | null;
   instagram_url: string | null;
-  instagram_thumbnail: string | null;
   is_published: boolean;
   created_by: number;
   created_at: string;
@@ -174,6 +173,7 @@ export default function AdminPosts() {
           <ul className="list-disc pl-4 space-y-1 text-ph-text-secondary">
             <li>{t("admin.postsTipPhoto")}</li>
             <li>{t("admin.postsTipReel")}</li>
+            <li>{t("admin.postsTipContent")}</li>
           </ul>
         </div>
         <form onSubmit={save} className="space-y-3">
@@ -192,14 +192,7 @@ export default function AdminPosts() {
           <div>
             <label className="ph-label">{t("admin.postsInstagramUrl")}</label>
             <p className="text-[11px] text-ph-text-muted mb-1">{t("admin.postsInstagramHint")}</p>
-            <input value={form.instagram_url} onChange={(e) => setForm({...form, instagram_url: e.target.value})} className="ph-input" placeholder="https://www.instagram.com/reel/..." maxLength={2000} />
-            {form.instagram_url && (
-              <p className="mt-1 text-[11px] text-ph-green font-bold">{t("admin.postsInstagramPreview")}</p>
-            )}
-            {editPost?.instagram_thumbnail && (
-              <img src={editPost.instagram_thumbnail} alt="" className="mt-2 max-h-32 rounded border border-ph-border-light dark:border-ph-border object-cover"
-                onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
-            )}
+            <input value={form.instagram_url} onChange={(e) => setForm({...form, instagram_url: e.target.value})} className="ph-input" placeholder="https://www.instagram.com/p/..." maxLength={2000} />
           </div>
           <div>
             <label className="ph-label">{t("admin.imageUrl")}</label>

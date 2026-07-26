@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, Calendar, Loader, Play } from "lucide-react";
+import { ArrowLeft, Calendar, Loader } from "lucide-react";
 import { SEO } from "../components/SEO";
 import { useLocale } from "../hooks/useLocale";
 import api from "../lib/api";
 
-declare global {
-  interface Window { instgrm?: { Embeds: { process: () => void } } }
+function instagramEmbedUrl(url: string): string | null {
+  try {
+    const match = url.match(/instagram\.com\/(?:p|reel|tv)\/([^\/?#]+)/);
+    return match ? `https://www.instagram.com/p/${match[1]}/embed/captioned/` : null;
+  } catch {
+    return null;
+  }
 }
 
 interface Post {
@@ -16,7 +21,6 @@ interface Post {
   post_type: string;
   image_url: string | null;
   instagram_url: string | null;
-  instagram_thumbnail: string | null;
   is_published: boolean;
   created_at: string;
   updated_at: string;
@@ -32,21 +36,6 @@ export default function NewsDetail() {
     if (!id) return;
     api.get(`/posts/${id}`).then(({ data }) => setPost(data)).catch(() => {}).finally(() => setLoading(false));
   }, [id]);
-
-  useEffect(() => {
-    if (!post?.content) return;
-    const hasEmbed = post.content.includes("instagram-media");
-    if (!hasEmbed) return;
-    if (window.instgrm) {
-      window.instgrm.Embeds.process();
-    } else {
-      const s = document.createElement("script");
-      s.src = "https://www.instagram.com/embed.js";
-      s.async = true;
-      s.onload = () => window.instgrm?.Embeds.process();
-      document.body.appendChild(s);
-    }
-  }, [post?.content]);
 
   if (loading) {
     return (
@@ -91,35 +80,19 @@ export default function NewsDetail() {
             className="mt-4 prose prose-sm dark:prose-invert max-w-none text-sm text-ph-text-dark dark:text-ph-text-secondary leading-relaxed [&_a]:text-ph-orange [&_a]:font-bold [&_blockquote]:border-l-ph-orange [&_blockquote]:pl-4 [&_blockquote]:italic"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
-          {post.instagram_url && (
-            <a href={post.instagram_url} target="_blank" rel="noopener noreferrer"
-              className="mt-5 group block max-w-sm mx-auto rounded overflow-hidden border border-ph-border-light dark:border-ph-border bg-ph-dark">
-              {post.instagram_thumbnail ? (
-                <div className="relative aspect-[9/16] bg-ph-card">
-                  <img src={post.instagram_thumbnail} alt="" className="absolute inset-0 w-full h-full object-cover"
-                    onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors">
-                    <div className="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                      <Play className="h-7 w-7 text-black ml-0.5" />
-                    </div>
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 p-3">
-                    <span className="text-xs font-bold text-white flex items-center gap-1.5">{t("news.viewOnInstagram")}</span>
-                  </div>
-                </div>
-              ) : (
-                <div className="flex items-center gap-3 p-4 group-hover:bg-ph-card-hover transition-colors">
-                  <div className="w-12 h-12 rounded-full bg-ph-orange/20 flex items-center justify-center shrink-0">
-                    <Play className="h-6 w-6 text-ph-orange ml-0.5" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-bold text-ph-text-dark dark:text-white">{t("news.type.instagram")}</p>
-                    <p className="text-xs text-ph-text-muted mt-0.5">{t("news.viewOnInstagram")}</p>
-                  </div>
-                </div>
-              )}
-            </a>
-          )}
+          {post.instagram_url && (() => {
+            const embedSrc = instagramEmbedUrl(post.instagram_url);
+            return embedSrc ? (
+              <iframe src={embedSrc} className="mt-4 w-full rounded border border-ph-border-light dark:border-ph-border"
+                style={{ maxWidth: "400px", height: "550px", margin: "0 auto", display: "block" }}
+                allowFullScreen loading="lazy" />
+            ) : (
+              <a href={post.instagram_url} target="_blank" rel="noopener noreferrer"
+                className="mt-4 inline-flex items-center gap-1 text-xs font-bold text-ph-orange hover:underline">
+                {t("news.viewOnInstagram")}
+              </a>
+            );
+          })()}
         </article>
       </div>
     </>
